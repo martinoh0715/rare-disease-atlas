@@ -290,7 +290,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
       <header className="border-b border-slate-200 bg-[#0b1f3a] text-white">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 py-3">
+        <div className="mx-auto flex max-w-[1800px] flex-wrap items-center gap-3 px-4 py-3">
           <button
             type="button"
             className="font-display text-lg tracking-tight"
@@ -319,69 +319,8 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-[1680px] gap-4 px-4 py-4 lg:grid-cols-[220px_minmax(0,1fr)_300px]">
-        <aside className="space-y-4">
-          <section className="rounded-xl border border-slate-200 bg-white p-4">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-              Categories
-            </h2>
-            <ul className="mt-3 space-y-2">
-              {demo.category_legend.map((c) => {
-                const count = local.nodes.filter(
-                  (n) => legendCategoryForType(n.type) === c.id
-                ).length;
-                if (count === 0) return null;
-                return (
-                  <li key={c.id} className="flex items-center gap-2 text-sm">
-                    <span
-                      className="inline-block h-3 w-3 rounded-full"
-                      style={{ background: c.color }}
-                    />
-                    <span className="flex-1 text-slate-700">{c.label}</span>
-                    <span className="text-slate-400">{count}</span>
-                  </li>
-                );
-              })}
-            </ul>
-            <p className="mt-3 text-xs leading-relaxed text-slate-500">
-              Counts match nodes currently on the graph. Dashed lines are
-              proposed bridges, not established facts.
-            </p>
-          </section>
-
-          <section className="rounded-xl border border-slate-200 bg-white p-4">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-              Guided discovery
-            </h2>
-            <p className="mt-2 text-xs leading-relaxed text-slate-600">
-              A 3-step tour. Each step fits a curated path on the graph —
-              biology first, then studies and partners, then a next-step brief.
-            </p>
-            <ol className="mt-3 space-y-2">
-              {stages.map((s, idx) => (
-                <li key={s.id}>
-                  <button
-                    type="button"
-                    onClick={() => chooseStage(s.id)}
-                    className={`w-full rounded-lg border px-3 py-2 text-left text-sm transition ${
-                      stageId === s.id
-                        ? "border-slate-900 bg-slate-900 text-white"
-                        : "border-slate-200 hover:border-slate-400"
-                    }`}
-                  >
-                    <span className="block text-[11px] uppercase tracking-wide opacity-70">
-                      Step {idx + 1}
-                    </span>
-                    <span className="font-medium">{s.label}</span>
-                  </button>
-                </li>
-              ))}
-            </ol>
-            <p className="mt-3 text-xs text-slate-600">{stage?.summary}</p>
-          </section>
-        </aside>
-
-        <main className="space-y-4">
+      <div className="mx-auto max-w-[1800px] space-y-4 px-4 py-4">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
           <section className="rounded-xl border border-slate-200 bg-white p-4">
             <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
               <div>
@@ -400,39 +339,68 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                   </p>
                 ) : null}
               </div>
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setExpanded((v) => !v)}
-                >
-                  {expanded ? "Show guided path" : "Show more connections"}
-                </Button>
-              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setExpanded((v) => !v)}
+              >
+                {expanded ? "Show guided path" : "Show more connections"}
+              </Button>
             </div>
 
-            <NetworkCanvas
-              focusId={focusId}
-              nodes={local.nodes}
-              edges={local.edges}
-              selectedEdgeId={selectedEdgeId}
-              legend={demo.category_legend}
-              onSelectNode={(id) => {
-                setFocusId(id);
-                const stageEdgeIds = new Set(stage?.edge_ids || []);
-                const e =
-                  curated.edges.find(
-                    (edge) =>
-                      (edge.source === id || edge.target === id) &&
-                      stageEdgeIds.has(edge.id)
-                  ) ||
-                  curated.edges.find(
-                    (edge) => edge.source === id || edge.target === id
-                  );
-                setSelectedEdgeId(e?.id || null);
-              }}
-              onSelectEdge={setSelectedEdgeId}
-            />
+            <div className="relative">
+              <NetworkCanvas
+                focusId={focusId}
+                nodes={local.nodes}
+                edges={local.edges}
+                selectedEdgeId={selectedEdgeId}
+                legend={demo.category_legend}
+                onSelectNode={(id) => {
+                  setFocusId(id);
+                  const stageEdgeIds = new Set(stage?.edge_ids || []);
+                  const e =
+                    curated.edges.find(
+                      (edge) =>
+                        (edge.source === id || edge.target === id) &&
+                        stageEdgeIds.has(edge.id)
+                    ) ||
+                    curated.edges.find(
+                      (edge) => edge.source === id || edge.target === id
+                    );
+                  setSelectedEdgeId(e?.id || null);
+                }}
+                onSelectEdge={setSelectedEdgeId}
+              />
+              <div className="pointer-events-none absolute bottom-10 left-3 z-10 max-w-xs rounded-lg border border-slate-200/80 bg-white/95 p-3 shadow-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+                  Legend
+                </p>
+                <ul className="mt-2 space-y-1.5">
+                  {demo.category_legend.map((c) => {
+                    const count = local.nodes.filter(
+                      (n) => legendCategoryForType(n.type) === c.id
+                    ).length;
+                    if (count === 0) return null;
+                    return (
+                      <li
+                        key={c.id}
+                        className="flex items-center gap-2 text-xs text-slate-700"
+                      >
+                        <span
+                          className="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
+                          style={{ background: c.color }}
+                        />
+                        <span className="flex-1">{c.label}</span>
+                        <span className="text-slate-400">{count}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <p className="mt-2 text-[11px] leading-snug text-slate-500">
+                  Dashed lines are proposed bridges, not established facts.
+                </p>
+              </div>
+            </div>
 
             {local.emptyReason && (
               <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
@@ -441,78 +409,70 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
             )}
             {local.truncated && (
               <p className="mt-2 text-xs text-slate-500">
-                Neighborhood truncated for readability. Return to the guided path
-                for the curated multi-hop view.
+                Neighborhood truncated for readability. Return to the guided
+                path for the curated multi-hop view.
               </p>
             )}
           </section>
 
-          {(stageId === "explore" || stageId === "prepare") && (
-            <AssetPanel
-              assets={visibleAssets.length ? visibleAssets : assetAssessments}
-              selectedAssetIds={selectedAssetIds}
-              onToggle={toggleAsset}
-              registryGap={demo.registry_gap}
+          <aside className="space-y-4 lg:sticky lg:top-4 lg:self-start">
+            <SourcePanel
+              edge={selectedEdge}
+              nodeMap={nodeMap}
+              plainFallback={
+                selectedEdge
+                  ? demo.edge_plain_language[selectedEdge.id]
+                  : undefined
+              }
             />
-          )}
-        </main>
+            <SummaryPanel
+              edge={selectedEdge}
+              plainFallback={
+                selectedEdge
+                  ? demo.edge_plain_language[selectedEdge.id]
+                  : undefined
+              }
+            />
+          </aside>
+        </div>
 
-        <aside className="space-y-4">
-          <SourcePanel
-            edge={selectedEdge}
-            nodeMap={nodeMap}
-            plainFallback={
-              selectedEdge
-                ? demo.edge_plain_language[selectedEdge.id]
-                : undefined
-            }
-          />
-
-          <SummaryPanel
-            edge={selectedEdge}
-            plainFallback={
-              selectedEdge
-                ? demo.edge_plain_language[selectedEdge.id]
-                : undefined
-            }
-          />
-
+        <div className="grid gap-4 md:grid-cols-2">
           <section className="rounded-xl border border-slate-200 bg-white p-4">
-            <h2 className="font-display text-lg">Selected entity</h2>
-            {focusNode ? (
-              <dl className="mt-3 space-y-2 text-sm text-slate-700">
-                <Detail label="Type" value={focusNode.type} />
-                <Detail label="Plain language" value={focusNode.plain_language} />
-                <Detail label="Genotype scope" value={focusNode.genotype_scope} />
-                <Detail label="Species" value={focusNode.species} />
-                <Detail label="Notes" value={focusNode.notes} />
-                <Detail label="Access" value={focusNode.access_info} />
-                {focusNode.source_url && (
-                  <div>
-                    <dt className="text-xs uppercase tracking-wide text-slate-500">
-                      Source
-                    </dt>
-                    <dd>
-                      <a
-                        className="text-teal-800 underline-offset-2 hover:underline"
-                        href={focusNode.source_url}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {focusNode.source_url}
-                      </a>
-                    </dd>
-                  </div>
-                )}
-              </dl>
-            ) : null}
+            <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+              Guided discovery
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">
+              A 3-step tour. Each step fits a curated path on the graph —
+              biology first, then studies and partners, then a next-step brief.
+            </p>
+            <ol className="mt-3 grid gap-2 sm:grid-cols-3">
+              {stages.map((s, idx) => (
+                <li key={s.id}>
+                  <button
+                    type="button"
+                    onClick={() => chooseStage(s.id)}
+                    className={`h-full w-full rounded-lg border px-3 py-2 text-left text-sm transition ${
+                      stageId === s.id
+                        ? "border-slate-900 bg-slate-900 text-white"
+                        : "border-slate-200 hover:border-slate-400"
+                    }`}
+                  >
+                    <span className="block text-[11px] uppercase tracking-wide opacity-70">
+                      Step {idx + 1}
+                    </span>
+                    <span className="font-medium">{s.label}</span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-3 text-sm text-slate-600">{stage?.summary}</p>
           </section>
 
           <section className="rounded-xl border border-slate-200 bg-white p-4">
             <h2 className="font-display text-lg">Prepare next step</h2>
             <p className="mt-2 text-sm text-slate-600">
-              Choose a partner organization and assets, then generate an editable
-              sourced brief. Nothing is sent automatically.
+              Choose a partner organization and assets, then generate an
+              editable sourced brief. Nothing is sent automatically.
             </p>
             <label className="mt-3 block text-xs font-semibold uppercase tracking-wide text-slate-500">
               Potential partner
@@ -531,7 +491,16 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               Prepare research proposal
             </Button>
           </section>
-        </aside>
+        </div>
+
+        {(stageId === "explore" || stageId === "prepare") && (
+          <AssetPanel
+            assets={visibleAssets.length ? visibleAssets : assetAssessments}
+            selectedAssetIds={selectedAssetIds}
+            onToggle={toggleAsset}
+            registryGap={demo.registry_gap}
+          />
+        )}
       </div>
 
       {proposalOpen && proposal && (
