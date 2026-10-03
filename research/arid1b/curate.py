@@ -1311,7 +1311,7 @@ def build_demo_experience() -> dict[str, Any]:
             {"id": "mechanism", "label": "Mechanisms & processes", "color": "#b45309"},
             {"id": "intervention", "label": "Interventions", "color": "#be123c"},
             {"id": "study", "label": "Clinical studies", "color": "#7c3aed"},
-            {"id": "publication", "label": "Publications", "color": "#0e7490"},
+            {"id": "publication", "label": "Publications", "color": "#c026d3"},
             {"id": "organization_asset", "label": "Organizations & assets", "color": "#ea580c"},
             {"id": "phenotype", "label": "Phenotypes", "color": "#57534e"},
         ],

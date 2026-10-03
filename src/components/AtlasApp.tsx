@@ -692,10 +692,15 @@ export function AtlasApp({
                     type="button"
                     onClick={() => toggleCategory(c.id)}
                     aria-pressed={checked}
+                    title={
+                      checked
+                        ? `Hide ${c.label.toLowerCase()}`
+                        : `Show ${c.label.toLowerCase()}`
+                    }
                     className={`inline-flex min-h-9 items-center gap-2 rounded-atlas border px-2.5 py-1.5 text-sm transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss ${
                       checked
-                        ? "border-line bg-white text-ink"
-                        : "border-transparent bg-slate-100 text-slate-400"
+                        ? "border-slate-300 bg-white text-ink shadow-sm"
+                        : "border-dashed border-slate-300 bg-slate-50 text-slate-400 opacity-70"
                     }`}
                   >
                     <span

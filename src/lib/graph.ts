@@ -150,7 +150,7 @@ export function typeColor(
     case "study":
       return "#7c3aed";
     case "publication":
-      return "#0e7490";
+      return "#c026d3";
     case "phenotype":
       return "#57534e";
     case "organization_asset":
