@@ -1,4 +1,4 @@
-# Demo walkthrough — Maria’s patient-leader journey
+# Demo walkthrough — Rare Disease Atlas
 
 Local app: http://127.0.0.1:43123
 
@@ -6,22 +6,21 @@ Local app: http://127.0.0.1:43123
 
 - Land on the atlas one-liner + single search field.
 - Try example **sickle cell** → disambiguation between broad SCD, HbSS, and trait/related matches.
-- Choose **Sickle cell anemia (HbSS)**.
+- Choose **Sickle cell anemia (HbSS)** or search **HbS**.
 
 ## 2. Graph workspace
 
-- Confirm HbSS is centered with a readable neighborhood.
-- Use zoom / pan / reset.
-- Open **Displayed connections** (accessible list) and select an edge.
-- Confirm the evidence panel shows plain language, relationship type, source, dates, species/genotype, reporting basis, and limitations.
+- Confirm the focused graph is the main surface (large canvas, zoom / pan / reset).
+- Click a node or connection. Connection names are not drawn on the graph; the Source panel shows the supporting reference.
+- Category counts on the left match nodes currently visible.
 - Solid vs dashed: established vs proposed.
 
 ## 3. Guided discovery
 
 Follow the three stages:
 
-1. **Understand the connection** — HbSS → HbF/BCL11A → related TDT evidence (exa-cel targets BCL11A, not HBB).
-2. **Explore resources** — study designs (NCT03745287 / NCT03655678), JAX Townes, SCDAA/CAF, with reusable / differs / needs review.
+1. **Understand the connection** — HbSS / HbS → HbF/BCL11A biology → exa-cel as an *intervention* (targets BCL11A, not HBB).
+2. **Explore resources** — immediately shows the multi-hop path to studies, publications, organizations, and models (no second “Move center” click). Select a study and confirm Source + Selected entity stay in sync.
 3. **Prepare next step** — select partner + assets → **Prepare research proposal**.
 
 ## 4. Proposal brief
@@ -39,7 +38,7 @@ Follow the three stages:
 
 ## Non-claims to keep visible
 
-- Conditions already have treatments.
-- SCD model ≠ automatic β-thalassemia model.
-- Registry participant data is not accessible via this atlas.
-- Search matches are not validated biology until reviewed edges say so.
+- These conditions already have treatments; this atlas is for research connections, not care advice.
+- Registry status ≠ efficacy.
+- Hypothesis edges (dashed) are not established facts.
+- No fabricated direct edges to bypass missing relationships.

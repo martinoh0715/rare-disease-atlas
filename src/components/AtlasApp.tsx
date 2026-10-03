@@ -8,6 +8,7 @@ import {
   GraphEdge,
   GraphNode,
   isHypothesisEdge,
+  legendCategoryForType,
   needsDisambiguation,
   neighborhood,
   pathNeighborhood,
@@ -53,53 +54,63 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
 
   const stages = (journey.stages || demo.stages) as DemoStage[];
   const stage = stages.find((s) => s.id === stageId) || stages[0];
-  const pathEdgeIds = new Set(stage?.edge_ids || []);
+  const productName = demo.product_name || "Rare Disease Atlas";
 
   const focusNode = nodeMap.get(focusId) || null;
   const selectedEdge = selectedEdgeId ? edgeMap.get(selectedEdgeId) || null : null;
 
   const local = useMemo(() => {
-    if (!focusNode) return { nodes: [] as GraphNode[], edges: [] as GraphEdge[], truncated: false };
+    if (!focusNode) {
+      return {
+        nodes: [] as GraphNode[],
+        edges: [] as GraphEdge[],
+        truncated: false,
+        emptyReason: null as string | null,
+      };
+    }
+
+    // Stage views show the full curated multi-hop path for that step.
     if (!expanded && stage) {
-      // Show stage path neighborhood centered on focus when possible.
       const path = pathNeighborhood(curated, stage.node_ids, stage.edge_ids);
-      if (path.nodes.some((n) => n.id === focusId)) {
-        // Keep focus-centered readable subset: path nodes/edges plus immediate focus links on path.
-        const focusEdges = path.edges.filter(
-          (e) => e.source === focusId || e.target === focusId
-        );
-        const ids = new Set<string>([focusId]);
-        const useEdges =
-          focusEdges.length > 0
-            ? focusEdges
-            : path.edges.slice(0, 10);
-        useEdges.forEach((e) => {
-          ids.add(e.source);
-          ids.add(e.target);
-        });
-        // If focus has few on-path edges, include a compact stage slice.
-        if (ids.size < 4) {
-          path.nodes.slice(0, 8).forEach((n) => ids.add(n.id));
-          return {
-            nodes: path.nodes.filter((n) => ids.has(n.id)),
-            edges: path.edges.filter(
-              (e) => ids.has(e.source) && ids.has(e.target)
-            ),
-            truncated: path.nodes.length > ids.size,
-          };
-        }
+      const presentNodes = path.nodes.filter((n) => nodeMap.has(n.id));
+      const presentEdges = path.edges.filter(
+        (e) => nodeMap.has(e.source) && nodeMap.has(e.target)
+      );
+      const hasResources = presentNodes.some((n) =>
+        ["clinical_study", "publication", "organization", "research_asset"].includes(
+          n.type
+        )
+      );
+      if (stage.id === "explore" && !hasResources) {
         return {
-          nodes: path.nodes.filter((n) => ids.has(n.id)),
-          edges: useEdges,
+          nodes: presentNodes,
+          edges: presentEdges,
           truncated: false,
+          emptyReason:
+            "No supported study, publication, organization, or asset path is available for this disease context in the curated layer.",
         };
       }
+      if (presentEdges.length === 0) {
+        return {
+          nodes: presentNodes.length ? presentNodes : [focusNode],
+          edges: [],
+          truncated: false,
+          emptyReason:
+            "This step has no sourced connections to display yet. Try another step or a different disease context.",
+        };
+      }
+      return {
+        nodes: presentNodes,
+        edges: presentEdges,
+        truncated: false,
+        emptyReason: null,
+      };
     }
-    return neighborhood(curated, focusId, {
-      maxEdges: expanded ? 16 : 10,
-      includeIds: pathEdgeIds,
-    });
-  }, [curated, expanded, focusId, focusNode, pathEdgeIds, stage]);
+
+    // Expanded mode: ego neighborhood around the selected center.
+    const ego = neighborhood(curated, focusId, { maxEdges: 16 });
+    return { ...ego, emptyReason: null as string | null };
+  }, [curated, expanded, focusId, focusNode, nodeMap, stage]);
 
   const assetAssessments = demo.asset_assessments;
   const visibleAssets = assetAssessments.filter((a) =>
@@ -157,31 +168,32 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
     setExpanded(false);
     const s = stages.find((x) => x.id === id);
     if (!s) return;
-    // Highlight this step's path only — do not steal the user's selected center.
-    // Prefer selecting a path edge attached to the current center when possible.
-    const edgeOnFocus =
+
+    // Fit the stage's resource/biology path immediately.
+    const anchor =
+      (s.anchor_node_id && nodeMap.has(s.anchor_node_id) && s.anchor_node_id) ||
+      s.node_ids.find((nid) => nodeMap.get(nid)?.type === "disease") ||
+      s.node_ids.find((nid) => nodeMap.has(nid)) ||
+      focusId;
+    setFocusId(anchor);
+
+    const preferred =
+      (s.preferred_edge_id && edgeMap.has(s.preferred_edge_id) && s.preferred_edge_id) ||
       s.edge_ids.find((eid) => {
         const e = edgeMap.get(eid);
-        return e && (e.source === focusId || e.target === focusId);
-      }) || null;
-    setSelectedEdgeId(edgeOnFocus || s.edge_ids[0] || null);
-  }
-
-  function jumpToStageFocus(id: string) {
-    const s = stages.find((x) => x.id === id);
-    if (!s) return;
-    const preferred =
-      s.node_ids.find((nid) => nodeMap.get(nid)?.type === "disease") ||
-      s.node_ids[0];
-    if (preferred) {
-      setFocusId(preferred);
-      const e =
-        s.edge_ids.find((eid) => {
-          const edge = edgeMap.get(eid);
-          return edge && (edge.source === preferred || edge.target === preferred);
-        }) || s.edge_ids[0];
-      setSelectedEdgeId(e || null);
-    }
+        if (!e) return false;
+        // Prefer study/publication/asset edges on Explore.
+        const tip = nodeMap.get(e.source) || nodeMap.get(e.target);
+        return (
+          tip &&
+          ["clinical_study", "publication", "research_asset", "organization"].includes(
+            tip.type
+          )
+        );
+      }) ||
+      s.edge_ids.find((eid) => edgeMap.has(eid)) ||
+      null;
+    setSelectedEdgeId(preferred);
   }
 
   function toggleAsset(id: string) {
@@ -284,7 +296,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
             className="font-display text-lg tracking-tight"
             onClick={() => setMode("landing")}
           >
-            HBB Evidence Atlas
+            {productName}
           </button>
           <form
             className="flex min-w-[280px] flex-1"
@@ -304,13 +316,10 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               Search
             </Button>
           </form>
-          <span className="text-xs uppercase tracking-[0.14em] text-slate-300">
-            Viewing as {demo.viewer}
-          </span>
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-7xl gap-4 px-4 py-4 lg:grid-cols-[250px_minmax(0,1fr)_340px]">
+      <div className="mx-auto grid max-w-[1680px] gap-4 px-4 py-4 lg:grid-cols-[220px_minmax(0,1fr)_300px]">
         <aside className="space-y-4">
           <section className="rounded-xl border border-slate-200 bg-white p-4">
             <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
@@ -319,27 +328,9 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
             <ul className="mt-3 space-y-2">
               {demo.category_legend.map((c) => {
                 const count = local.nodes.filter(
-                  (n) =>
-                    (c.id === "gene_variant" &&
-                      ["gene", "protein", "variant", "allele", "genotype"].includes(
-                        n.type
-                      )) ||
-                    (c.id === "mechanism" &&
-                      ["mechanism", "biological_process", "hypothesis"].includes(
-                        n.type
-                      )) ||
-                    (c.id === "organization_asset" &&
-                      ["organization", "research_asset", "research_question"].includes(
-                        n.type
-                      )) ||
-                    (c.id === "study" &&
-                      ["publication", "clinical_study", "intervention"].includes(
-                        n.type
-                      )) ||
-                    n.type === c.id ||
-                    (c.id === "disease" && n.type === "disease") ||
-                    (c.id === "phenotype" && n.type === "phenotype")
+                  (n) => legendCategoryForType(n.type) === c.id
                 ).length;
+                if (count === 0) return null;
                 return (
                   <li key={c.id} className="flex items-center gap-2 text-sm">
                     <span
@@ -353,8 +344,8 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               })}
             </ul>
             <p className="mt-3 text-xs leading-relaxed text-slate-500">
-              Selected center is emphasized. Dashed lines are proposed bridges,
-              not established facts.
+              Counts match nodes currently on the graph. Dashed lines are
+              proposed bridges, not established facts.
             </p>
           </section>
 
@@ -363,9 +354,8 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               Guided discovery
             </h2>
             <p className="mt-2 text-xs leading-relaxed text-slate-600">
-              A 3-step tour of the curated story. Each step highlights which
-              links matter now. It does not change your selected center unless
-              you ask it to.
+              A 3-step tour. Each step fits a curated path on the graph —
+              biology first, then studies and partners, then a next-step brief.
             </p>
             <ol className="mt-3 space-y-2">
               {stages.map((s, idx) => (
@@ -388,15 +378,6 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               ))}
             </ol>
             <p className="mt-3 text-xs text-slate-600">{stage?.summary}</p>
-            {stage && !stage.node_ids.includes(focusId) && (
-              <button
-                type="button"
-                onClick={() => jumpToStageFocus(stage.id)}
-                className="mt-2 text-xs font-medium text-teal-800 hover:underline"
-              >
-                Move center to this step’s starting point
-              </button>
-            )}
           </section>
         </aside>
 
@@ -407,11 +388,11 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
                   Focused graph
                 </p>
-                <h1 className="font-display text-2xl text-slate-950">
+                <h1 className="font-display text-3xl font-bold text-slate-950">
                   {focusNode?.label}
                 </h1>
-                <p className="text-sm text-slate-600">
-                  {focusNode?.type} · review {focusNode?.review_status || "n/a"}
+                <p className="mt-1 text-sm capitalize text-slate-600">
+                  {(focusNode?.type || "").replace(/_/g, " ")}
                   {focusNode?.does_not ? ` · does not: ${focusNode.does_not}` : ""}
                 </p>
               </div>
@@ -421,7 +402,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                   variant="outline"
                   onClick={() => setExpanded((v) => !v)}
                 >
-                  {expanded ? "Show compact path" : "Show more connections"}
+                  {expanded ? "Show guided path" : "Show more connections"}
                 </Button>
               </div>
             </div>
@@ -434,11 +415,12 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               legend={demo.category_legend}
               onSelectNode={(id) => {
                 setFocusId(id);
+                const stageEdgeIds = new Set(stage?.edge_ids || []);
                 const e =
                   curated.edges.find(
                     (edge) =>
                       (edge.source === id || edge.target === id) &&
-                      pathEdgeIds.has(edge.id)
+                      stageEdgeIds.has(edge.id)
                   ) ||
                   curated.edges.find(
                     (edge) => edge.source === id || edge.target === id
@@ -448,19 +430,17 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               onSelectEdge={setSelectedEdgeId}
             />
 
-            {local.truncated && (
-              <p className="mt-2 text-xs text-slate-500">
-                Neighborhood truncated for readability. Use “Show more
-                connections” or follow the guided stages.
+            {local.emptyReason && (
+              <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
+                {local.emptyReason}
               </p>
             )}
-
-            <ConnectionList
-              edges={local.edges}
-              nodeMap={nodeMap}
-              selectedEdgeId={selectedEdgeId}
-              onSelect={setSelectedEdgeId}
-            />
+            {local.truncated && (
+              <p className="mt-2 text-xs text-slate-500">
+                Neighborhood truncated for readability. Return to the guided path
+                for the curated multi-hop view.
+              </p>
+            )}
           </section>
 
           {(stageId === "explore" || stageId === "prepare") && (
@@ -574,7 +554,7 @@ function Landing({
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,#dbeafe,transparent_40%),linear-gradient(180deg,#f8fafc,#eef2ff)]">
       <div className="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-4 py-16">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-          HBB Evidence Atlas · patient-leader view
+          {demo.product_name || "Rare Disease Atlas"}
         </p>
         <h1 className="font-display mt-3 text-4xl leading-tight text-slate-950 md:text-5xl">
           Follow one search to sourced research connections
@@ -883,47 +863,6 @@ function CompareCol({ title, items }: { title: string; items: string[] }) {
       <ul className="mt-2 space-y-1 text-sm text-slate-700">
         {items.map((item) => (
           <li key={item}>• {item}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function ConnectionList({
-  edges,
-  nodeMap,
-  selectedEdgeId,
-  onSelect,
-}: {
-  edges: GraphEdge[];
-  nodeMap: Map<string, GraphNode>;
-  selectedEdgeId: string | null;
-  onSelect: (id: string) => void;
-}) {
-  return (
-    <div className="mt-4">
-      <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-        Related connections
-      </h3>
-      <p className="mt-1 text-xs text-slate-500">
-        Relationships around the selected center. Click one to highlight it on
-        the graph and open its source.
-      </p>
-      <ul className="mt-2 max-h-40 space-y-1 overflow-auto">
-        {edges.map((e) => (
-          <li key={e.id}>
-            <button
-              type="button"
-              onClick={() => onSelect(e.id)}
-              className={`w-full rounded-md px-2 py-1.5 text-left text-sm ${
-                selectedEdgeId === e.id ? "bg-slate-900 text-white" : "hover:bg-slate-100"
-              }`}
-            >
-              {nodeMap.get(e.source)?.label} — {relationshipLabel(e.type)} —{" "}
-              {nodeMap.get(e.target)?.label}
-              {isHypothesisEdge(e) ? " (proposed)" : ""}
-            </button>
-          </li>
         ))}
       </ul>
     </div>

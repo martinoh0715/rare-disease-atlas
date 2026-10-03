@@ -1078,6 +1078,14 @@ def curate() -> None:
     )
 
     # Clinical studies: include NCT03745287 and NCT03655678 if present
+    study_short_labels = {
+        "NCT03745287": "CLIMB SCD-121 clinical study (NCT03745287)",
+        "NCT03655678": "CLIMB THAL-111 clinical study (NCT03655678)",
+    }
+    pub_for_study = {
+        "NCT03745287": "pmid:38661449",
+        "NCT03655678": "pmid:38657265",
+    }
     for s in records.get("clinical_studies", []):
         nct = s.get("nct_id")
         if nct in {"NCT03745287", "NCT03655678"}:
@@ -1085,7 +1093,8 @@ def curate() -> None:
                 {
                     "id": s["id"],
                     "type": "clinical_study",
-                    "label": s.get("label"),
+                    "label": study_short_labels.get(nct, s.get("label")),
+                    "official_title": s.get("label"),
                     "nct_id": nct,
                     "overall_status": s.get("overall_status"),
                     "phases": s.get("phases"),
@@ -1095,7 +1104,7 @@ def curate() -> None:
                     "retrieval_date": s.get("retrieval_date"),
                     "layer": "curated",
                     "review_status": "curated",
-                    "notes": "Status/eligibility ≠ demonstrated efficacy.",
+                    "notes": "Clinical study registry record. Status/eligibility ≠ demonstrated efficacy.",
                 }
             )
             add_edge(
@@ -1107,6 +1116,9 @@ def curate() -> None:
                     "relationship_status": "established",
                     "review_status": "curated",
                     "layer": "curated",
+                    "plain_language": (
+                        f"{study_short_labels.get(nct, nct)} investigates the exa-cel intervention."
+                    ),
                     "evidence": evidence(
                         source_url=s.get("source_url"),
                         supporting_passage=s.get("label") or nct,
@@ -1120,6 +1132,38 @@ def curate() -> None:
                     ),
                 }
             )
+            pub_id = pub_for_study.get(nct)
+            if pub_id and pub_id in nodes:
+                add_edge(
+                    {
+                        "id": f"edge:{pub_id}:reports_on_study:{s['id']}",
+                        "source": pub_id,
+                        "target": s["id"],
+                        "type": "publication_reports_on_study",
+                        "relationship_status": "established",
+                        "review_status": "curated",
+                        "layer": "curated",
+                        "plain_language": (
+                            "This peer-reviewed paper reports outcomes from the linked clinical study."
+                        ),
+                        "evidence": evidence(
+                            source_url=nodes[pub_id].get("source_url"),
+                            supporting_passage=(
+                                f"{nodes[pub_id].get('label')} corresponds to ClinicalTrials.gov {nct}."
+                            ),
+                            publication_date=nodes[pub_id].get("pubdate"),
+                            retrieval_date=nodes[pub_id].get("retrieval_date"),
+                            evidence_type="publication_to_registry_linkage",
+                            extraction_review_status="manually_reviewed",
+                            species="Homo sapiens",
+                            evidence_strength="high",
+                            limitations=(
+                                "Publication and registry record are distinct entities; "
+                                "registry status is not the same as published efficacy results."
+                            ),
+                        ),
+                    }
+                )
             review_log.append(
                 {
                     "decision": "include_curated",
@@ -1358,7 +1402,7 @@ def curate() -> None:
         ),
         encoding="utf-8",
     )
-    # Enrich journey + edges with demo experience (Maria patient-leader flow).
+    # Enrich journey + edges with demo experience stages and plain language.
     demo_path = ROOT / "config" / "demo_experience.json"
     demo = json.loads(demo_path.read_text(encoding="utf-8"))
     plain = demo.get("edge_plain_language") or {}

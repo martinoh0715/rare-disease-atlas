@@ -14,6 +14,8 @@ export type DemoStage = {
   summary: string;
   node_ids: string[];
   edge_ids: string[];
+  anchor_node_id?: string;
+  preferred_edge_id?: string;
 };
 
 export type AssetAssessment = {
@@ -42,7 +44,7 @@ export type AssetAssessment = {
 
 export type DemoExperience = {
   product_one_liner: string;
-  viewer: string;
+  product_name?: string;
   example_searches: { label: string; query: string }[];
   search_entries: SearchEntry[];
   category_legend: { id: string; label: string; color: string }[];

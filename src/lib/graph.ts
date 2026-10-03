@@ -111,6 +111,12 @@ export function legendCategoryForType(type: string): string {
     case "biological_process":
     case "hypothesis":
       return "mechanism";
+    case "intervention":
+      return "intervention";
+    case "clinical_study":
+      return "study";
+    case "publication":
+      return "publication";
     case "phenotype":
       return "phenotype";
     case "organization":
@@ -118,9 +124,6 @@ export function legendCategoryForType(type: string): string {
     case "institution":
     case "research_question":
       return "organization_asset";
-    case "publication":
-    case "clinical_study":
-    case "intervention":
     case "grant":
       return "study";
     default:
@@ -142,12 +145,16 @@ export function typeColor(
       return "#0f766e";
     case "mechanism":
       return "#ca8a04";
+    case "intervention":
+      return "#db2777";
+    case "study":
+      return "#7c3aed";
+    case "publication":
+      return "#4f46e5";
     case "phenotype":
       return "#64748b";
     case "organization_asset":
       return "#c2410c";
-    case "study":
-      return "#7c3aed";
     default:
       return "#475569";
   }

@@ -46,11 +46,14 @@ export function sourceCardForEdge(
   const sourceNode = nodeMap.get(edge.source);
   const targetNode = nodeMap.get(edge.target);
 
+  // Prefer the evidence-bearing entity — never a terse "A ↔ B" connection name.
   let title =
     (sourceNode?.type === "publication" && sourceNode.label) ||
     (targetNode?.type === "publication" && targetNode.label) ||
     (sourceNode?.type === "clinical_study" && sourceNode.label) ||
     (targetNode?.type === "clinical_study" && targetNode.label) ||
+    (sourceNode?.type === "intervention" && sourceNode.label) ||
+    (targetNode?.type === "intervention" && targetNode.label) ||
     (sourceNode?.type === "organization" && sourceNode.label) ||
     (targetNode?.type === "organization" && targetNode.label) ||
     (sourceNode?.type === "research_asset" && sourceNode.label) ||
@@ -58,10 +61,14 @@ export function sourceCardForEdge(
     null;
 
   if (!title && url?.includes("pubmed")) {
-    title = `Publication supporting this connection`;
+    title = "Publication supporting this link";
   }
   if (!title) {
-    title = `${sourceNode?.label || edge.source} ↔ ${targetNode?.label || edge.target}`;
+    title =
+      orgFromUrl(url) ||
+      sourceNode?.label ||
+      targetNode?.label ||
+      "Sourced reference";
   }
 
   const organization =

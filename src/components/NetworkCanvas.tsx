@@ -21,8 +21,8 @@ type Props = {
 
 type Pos = { x: number; y: number };
 
-const WIDTH = 980;
-const HEIGHT = 620;
+const WIDTH = 1400;
+const HEIGHT = 900;
 const CX = WIDTH / 2;
 const CY = HEIGHT / 2;
 
@@ -53,7 +53,7 @@ function layoutNodes(focusId: string, nodes: GraphNode[]): Map<string, Pos> {
   if (n === 0) return positions;
 
   // Larger radius when more neighbors so labels have room.
-  const radius = Math.min(230, 130 + n * 14);
+  const radius = Math.min(360, 180 + n * 14);
   others.forEach((node, i) => {
     // Start at top; equal angular spacing.
     const angle = (2 * Math.PI * i) / n - Math.PI / 2;
@@ -72,7 +72,7 @@ function layoutNodes(focusId: string, nodes: GraphNode[]): Map<string, Pos> {
         const dx = b.x - a.x;
         const dy = b.y - a.y;
         const dist = Math.hypot(dx, dy) || 1;
-        const minDist = 118;
+        const minDist = 130;
         if (dist < minDist) {
           const push = ((minDist - dist) / dist) * 0.5;
           const ox = dx * push * 0.5;
@@ -93,8 +93,8 @@ function layoutNodes(focusId: string, nodes: GraphNode[]): Map<string, Pos> {
       const target = radius;
       p.x = CX + (dx / dist) * target;
       p.y = CY + (dy / dist) * target;
-      p.x = Math.min(WIDTH - 90, Math.max(90, p.x));
-      p.y = Math.min(HEIGHT - 70, Math.max(50, p.y));
+      p.x = Math.min(WIDTH - 110, Math.max(110, p.x));
+      p.y = Math.min(HEIGHT - 80, Math.max(60, p.y));
     }
   }
 
@@ -173,7 +173,7 @@ export function NetworkCanvas({
       </div>
       <svg
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-        className="h-[520px] w-full touch-none"
+        className="h-[min(78vh,820px)] w-full touch-none"
         role="img"
         aria-label="Interactive evidence graph"
         onWheel={(e) => {
@@ -212,7 +212,7 @@ export function NetworkCanvas({
             if (!a || !b) return null;
             const hypo = isHypothesisEdge(e);
             const selected = e.id === selectedEdgeId;
-            const { d, mid } = edgePath(a, b, index, edges.length);
+            const { d } = edgePath(a, b, index, edges.length);
             return (
               <g key={e.id} data-edge>
                 {/* Invisible wider hit target */}
@@ -240,17 +240,6 @@ export function NetworkCanvas({
                     onSelectEdge(e.id);
                   }}
                 />
-                {selected && (
-                  <text
-                    x={mid.x}
-                    y={mid.y - 10}
-                    textAnchor="middle"
-                    className="fill-slate-800"
-                    style={{ fontSize: 12, fontWeight: 600 }}
-                  >
-                    {e.type.replace(/_/g, " ")}
-                  </text>
-                )}
               </g>
             );
           })}
@@ -315,7 +304,7 @@ export function NetworkCanvas({
       </svg>
       <p className="border-t border-slate-200 bg-white px-3 py-2 text-xs text-slate-500">
         Drag to pan · scroll to zoom · click a node or connection. Only the
-        selected connection is highlighted. Dashed = proposed / hypothesis.
+        selected connection is highlighted. Dashed = proposed.
       </p>
     </div>
   );

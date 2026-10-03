@@ -13,9 +13,9 @@ const body = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
-  title: "HBB Evidence Atlas",
+  title: "Rare Disease Atlas",
   description:
-    "Search hemoglobinopathies and follow sourced connections to related biology, communities, and research assets.",
+    "Search a rare disease and follow sourced connections to related biology, communities, and research assets.",
 };
 
 export default function RootLayout({

@@ -1,11 +1,11 @@
-# HBB Evidence Atlas
+# Rare Disease Atlas
 
-Local prototype for Hack-Nation’s rare-disease challenge: an evidence-backed knowledge graph for **HBB-related hemoglobin disorders**, with one complete patient-group-leader research journey.
+Local prototype for an evidence-backed rare-disease knowledge graph. The first curated slice covers **HBB-related hemoglobin disorders**, with one complete patient-group research journey from search → biology → studies/assets → sourced next-step brief.
 
-Focus:
-- Sickle cell anemia (**HbSS**)
+Focus of the curated demo:
+- Sickle cell anemia (**HbSS**) and the **HbS** allele
 - **Beta-thalassemia** (genetic categories kept distinct from transfusion dependence / severity)
-- Optional later: HbS/β-thalassemia
+- Shared **HbF / BCL11A** biology, with interventions, studies, and publications kept as separate node types
 
 This is **not** medical advice. These conditions already have treatments. The prototype does **not** claim a 10× acceleration without measurements.
 
@@ -30,15 +30,15 @@ npm run dev
 1. **Curated graph** — `research/hbb/output/curated-graph.json`
 2. **Review log** — inclusion/exclusion decisions in `research/hbb/output/review-log.json`
 3. **Discovery layer** — broader automated graph in `graph.json` / `nodes.jsonl` / `edges.jsonl`
-4. **Local UI** — search, focused neighborhood graph, evidence panel, resources, next-step uncertainties
+4. **Local UI** — search, large focused graph, source panel, resources, next-step brief
 5. **Demo walkthrough** — `docs/DEMO.md`
 6. **Gaps** — `research/hbb/output/gaps.md`
 
 ## Research journey (default)
 
-`disease/genotype (HbSS)` → `HbF / BCL11A mechanism` → `anchor trials (PMID 38661449 & 38657265)` → `organizations + JAX Townes model` → `validation research question`
+`disease/genotype (HbSS)` → `HbF / BCL11A mechanism` → `exa-cel intervention` → `clinical studies + publications` → `organizations + JAX Townes model` → `validation research question`
 
-Important non-claim: **exagamglogene autotemcel edits the BCL11A erythroid enhancer, not HBB.**
+Important non-claim: **exagamglogene autotemcel edits the BCL11A erythroid enhancer, not HBB.** Studies and papers are separate nodes linked by sourced relationships.
 
 ## Project layout
 

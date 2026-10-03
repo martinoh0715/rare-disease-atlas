@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T20:33:22+00:00",
+  "generated_at": "2026-10-03T21:39:35+00:00",
   "layer": "curated",
   "nodes": [
     {
@@ -364,7 +364,8 @@
     {
       "id": "nct:NCT03655678",
       "type": "clinical_study",
-      "label": "A Safety and Efficacy Study Evaluating CTX001 in Participants With Transfusion-Dependent \u03b2-Thalassemia",
+      "label": "CLIMB THAL-111 clinical study (NCT03655678)",
+      "official_title": "A Safety and Efficacy Study Evaluating CTX001 in Participants With Transfusion-Dependent \u03b2-Thalassemia",
       "nct_id": "NCT03655678",
       "overall_status": "COMPLETED",
       "phases": [
@@ -388,12 +389,13 @@
       "retrieval_date": "2026-10-03T20:07:55+00:00",
       "layer": "curated",
       "review_status": "curated",
-      "notes": "Status/eligibility \u2260 demonstrated efficacy."
+      "notes": "Clinical study registry record. Status/eligibility \u2260 demonstrated efficacy."
     },
     {
       "id": "nct:NCT03745287",
       "type": "clinical_study",
-      "label": "A Safety and Efficacy Study Evaluating CTX001 in Subjects With Severe Sickle Cell Disease",
+      "label": "CLIMB SCD-121 clinical study (NCT03745287)",
+      "official_title": "A Safety and Efficacy Study Evaluating CTX001 in Subjects With Severe Sickle Cell Disease",
       "nct_id": "NCT03745287",
       "overall_status": "COMPLETED",
       "phases": [
@@ -415,7 +417,7 @@
       "retrieval_date": "2026-10-03T20:07:55+00:00",
       "layer": "curated",
       "review_status": "curated",
-      "notes": "Status/eligibility \u2260 demonstrated efficacy."
+      "notes": "Clinical study registry record. Status/eligibility \u2260 demonstrated efficacy."
     },
     {
       "id": "question:validate_hbf_asset_transfer",
@@ -613,7 +615,7 @@
         "source_url": "https://www.ncbi.nlm.nih.gov/clinvar/",
         "supporting_passage": "HbS is the HBB c.20A>T (p.Glu7Val) allele; legacy protein numbering often cites codon 6.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "authoritative_variant_nomenclature",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "HbS allele",
@@ -640,7 +642,7 @@
         "source_url": "https://www.ncbi.nlm.nih.gov/clinvar/",
         "supporting_passage": "HbC is the HBB c.19G>A (p.Glu7Lys) allele; legacy numbering often cites codon 6.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "authoritative_variant_nomenclature",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "HbC allele",
@@ -666,7 +668,7 @@
         "source_url": "https://www.ncbi.nlm.nih.gov/medgen/",
         "supporting_passage": "HbSS denotes homozygosity for the HbS allele.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "genotype_definition",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "HbS/HbS",
@@ -693,7 +695,7 @@
         "source_url": "https://www.omim.org/entry/603903",
         "supporting_passage": "Sickle cell anemia (HbSS) is defined by homozygous HBB Glu6Val / c.20A>T.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "disease_definition",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "HbSS",
@@ -720,7 +722,7 @@
         "source_url": "https://www.cdc.gov/sickle-cell/about/index.html",
         "supporting_passage": "Sickle cell trait is the heterozygous carrier state (HbAS), distinct from sickle cell disease.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "public_health_definition",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "HbAS",
@@ -787,7 +789,7 @@
       }
     },
     {
-      "id": "edge:disease:hbss:has_phenotype:phenotype:HP:0001903:68677491",
+      "id": "edge:disease:hbss:has_phenotype:phenotype:HP:0001903:39560236",
       "source": "disease:hbss",
       "target": "phenotype:HP:0001903",
       "type": "source_reports_association",
@@ -798,7 +800,7 @@
         "source_url": "https://hpo.jax.org/browse/term/HP:0001903",
         "supporting_passage": "Core feature of sickle cell anemia (hemolytic anemia).",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "manual_curation_from_disease_knowledge",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "disease-scoped; see disease node",
@@ -813,7 +815,7 @@
       }
     },
     {
-      "id": "edge:disease:beta_thal_genetic:has_phenotype:phenotype:HP:0001903:72653140",
+      "id": "edge:disease:beta_thal_genetic:has_phenotype:phenotype:HP:0001903:36081852",
       "source": "disease:beta_thal_genetic",
       "target": "phenotype:HP:0001903",
       "type": "source_reports_association",
@@ -824,7 +826,7 @@
         "source_url": "https://hpo.jax.org/browse/term/HP:0001903",
         "supporting_passage": "Anemia from reduced/absent \u03b2-globin in \u03b2-thalassemia.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "manual_curation_from_disease_knowledge",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "disease-scoped; see disease node",
@@ -839,7 +841,7 @@
       }
     },
     {
-      "id": "edge:disease:hbss:has_phenotype:phenotype:HP:0001878:48026659",
+      "id": "edge:disease:hbss:has_phenotype:phenotype:HP:0001878:53513334",
       "source": "disease:hbss",
       "target": "phenotype:HP:0001878",
       "type": "source_reports_association",
@@ -850,7 +852,7 @@
         "source_url": "https://hpo.jax.org/browse/term/HP:0001878",
         "supporting_passage": "Hemolysis secondary to HbS polymerization.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "manual_curation_from_disease_knowledge",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "disease-scoped; see disease node",
@@ -865,7 +867,7 @@
       }
     },
     {
-      "id": "edge:disease:hbss:has_phenotype:phenotype:HP:0005265:64395828",
+      "id": "edge:disease:hbss:has_phenotype:phenotype:HP:0005265:11817274",
       "source": "disease:hbss",
       "target": "phenotype:HP:0005265",
       "type": "source_reports_association",
@@ -876,7 +878,7 @@
         "source_url": "https://pubmed.ncbi.nlm.nih.gov/38661449/",
         "supporting_passage": "Recurrent severe vaso-occlusive crises are used as SCD trial eligibility/endpoints; not a treatment claim.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "manual_curation_from_disease_knowledge",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "disease-scoped; see disease node",
@@ -1170,7 +1172,7 @@
         "source_url": "https://pubmed.ncbi.nlm.nih.gov/38661449/",
         "supporting_passage": "Both SCD and \u03b2-thalassemia publications describe BCL11A enhancer editing to raise HbF; shared mechanism \u2260 automatic interchangeability of models, eligibility, or assets.",
         "publication_date": "2024 May 9",
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "cross_disease_hypothesis",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": null,
@@ -1278,7 +1280,7 @@
         "source_url": "https://www.jax.org/strain/013071",
         "supporting_passage": "No automatic suitability claim: Townes sickle-cell mice model SCD pathophysiology; reuse for \u03b2-thalassemia would require explicit experimental validation.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "negative_or_missing_link",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": null,
@@ -1301,6 +1303,7 @@
       "relationship_status": "established",
       "review_status": "curated",
       "layer": "curated",
+      "plain_language": "CLIMB THAL-111 is the clinical study registry record testing exa-cel in transfusion-dependent \u03b2-thalassemia.",
       "evidence": {
         "source_url": "https://clinicaltrials.gov/study/NCT03655678",
         "supporting_passage": "A Safety and Efficacy Study Evaluating CTX001 in Participants With Transfusion-Dependent \u03b2-Thalassemia",
@@ -1317,8 +1320,34 @@
         "limitations": "Registry status is not outcome evidence; see peer-reviewed publications for results.",
         "contradictory_evidence": null,
         "reporting_basis": "directly_reported_or_sourced"
-      },
-      "plain_language": "CLIMB THAL-111 is the registry record for the TDT exa-cel study design."
+      }
+    },
+    {
+      "id": "edge:pmid:38657265:reports_on_study:nct:NCT03655678",
+      "source": "pmid:38657265",
+      "target": "nct:NCT03655678",
+      "type": "publication_reports_on_study",
+      "relationship_status": "established",
+      "review_status": "curated",
+      "layer": "curated",
+      "plain_language": "This publication reports results from the CLIMB THAL-111 clinical study (NCT03655678).",
+      "evidence": {
+        "source_url": "https://pubmed.ncbi.nlm.nih.gov/38657265/",
+        "supporting_passage": "Exagamglogene Autotemcel for Transfusion-Dependent \u03b2-Thalassemia. corresponds to ClinicalTrials.gov NCT03655678.",
+        "publication_date": "2024 May 9",
+        "retrieval_date": "2026-10-03T20:07:55+00:00",
+        "evidence_type": "publication_to_registry_linkage",
+        "extraction_review_status": "manually_reviewed",
+        "genotype_context": null,
+        "population_context": null,
+        "species": "Homo sapiens",
+        "experimental_context": null,
+        "extraction_confidence": "high",
+        "evidence_strength": "high",
+        "limitations": "Publication and registry record are distinct entities; registry status is not the same as published efficacy results.",
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      }
     },
     {
       "id": "edge:nct:NCT03745287:tests:intervention:exa_cel",
@@ -1328,6 +1357,7 @@
       "relationship_status": "established",
       "review_status": "curated",
       "layer": "curated",
+      "plain_language": "CLIMB SCD-121 is the clinical study registry record testing exa-cel in severe sickle cell disease.",
       "evidence": {
         "source_url": "https://clinicaltrials.gov/study/NCT03745287",
         "supporting_passage": "A Safety and Efficacy Study Evaluating CTX001 in Subjects With Severe Sickle Cell Disease",
@@ -1344,8 +1374,34 @@
         "limitations": "Registry status is not outcome evidence; see peer-reviewed publications for results.",
         "contradictory_evidence": null,
         "reporting_basis": "directly_reported_or_sourced"
-      },
-      "plain_language": "CLIMB SCD-121 is the registry record for the SCD exa-cel study design."
+      }
+    },
+    {
+      "id": "edge:pmid:38661449:reports_on_study:nct:NCT03745287",
+      "source": "pmid:38661449",
+      "target": "nct:NCT03745287",
+      "type": "publication_reports_on_study",
+      "relationship_status": "established",
+      "review_status": "curated",
+      "layer": "curated",
+      "plain_language": "This publication reports results from the CLIMB SCD-121 clinical study (NCT03745287).",
+      "evidence": {
+        "source_url": "https://pubmed.ncbi.nlm.nih.gov/38661449/",
+        "supporting_passage": "Exagamglogene Autotemcel for Severe Sickle Cell Disease. corresponds to ClinicalTrials.gov NCT03745287.",
+        "publication_date": "2024 May 9",
+        "retrieval_date": "2026-10-03T20:07:55+00:00",
+        "evidence_type": "publication_to_registry_linkage",
+        "extraction_review_status": "manually_reviewed",
+        "genotype_context": null,
+        "population_context": null,
+        "species": "Homo sapiens",
+        "experimental_context": null,
+        "extraction_confidence": "high",
+        "evidence_strength": "high",
+        "limitations": "Publication and registry record are distinct entities; registry status is not the same as published efficacy results.",
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      }
     },
     {
       "id": "edge:hypothesis:bridge:leads_to:question",
@@ -1359,7 +1415,7 @@
         "source_url": "https://pubmed.ncbi.nlm.nih.gov/38657265/",
         "supporting_passage": "Shared HbF biology across SCD and TDT motivates cross-community learning, while model and eligibility differences require explicit next-step validation.",
         "publication_date": "2024 May 9",
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "curated_research_planning",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": null,
@@ -1386,7 +1442,7 @@
         "source_url": "https://www.thalassemia.org/",
         "supporting_passage": "Patient-group leadership is a stakeholder for prioritizing \u03b2-thalassemia research questions and assets.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "stakeholder_mapping",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": null,
@@ -1413,7 +1469,7 @@
         "source_url": "https://www.sicklecelldisease.org/",
         "supporting_passage": "SCD community organizations can advise which SCD-side assets and priorities are appropriate to discuss in cross-disease settings.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:33:22+00:00",
+        "retrieval_date": "2026-10-03T21:39:35+00:00",
         "evidence_type": "stakeholder_mapping",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": null,
@@ -1431,7 +1487,7 @@
   ],
   "stats": {
     "node_count": 32,
-    "edge_count": 46,
+    "edge_count": 48,
     "dropped_edges_missing_endpoints": [],
     "hbs_variant_records_curated": 1,
     "hbc_variant_records_curated": 1
