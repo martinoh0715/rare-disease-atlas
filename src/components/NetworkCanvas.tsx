@@ -28,9 +28,10 @@ const HEIGHT = 720;
 const CX = WIDTH / 2;
 const CY = HEIGHT / 2 + 24;
 
-/** Keep nodes/labels out of the embedded legend (top-right). */
+/** Keep nodes/labels out of the embedded chrome (top corners). */
 const LEGEND_ZONE_OPEN = { x0: WIDTH - 340, y0: 0, x1: WIDTH, y1: 290 };
 const LEGEND_ZONE_COLLAPSED = { x0: WIDTH - 180, y0: 0, x1: WIDTH, y1: 70 };
+const BACK_ZONE = { x0: 0, y0: 0, x1: 320, y1: 80 };
 
 function wrapLabel(label: string, maxChars = 22): string[] {
   const words = label.split(/\s+/);
@@ -62,13 +63,17 @@ function inLegendZone(
   );
 }
 
-function escapeLegendZone(
+function escapeOverlayZone(
   p: Pos,
-  zone: { x0: number; y0: number; x1: number; y1: number }
+  zone: { x0: number; y0: number; x1: number; y1: number },
+  side: "left" | "right"
 ) {
   if (!inLegendZone(p, zone)) return;
-  // Push toward center-left / down, away from the legend corner.
-  p.x = Math.min(p.x, zone.x0 - 50);
+  if (side === "right") {
+    p.x = Math.min(p.x, zone.x0 - 50);
+  } else {
+    p.x = Math.max(p.x, zone.x1 + 50);
+  }
   p.y = Math.max(p.y, zone.y1 + 36);
 }
 
@@ -127,7 +132,8 @@ function layoutNodes(
       p.y = CY + (dy / dist) * radiusY;
       p.x = Math.min(WIDTH - 140, Math.max(140, p.x));
       p.y = Math.min(HEIGHT - 90, Math.max(70, p.y));
-      escapeLegendZone(p, zone);
+      escapeOverlayZone(p, zone, "right");
+      escapeOverlayZone(p, BACK_ZONE, "left");
     }
   }
 
@@ -322,9 +328,11 @@ export function NetworkCanvas({
           );
         })}
       </svg>
-      <p className="border-t border-slate-200 bg-white px-3 py-2 text-xs text-slate-500">
+      <p className="border-t border-slate-200 bg-white px-3 py-2 text-xs leading-relaxed text-slate-500">
         Click a node or connection. Only the selected connection is highlighted.
-        Dashed = proposed.
+        Solid lines are sourced, established relationships. Dashed lines are
+        proposed bridges or next-step ideas — hypotheses to investigate, not
+        proven facts.
       </p>
     </div>
   );

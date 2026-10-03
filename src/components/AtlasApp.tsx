@@ -408,23 +408,6 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
       </header>
 
       <div className="mx-auto max-w-[1800px] space-y-4 px-4 py-4">
-        <div className="flex items-center gap-2">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={goBack}
-            disabled={focusHistory.length === 0}
-            aria-label="Back to previous node"
-          >
-            ← Back
-          </Button>
-          <span className="text-xs text-slate-500">
-            {focusHistory.length > 0
-              ? `Previous: ${nodeMap.get(focusHistory[focusHistory.length - 1])?.label || "node"}`
-              : "No previous node yet"}
-          </span>
-        </div>
-
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-stretch">
           <section
             ref={graphSectionRef}
@@ -457,6 +440,27 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
             </div>
 
             <div className="relative overflow-hidden rounded-xl">
+              <div className="pointer-events-auto absolute left-3 top-3 z-20 flex max-w-[280px] items-center gap-2 rounded-md border border-slate-300 bg-white/95 px-2 py-1.5 shadow-md backdrop-blur-sm">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={goBack}
+                  disabled={focusHistory.length === 0}
+                  aria-label="Back to previous node"
+                  className="h-8 shrink-0 bg-white"
+                >
+                  ← Back
+                </Button>
+                <span className="truncate text-xs text-slate-600">
+                  {focusHistory.length > 0
+                    ? `Previous: ${
+                        nodeMap.get(focusHistory[focusHistory.length - 1])
+                          ?.label || "node"
+                      }`
+                    : "No previous node yet"}
+                </span>
+              </div>
+
               <div className="pointer-events-auto absolute right-3 top-3 z-20 w-[250px] rounded-md border border-slate-300 bg-white/95 shadow-md backdrop-blur-sm">
                 <div className="flex items-center justify-between gap-2 border-b border-slate-200 bg-slate-50/95 px-3 py-2">
                   <button
