@@ -164,34 +164,66 @@ export type SearchHit = {
   entry: SearchEntry;
   score: number;
   matchReason: string;
+  datasetId?: string;
+  datasetLabel?: string;
 };
 
 export function searchDemoEntries(
   entries: SearchEntry[],
-  query: string
+  query: string,
+  meta?: { datasetId?: string; datasetLabel?: string }
 ): SearchHit[] {
   const q = query.trim().toLowerCase();
   if (!q) return [];
   const hits: SearchHit[] = [];
   for (const entry of entries) {
     const label = entry.label.toLowerCase();
+    const wrap = (score: number, matchReason: string): SearchHit => ({
+      entry,
+      score,
+      matchReason,
+      datasetId: meta?.datasetId,
+      datasetLabel: meta?.datasetLabel,
+    });
     if (label === q) {
-      hits.push({ entry, score: 100, matchReason: "Exact label match" });
+      hits.push(wrap(100, "Exact label match"));
       continue;
     }
     if (entry.synonyms.some((s) => s.toLowerCase() === q)) {
-      hits.push({ entry, score: 95, matchReason: "Synonym match" });
+      hits.push(wrap(95, "Synonym match"));
       continue;
     }
     if (label.startsWith(q) || entry.synonyms.some((s) => s.toLowerCase().startsWith(q))) {
-      hits.push({ entry, score: 80, matchReason: "Starts with query" });
+      hits.push(wrap(80, "Starts with query"));
       continue;
     }
     if (label.includes(q) || entry.synonyms.some((s) => s.toLowerCase().includes(q))) {
-      hits.push({ entry, score: 60, matchReason: "Partial match" });
+      hits.push(wrap(60, "Partial match"));
     }
   }
   return hits.sort((a, b) => b.score - a.score || a.entry.label.localeCompare(b.entry.label));
+}
+
+export function searchAcrossDatasets(
+  datasets: {
+    id: string;
+    label: string;
+    entries: SearchEntry[];
+  }[],
+  query: string
+): SearchHit[] {
+  const hits = datasets.flatMap((d) =>
+    searchDemoEntries(d.entries, query, {
+      datasetId: d.id,
+      datasetLabel: d.label,
+    })
+  );
+  return hits.sort(
+    (a, b) =>
+      b.score - a.score ||
+      a.entry.label.localeCompare(b.entry.label) ||
+      (a.datasetId || "").localeCompare(b.datasetId || "")
+  );
 }
 
 export function needsDisambiguation(hits: SearchHit[]): boolean {

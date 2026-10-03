@@ -1,44 +1,24 @@
-# Demo walkthrough — Rare Disease Atlas
+# Demo script (HBB + ARID1B)
 
-Local app: http://127.0.0.1:43123
+## HBB baseline (unchanged path)
 
-## 1. One search box
+1. Search **sickle cell anemia** or **HbSS**.
+2. **Understand** — follow HbSS → HbS/HBB → HbF/BCL11A → exa-cel → publications / TDT bridge.
+3. **Explore** — open study and organization edges; note Townes model caveats.
+4. **Prepare** — generate a sourced proposal brief (CAF / CLIMB / Townes defaults).
 
-- Land on the atlas one-liner + single search field.
-- Try example **sickle cell** → disambiguation between broad SCD, HbSS, and trait/related matches.
-- Choose **Sickle cell anemia (HbSS)** or search **HbS**.
+Non-claim to say aloud: exa-cel edits BCL11A, not HBB.
 
-## 2. Graph workspace
+## ARID1B extension
 
-- Confirm the focused graph is the main surface (large canvas, zoom / pan / reset).
-- Click a node or connection. Connection names are not drawn on the graph; the Source panel shows the supporting reference.
-- Category counts on the left match nodes currently visible.
-- Solid vs dashed: established vs proposed.
+1. Search **ARID1B** or **Coffin-Siris**.
+2. Confirm the dataset badge switches to **ARID1B-related disorders**.
+3. **Understand** — ARID1B-RD → heterozygous genotype context → haploinsufficiency / BAF → CSS1 vs nonsyndromic ID kept distinct.
+4. **Explore** — van der Sluijs 2019 spectrum paper, CARE4ARID1B natural history, FAR.
+5. **Prepare** — proposal question about endpoint readiness (not a treatment claim).
 
-## 3. Guided discovery
+Honest gap to say aloud: no approved disease-modifying therapy; no invented link to HBB.
 
-Follow the three stages:
+## Unsupported search
 
-1. **Understand the connection** — HbSS / HbS → HbF/BCL11A biology → exa-cel as an *intervention* (targets BCL11A, not HBB).
-2. **Explore resources** — immediately shows the multi-hop path to studies, publications, organizations, and models (no second “Move center” click). Select a study and confirm Source + Selected entity stay in sync.
-3. **Prepare next step** — select partner + assets → **Prepare research proposal**.
-
-## 4. Proposal brief
-
-- Edit fields if needed.
-- Copy or download markdown.
-- Confirm nothing is sent automatically.
-- Partner availability is not claimed.
-
-## 5. Unsupported search
-
-- Search `zzzznotadisease`.
-- Confirm honest coverage statement, missing evidence, and a next research question.
-- Use a supported example chip to return.
-
-## Non-claims to keep visible
-
-- These conditions already have treatments; this atlas is for research connections, not care advice.
-- Registry status ≠ efficacy.
-- Hypothesis edges (dashed) are not established facts.
-- No fabricated direct edges to bypass missing relationships.
+Try a term outside both curated slices. The page should explain missing evidence without claiming the biology does not exist.

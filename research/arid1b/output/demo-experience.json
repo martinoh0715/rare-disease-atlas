@@ -1,0 +1,424 @@
+{
+  "product_one_liner": "Search a rare disease and follow sourced connections to related biology, communities, and research assets.",
+  "product_name": "Rare Disease Atlas",
+  "dataset_id": "arid1b",
+  "dataset_label": "ARID1B-related disorders",
+  "default_focus_id": "disease:arid1b_rd",
+  "default_partner_id": "org:far",
+  "default_asset_ids": [
+    "study:care4arid1b",
+    "asset:care4arid1b_protocol"
+  ],
+  "landing_disclaimer": "This atlas focuses on sourced research connections and reusable assets \u2014 not treatment advice. ARID1B-RD currently has no approved disease-modifying therapy in this curated layer.",
+  "example_searches": [
+    {
+      "label": "ARID1B",
+      "query": "ARID1B"
+    },
+    {
+      "label": "Coffin-Siris",
+      "query": "Coffin-Siris"
+    },
+    {
+      "label": "ARID1B-RD",
+      "query": "ARID1B-RD"
+    },
+    {
+      "label": "haploinsufficiency",
+      "query": "haploinsufficiency"
+    }
+  ],
+  "search_entries": [
+    {
+      "id": "disease:arid1b_rd",
+      "label": "ARID1B-related disorder (ARID1B-RD)",
+      "category": "disease",
+      "disambiguation_note": "Gene-centered umbrella spanning CSS-like and less syndromic ID presentations.",
+      "synonyms": [
+        "arid1b-rd",
+        "arid1b related disorder",
+        "arid1b-related disorder",
+        "arid1b disorder"
+      ]
+    },
+    {
+      "id": "disease:css1",
+      "label": "Coffin-Siris syndrome 1 (CSS1)",
+      "category": "disease",
+      "disambiguation_note": "ARID1B-linked CSS subtype (OMIM 135900). Other genes can cause CSS clinically.",
+      "synonyms": [
+        "coffin-siris",
+        "coffin siris",
+        "coffin-siris syndrome",
+        "css1",
+        "css"
+      ]
+    },
+    {
+      "id": "disease:arid1b_id",
+      "label": "ARID1B-related nonsyndromic intellectual disability",
+      "category": "disease",
+      "disambiguation_note": "Keep distinct from classic CSS1 physical framing.",
+      "synonyms": [
+        "arid1b-id",
+        "arid1b intellectual disability",
+        "nonsyndromic arid1b"
+      ]
+    },
+    {
+      "id": "gene:ARID1B",
+      "label": "ARID1B",
+      "category": "gene",
+      "disambiguation_note": "BAF-complex subunit gene on 6q25.3.",
+      "synonyms": [
+        "arid1b",
+        "baf250b",
+        "at-rich interaction domain 1b"
+      ]
+    },
+    {
+      "id": "allele:ARID1B_p.Arg1225Ter",
+      "label": "ARID1B p.Arg1225Ter",
+      "category": "variant",
+      "disambiguation_note": "Representative ClinVar nonsense example (c.3673C>T on NM_001374828.1).",
+      "synonyms": [
+        "c.3673c>t",
+        "p.arg1225ter",
+        "arg1225ter"
+      ]
+    },
+    {
+      "id": "allele:ARID1B_c.4479G>A",
+      "label": "ARID1B c.4479G>A (splice)",
+      "category": "variant",
+      "disambiguation_note": "Synonymous-looking coding change with reported splice/RNA effect.",
+      "synonyms": [
+        "c.4479g>a",
+        "arid1b splice"
+      ]
+    },
+    {
+      "id": "mechanism:arid1b_haploinsufficiency",
+      "label": "ARID1B haploinsufficiency",
+      "category": "mechanism",
+      "disambiguation_note": "Disease-mechanism framing for heterozygous LoF-class patterns.",
+      "synonyms": [
+        "haploinsufficiency",
+        "arid1b haploinsufficiency"
+      ]
+    },
+    {
+      "id": "org:far",
+      "label": "Foundation for ARID1B Research",
+      "category": "organization",
+      "disambiguation_note": "Patient-led research foundation (FAR).",
+      "synonyms": [
+        "far",
+        "foundation for arid1b research",
+        "arid1b foundation"
+      ]
+    },
+    {
+      "id": "study:care4arid1b",
+      "label": "CARE4ARID1B natural history study",
+      "category": "study",
+      "disambiguation_note": "Multi-site prospective natural-history study \u2014 not a treatment trial.",
+      "synonyms": [
+        "care4arid1b",
+        "care4 arid1b",
+        "arid1b natural history"
+      ]
+    }
+  ],
+  "category_legend": [
+    {
+      "id": "disease",
+      "label": "Diseases",
+      "color": "#2563eb"
+    },
+    {
+      "id": "gene_variant",
+      "label": "Genes & variants",
+      "color": "#0f766e"
+    },
+    {
+      "id": "mechanism",
+      "label": "Mechanisms & processes",
+      "color": "#ca8a04"
+    },
+    {
+      "id": "intervention",
+      "label": "Interventions",
+      "color": "#db2777"
+    },
+    {
+      "id": "study",
+      "label": "Clinical studies",
+      "color": "#7c3aed"
+    },
+    {
+      "id": "publication",
+      "label": "Publications",
+      "color": "#4f46e5"
+    },
+    {
+      "id": "organization_asset",
+      "label": "Organizations & assets",
+      "color": "#c2410c"
+    },
+    {
+      "id": "phenotype",
+      "label": "Phenotypes",
+      "color": "#64748b"
+    }
+  ],
+  "stages": [
+    {
+      "id": "understand",
+      "label": "Understand the connection",
+      "summary": "Follow ARID1B-RD to haploinsufficiency/BAF biology and the CSS1 vs nonsyndromic ID spectrum.",
+      "anchor_node_id": "disease:arid1b_rd",
+      "preferred_edge_id": "edge:mechanism:haploinsufficiency:relevant:disease:arid1b_rd",
+      "node_ids": [
+        "disease:arid1b_rd",
+        "genotype:arid1b_het_lof",
+        "allele:ARID1B_p.Arg1225Ter",
+        "gene:ARID1B",
+        "protein:ARID1B",
+        "mechanism:arid1b_haploinsufficiency",
+        "process:baf_chromatin_remodeling",
+        "disease:css1",
+        "disease:arid1b_id",
+        "phenotype:intellectual_disability",
+        "phenotype:fifth_nail_hypoplasia",
+        "pmid:31249371"
+      ],
+      "edge_ids": [
+        "edge:genotype:het_lof:defines:disease:arid1b_rd",
+        "edge:genotype:het_lof:has_allele:Arg1225Ter",
+        "edge:allele:Arg1225Ter:allele_of:gene:ARID1B",
+        "edge:gene:ARID1B:encodes:protein:ARID1B",
+        "edge:gene:ARID1B:participates:process:baf",
+        "edge:process:baf:supports:mechanism:haploinsufficiency",
+        "edge:mechanism:haploinsufficiency:relevant:disease:arid1b_rd",
+        "edge:disease:css1:narrower_than:disease:arid1b_rd",
+        "edge:disease:arid1b_id:related_but_distinct:disease:css1",
+        "edge:disease:arid1b_rd:has_phenotype:id",
+        "edge:disease:css1:has_phenotype:nail",
+        "edge:pmid:31249371:reports_on:disease:arid1b_rd"
+      ]
+    },
+    {
+      "id": "explore",
+      "label": "Explore resources",
+      "summary": "See the spectrum publication, CARE4ARID1B natural-history asset, and FAR \u2014 with explicit non-treatment framing.",
+      "anchor_node_id": "disease:arid1b_rd",
+      "preferred_edge_id": "edge:study:care4arid1b:focuses:disease:arid1b_rd",
+      "node_ids": [
+        "disease:arid1b_rd",
+        "disease:css1",
+        "mechanism:arid1b_haploinsufficiency",
+        "pmid:31249371",
+        "pmid:22405089",
+        "study:care4arid1b",
+        "asset:care4arid1b_protocol",
+        "org:far",
+        "allele:ARID1B_c.4479G>A",
+        "gene:ARID1B"
+      ],
+      "edge_ids": [
+        "edge:mechanism:haploinsufficiency:relevant:disease:arid1b_rd",
+        "edge:mechanism:haploinsufficiency:relevant:disease:css1",
+        "edge:pmid:31249371:reports_on:disease:arid1b_rd",
+        "edge:pmid:31249371:reports_on:disease:css1",
+        "edge:pmid:22405089:supports:mechanism:haploinsufficiency",
+        "edge:study:care4arid1b:focuses:disease:arid1b_rd",
+        "edge:study:care4:uses:asset:protocol",
+        "edge:asset:care4:developed_for:disease:arid1b_rd",
+        "edge:org:far:supports:disease:arid1b_rd",
+        "edge:allele:c4479:allele_of:gene:ARID1B",
+        "edge:allele:c4479:observed_effect_note"
+      ]
+    },
+    {
+      "id": "prepare",
+      "label": "Prepare next step",
+      "summary": "Turn endpoint and spectrum uncertainties into a sourced collaboration brief.",
+      "anchor_node_id": "question:arid1b_endpoint_readiness",
+      "preferred_edge_id": "edge:study:care4:leads_to:question",
+      "node_ids": [
+        "question:arid1b_endpoint_readiness",
+        "org:far",
+        "study:care4arid1b",
+        "hypothesis:arid1b_spectrum_modifiers"
+      ],
+      "edge_ids": [
+        "edge:study:care4:leads_to:question",
+        "edge:org:far:could_inform:question",
+        "edge:hypothesis:modifiers:leads_to:question"
+      ]
+    }
+  ],
+  "edge_plain_language": {
+    "edge:mechanism:haploinsufficiency:relevant:disease:arid1b_rd": "Haploinsufficiency is the core mechanism framing for ARID1B-RD.",
+    "edge:gene:ARID1B:participates:process:baf": "ARID1B participates in BAF/SWI/SNF chromatin remodeling.",
+    "edge:process:baf:supports:mechanism:haploinsufficiency": "BAF dosage sensitivity supports why one impaired ARID1B copy can matter.",
+    "edge:disease:css1:narrower_than:disease:arid1b_rd": "CSS1 is a clinical subset within broader ARID1B-RD language.",
+    "edge:disease:arid1b_id:related_but_distinct:disease:css1": "Nonsyndromic ARID1B-ID and CSS1 are related but not identical presentations.",
+    "edge:pmid:31249371:reports_on:disease:arid1b_rd": "A 143-patient paper maps the ARID1B clinical spectrum.",
+    "edge:study:care4arid1b:focuses:disease:arid1b_rd": "CARE4ARID1B is a natural-history study for ARID1B-RD.",
+    "edge:org:far:supports:disease:arid1b_rd": "FAR is a verified ARID1B-RD community organization.",
+    "edge:study:care4:leads_to:question": "Natural-history endpoint goals motivate a concrete next research question.",
+    "edge:org:far:could_inform:question": "FAR may inform community priorities \u2014 availability not claimed."
+  },
+  "asset_assessments": [
+    {
+      "asset_id": "study:care4arid1b",
+      "asset_kind": "natural_history_study",
+      "title": "CARE4ARID1B prospective natural history study",
+      "description": "Multi-site prospective study describing developmental trajectories and clinical endpoints for ARID1B-RD.",
+      "owner": "CARE4ARID1B consortium (public study pages)",
+      "source_url": "http://care4arid1b.org/intro.html",
+      "designed_for": {
+        "disease": "ARID1B-related disorder",
+        "genotype": "Genetically confirmed ARID1B-RD (per study eligibility language)",
+        "population": "Children/adolescents described on public pages (verify current age window)",
+        "species": "Homo sapiens"
+      },
+      "access": "Public study description. No participant-level data bundled here. Contact study sites for participation questions.",
+      "relevance_to_journey": "Primary research asset for endpoint definition ahead of any future interventional discussion.",
+      "comparison": {
+        "may_be_reusable": [
+          "Public endpoint and assessment framing for collaboration briefs",
+          "Multi-site natural-history design pattern for other NDDs (as a design reference only)"
+        ],
+        "what_differs": [
+          "Observational natural history \u2260 interventional treatment trial",
+          "ARID1B-RD endpoints are not hemoglobinopathy endpoints"
+        ],
+        "needs_expert_review": [
+          "Which endpoints are mature enough for protocol discussions",
+          "How CSS1 vs broader ARID1B-RD labeling should appear in eligibility"
+        ],
+        "adaptation_status": "Documented for ARID1B-RD natural history; not a therapy",
+        "validation_question": "Which CARE4ARID1B endpoints are ready to cite in an interventional-trial design conversation?"
+      }
+    },
+    {
+      "asset_id": "asset:care4arid1b_protocol",
+      "asset_kind": "study_design_description",
+      "title": "CARE4ARID1B public design / methods description",
+      "description": "Public methods summary (assessments, biomarkers, wearable/caregiver reports, planned cohort size).",
+      "owner": "CARE4ARID1B consortium",
+      "source_url": "http://care4arid1b.org/intro.html",
+      "designed_for": {
+        "disease": "ARID1B-RD",
+        "genotype": "ARID1B pathogenic variant confirmed for eligibility (per public pages)",
+        "population": "Planned ~135 participants across seven sites",
+        "species": "Homo sapiens"
+      },
+      "access": "Public web description only.",
+      "relevance_to_journey": "Concrete design artifact to discuss in a sourced proposal.",
+      "comparison": {
+        "may_be_reusable": [
+          "Assessment cadence and multi-method framing as discussion reference"
+        ],
+        "what_differs": [
+          "Public summary is not the full protocol or data-use agreement"
+        ],
+        "needs_expert_review": [
+          "Current site status and data-access pathways",
+          "Whether historical-control use is appropriate for a proposed question"
+        ],
+        "adaptation_status": "Potential reference for trial-readiness planning",
+        "validation_question": "What can be reused from the public design vs what requires consortium collaboration?"
+      }
+    },
+    {
+      "asset_id": "org:far",
+      "asset_kind": "patient_organization",
+      "title": "Foundation for ARID1B Research (FAR)",
+      "description": "Parent-led foundation advancing ARID1B-RD research collaborations.",
+      "owner": "Foundation for ARID1B Research",
+      "source_url": "https://www.arid1b.org/",
+      "designed_for": {
+        "disease": "ARID1B-related disorder",
+        "genotype": "Community-level; not a single-variant filter",
+        "population": "Patients, families, researchers",
+        "species": null
+      },
+      "access": "Public website/contact. Verify before outreach. Atlas sends nothing automatically.",
+      "relevance_to_journey": "Potential partner for prioritizing endpoint and research questions.",
+      "comparison": {
+        "may_be_reusable": [
+          "Community priority-setting for a collaboration brief"
+        ],
+        "what_differs": [
+          "Organization mission \u2260 study protocol",
+          "Interest in modalities is not an efficacy claim"
+        ],
+        "needs_expert_review": [
+          "Current programs and capacity",
+          "How FAR prefers CSS1 vs ARID1B-RD language in external materials"
+        ],
+        "adaptation_status": "Potential collaboration to investigate",
+        "validation_question": "Which endpoint and natural-history priorities does FAR want emphasized in a research brief?"
+      }
+    },
+    {
+      "asset_id": "pmid:31249371",
+      "asset_kind": "publication",
+      "title": "ARID1B spectrum cohort (143 patients)",
+      "description": "Peer-reviewed characterization of ARID1B-CSS vs ARID1B-ID presentations and variant classes.",
+      "owner": "van der Sluijs et al., Genet Med 2019",
+      "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6752273/",
+      "designed_for": {
+        "disease": "ARID1B spectrum (CSS and ID ascertainment)",
+        "genotype": "Pathogenic ARID1B variants as ascertained in cohort",
+        "population": "143 individuals",
+        "species": "Homo sapiens"
+      },
+      "access": "Open access via PMC.",
+      "relevance_to_journey": "Primary evidence that spectrum labels should not be collapsed.",
+      "comparison": {
+        "may_be_reusable": [
+          "Variant-class and de novo statistics with population denominators from the paper"
+        ],
+        "what_differs": [
+          "Cohort ascertainment biases differ from natural-history enrollment"
+        ],
+        "needs_expert_review": [
+          "How to cite percentages with their original denominators"
+        ],
+        "adaptation_status": "Evidence reference",
+        "validation_question": "Which spectrum distinctions must appear in any proposal eligibility language?"
+      }
+    }
+  ],
+  "registry_gap": {
+    "status": "natural_history_present_patient_registry_not_verified",
+    "explanation": "CARE4ARID1B provides a prospective natural-history study description, but this curated layer does not include a verified standalone patient registry with a confirmed data-access pathway.",
+    "missing_evidence": [
+      "Registry name/owner, consent scope, and access process verified from a primary public page distinct from the natural-history study"
+    ],
+    "next_question": "Is there a publicly documented ARID1B patient registry with a clear access pathway beyond CARE4ARID1B study enrollment?"
+  },
+  "unsupported_search": {
+    "sources_searched": [
+      "Curated ARID1B demonstration layer (ClinVar examples, PMID 31249371/22405089, CARE4ARID1B, FAR, ClinGen dosage)",
+      "Curated HBB demonstration layer remains separate \u2014 no cross-cluster merge",
+      "Discovery placeholders retained but not treated as validated leads"
+    ],
+    "coverage_note": "Coverage is limited to the curated HBB and ARID1B demonstration datasets in this prototype."
+  },
+  "proposal_defaults": {
+    "research_question": "Which CARE4ARID1B natural-history endpoints are ready to inform a future interventional protocol discussion for ARID1B-RD without collapsing CSS1 and nonsyndromic ID presentations?",
+    "proposed_next_step": "Review the CARE4ARID1B public endpoint goals with FAR community priorities, list spectrum-preserving eligibility language, and identify what still lacks public evidence before any therapy-oriented claim.",
+    "partner_gap_if_unknown": "No individual researcher availability or email is asserted. Use organization public contact pages after human verification."
+  },
+  "unsupported_missing_evidence": [
+    "A curated entity match for this query in the demonstration layer",
+    "A reviewed edge connecting it into the selected dataset journey without merging unrelated disease labels"
+  ],
+  "unsupported_next_question_template": "What primary public source would establish whether \"{query}\" belongs in the Rare Disease Atlas curated layer, and which disease scope should it be mapped to without merging synonyms?"
+}

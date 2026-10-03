@@ -1,0 +1,68 @@
+{
+  "dataset_id": "arid1b",
+  "focus_gene": "ARID1B",
+  "inheritance_pattern": "autosomal_dominant_de_novo_typical",
+  "genotype_structure_note": "Heterozygous pathogenic variants; do not assume HBB-style recessive homozygous genotypes.",
+  "diseases": [
+    {
+      "id": "disease:css1",
+      "label": "Coffin-Siris syndrome 1 (CSS1)",
+      "mondo": "MONDO:0007617",
+      "orphanet": "Orphanet:1465",
+      "omim": "OMIM:135900",
+      "genotype_scope": "Heterozygous pathogenic ARID1B variant in a person meeting CSS clinical criteria",
+      "notes": "Gene-defined CSS subtype. Other BAF-complex genes can cause CSS clinically; keep ARID1B-CSS1 distinct from CSS caused by other genes."
+    },
+    {
+      "id": "disease:arid1b_rd",
+      "label": "ARID1B-related disorder (ARID1B-RD)",
+      "notes": "Gene-centered clinical umbrella used by FAR/CARE4ARID1B for the spectrum from CSS-like presentations to less syndromic intellectual disability. Not a mechanistic proof that every presentation shares identical modifiers."
+    },
+    {
+      "id": "disease:arid1b_id",
+      "label": "ARID1B-related nonsyndromic intellectual disability",
+      "omim_related": "OMIM:614562 (MRD12 / historical labels may appear in sources)",
+      "notes": "Keep separate from CSS1. Same gene, overlapping variant classes, different clinical framing; van der Sluijs et al. compare CSS-ascertained vs ID-ascertained cohorts."
+    }
+  ],
+  "representative_variants": [
+    {
+      "id": "allele:ARID1B_p.Arg1225Ter",
+      "clinvar_variation_id": "31210",
+      "hgvs_c": "NM_001374828.1:c.3673C>T",
+      "hgvs_p": "p.Arg1225Ter",
+      "predicted_consequence": "nonsense / predicted LoF",
+      "notes": "Representative ClinVar pathogenic nonsense allele. Predicted molecular consequence ≠ experimentally measured functional effect for every carrier context."
+    },
+    {
+      "id": "allele:ARID1B_c.4479G>A",
+      "clinvar_variation_id": "210291",
+      "hgvs_c": "NM_001374828.1:c.4479G>A",
+      "hgvs_p_apparent": "p.Pro1493=",
+      "experimental_effect": "Donor splice disruption with exon 17 skipping leading to frameshift (reported RNA studies)",
+      "notes": "Synonymous-looking coding change with splice effect — illustrates predicted vs experimentally observed consequence distinction."
+    }
+  ],
+  "inclusion_criteria": [
+    "Germline ARID1B monogenic neurodevelopmental presentations with public primary sources",
+    "Edges require source URL + supporting passage or structured-field reference",
+    "Keep CSS1, ARID1B-RD umbrella, and nonsyndromic ID labels distinct"
+  ],
+  "exclusion_criteria": [
+    "Somatic cancer associations for ARID1B/BAF subunits as if they were the germline rare-disease mechanism",
+    "Claims that every truncating variant has proven functional protein loss without context",
+    "Approved gene-therapy or disease-modifying treatment claims",
+    "Cross-links to HBB hemoglobinopathy nodes without a supporting source"
+  ],
+  "anchor_publications": ["PMID:31249371", "PMID:22405089"],
+  "demo_path": [
+    "disease:arid1b_rd",
+    "gene:ARID1B",
+    "mechanism:arid1b_haploinsufficiency",
+    "process:baf_chromatin_remodeling",
+    "pmid:31249371",
+    "study:care4arid1b",
+    "org:far",
+    "question:arid1b_endpoint_readiness"
+  ]
+}

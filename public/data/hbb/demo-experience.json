@@ -493,13 +493,28 @@
   "unsupported_search": {
     "sources_searched": [
       "Curated HBB demonstration layer (ClinVar anchors, PubMed PMIDs 38657265/38661449, ClinicalTrials NCT03745287/NCT03655678, SCDAA, CAF, JAX Townes)",
-      "Discovery collection retained for review but not treated as validated leads"
+      "Discovery collection retained for review but not treated as validated leads",
+      "Curated ARID1B demonstration layer remains searchable as a separate dataset"
     ],
-    "coverage_note": "Coverage is limited to HBB-related hemoglobinopathy evidence assembled for this prototype."
+    "coverage_note": "Coverage is limited to the curated HBB and ARID1B demonstration datasets in this prototype."
   },
   "proposal_defaults": {
     "research_question": "Which HbF-pathway research assets and collaborator networks can be responsibly evaluated for \u03b2-thalassemia community needs without assuming SCD-model compatibility?",
     "proposed_next_step": "Schedule an expert review call to compare CLIMB SCD-121 and CLIMB THAL-111 public protocol fields against the patient group's genotype-aware question, and decide whether Townes (or another model) is even in scope.",
     "partner_gap_if_unknown": "No individual researcher availability or email is asserted. Use organization public contact pages after human verification."
-  }
+  },
+  "dataset_id": "hbb",
+  "dataset_label": "HBB hemoglobinopathies",
+  "default_focus_id": "disease:hbss",
+  "default_partner_id": "org:caf",
+  "default_asset_ids": [
+    "nct:NCT03655678",
+    "asset:jax_townes"
+  ],
+  "landing_disclaimer": "These hemoglobinopathy conditions already have treatments. This atlas focuses on sourced research connections and reusable assets \u2014 not treatment advice.",
+  "unsupported_missing_evidence": [
+    "A curated entity match for this query in the demonstration layer",
+    "A reviewed edge connecting it into the selected dataset journey without merging unrelated disease labels"
+  ],
+  "unsupported_next_question_template": "What primary public source would establish whether \"{query}\" belongs in the Rare Disease Atlas curated layer, and which disease scope should it be mapped to without merging synonyms?"
 }

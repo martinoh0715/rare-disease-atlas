@@ -1,0 +1,153 @@
+[
+  {
+    "decision": "accept",
+    "status": "accepted",
+    "claim": "ARID1B haploinsufficiency is the primary mechanism framing for ARID1B-RD/CSS1",
+    "reason": "Supported by FAR page, ClinGen dosage score 3, Hoyer 2012, OMIM CSS1 entry",
+    "sources": [
+      "https://www.arid1b.org/arid1b",
+      "https://search.clinicalgenome.org/kb/gene-dosage/HGNC:18040",
+      "PMID:22405089",
+      "OMIM:135900"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "accept",
+    "status": "accepted",
+    "claim": "Keep CSS1 and nonsyndromic ARID1B-ID as related-but-distinct clinical framings",
+    "reason": "van der Sluijs et al. explicitly contrast ARID1B-CSS vs ARID1B-ID ascertainment",
+    "sources": [
+      "PMID:31249371"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "accept",
+    "status": "accepted",
+    "claim": "CARE4ARID1B is a prospective natural-history study aiming to define endpoints",
+    "reason": "Public study pages describe observational multi-site design and endpoint goals",
+    "sources": [
+      "http://care4arid1b.org/intro.html",
+      "http://care4arid1b.org/parents.html"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "accept",
+    "status": "accepted",
+    "claim": "FAR is a verified patient/research organization for ARID1B-RD",
+    "reason": "Primary organization website with mission and contact pathways",
+    "sources": [
+      "https://www.arid1b.org/"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "reject",
+    "status": "rejected",
+    "claim": "All ARID1B presentations involve identical variants",
+    "reason": "Cohort shows many distinct frameshift/nonsense/splice/deletion alleles; presentations vary",
+    "sources": [
+      "PMID:31249371"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "reject",
+    "status": "rejected",
+    "claim": "Every truncating variant automatically causes functional protein loss",
+    "reason": "Transcript/NMD/context matter; pLoF-clustering paper (PMID 38671509) cautions against universal automatic pathogenicity rules. We require allele-level sources.",
+    "sources": [
+      "PMID:38671509",
+      "PMID:31249371"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "reject",
+    "status": "rejected",
+    "claim": "There is an approved gene therapy / cure for ARID1B-RD",
+    "reason": "FAR states no treatment currently; management is supportive",
+    "sources": [
+      "https://www.arid1b.org/arid1b"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "reject",
+    "status": "rejected",
+    "claim": "Import ODC1 LoF disease cluster and DFMO as ARID1B-adjacent treatments",
+    "reason": "Different gene/mechanism; ODC1 LoF association unresolved; would fabricate cross-cluster edges",
+    "sources": [
+      "GeneReviews Bachmann-Bupp NBK583220"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "reject",
+    "status": "rejected",
+    "claim": "Merge CSS caused by other BAF genes into ARID1B-CSS1",
+    "reason": "Shared clinical label \u2260 shared gene; keep gene-defined CSS1 separate",
+    "sources": [
+      "OMIM:135900",
+      "ClinGen ARID1B dosage page"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "unresolved",
+    "status": "unresolved",
+    "claim": "Exact worldwide prevalence (e.g., 1/9500) as a hard atlas fact",
+    "reason": "CARE4ARID1B/FAR quote an approximated prevalence; retained as source-attributed context in nodes/passages, not as a standalone numeric edge without population methodology detail",
+    "sources": [
+      "http://care4arid1b.org/intro.html",
+      "https://www.arid1b.org/arid1b"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "unresolved",
+    "status": "unresolved",
+    "claim": "Current CARE4ARID1B enrollment open/closed status on any given date",
+    "reason": "Time-sensitive; UI marks status as verify-before-citing",
+    "sources": [
+      "http://care4arid1b.org/parents.html"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "unresolved",
+    "status": "unresolved",
+    "claim": "ASO upregulation of the wild-type allele as a near-term therapy",
+    "reason": "FAR research pages discuss modality exploration; not imported as an intervention node with efficacy claims in this curated slice",
+    "sources": [
+      "https://www.arid1b.org/research"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  }
+]

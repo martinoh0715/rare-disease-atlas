@@ -1,0 +1,49 @@
+{
+  "journeys": [
+    {
+      "id": "journey:arid1b_research_discovery",
+      "title": "ARID1B-RD research discovery journey",
+      "intended_user": "Patient-group organizer or rare-disease research coordinator",
+      "plain_language": "Start from ARID1B-related disorder, follow haploinsufficiency / BAF biology and the CSS\u2194ID spectrum evidence, then connect to CARE4ARID1B natural-history work and FAR as a potential collaboration partner for a specific endpoint-readiness research question. No treatment recommendation is made.",
+      "node_path": [
+        "disease:arid1b_rd",
+        "gene:ARID1B",
+        "mechanism:arid1b_haploinsufficiency",
+        "process:baf_chromatin_remodeling",
+        "disease:css1",
+        "disease:arid1b_id",
+        "pmid:31249371",
+        "study:care4arid1b",
+        "asset:care4arid1b_protocol",
+        "org:far",
+        "question:arid1b_endpoint_readiness"
+      ],
+      "edge_path": [
+        "edge:mechanism:haploinsufficiency:relevant:disease:arid1b_rd",
+        "edge:gene:ARID1B:participates:process:baf",
+        "edge:process:baf:supports:mechanism:haploinsufficiency",
+        "edge:disease:css1:narrower_than:disease:arid1b_rd",
+        "edge:disease:arid1b_id:related_but_distinct:disease:css1",
+        "edge:pmid:31249371:reports_on:disease:arid1b_rd",
+        "edge:study:care4arid1b:focuses:disease:arid1b_rd",
+        "edge:asset:care4:developed_for:disease:arid1b_rd",
+        "edge:org:far:supports:disease:arid1b_rd",
+        "edge:study:care4:leads_to:question",
+        "edge:org:far:could_inform:question"
+      ],
+      "answers": {
+        "relevant_communities": [
+          "org:far"
+        ],
+        "existing_assets": [
+          "asset:care4arid1b_protocol",
+          "study:care4arid1b"
+        ],
+        "who_could_help": [
+          "org:far"
+        ],
+        "next_step": "Review CARE4ARID1B public endpoint goals with FAR/community priorities and draft eligibility language that preserves CSS1 vs broader ARID1B-RD distinctions."
+      }
+    }
+  ]
+}

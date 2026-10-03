@@ -9,9 +9,12 @@
     "lint": "next lint",
     "collect": "python3 research/hbb/collect.py",
     "graph": "python3 research/hbb/build_graph.py && python3 research/hbb/curate.py",
+    "graph:arid1b": "python3 research/arid1b/curate.py",
     "sync-data": "bash scripts/sync-data.sh",
-    "pipeline": "npm run collect && npm run graph && npm run sync-data",
-    "validate": "python3 research/hbb/validate.py"
+    "pipeline": "npm run collect && npm run graph && npm run graph:arid1b && npm run sync-data",
+    "validate": "python3 research/hbb/validate.py",
+    "validate:arid1b": "python3 research/arid1b/validate.py",
+    "regression": "python3 scripts/regression_check.py"
   },
   "dependencies": {
     "@radix-ui/react-scroll-area": "^1.2.18",

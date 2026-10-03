@@ -1,26 +1,3 @@
-#!/usr/bin/env bash
-set -euo pipefail
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-
-sync_dataset() {
-  local id="$1"
-  local src="$ROOT/research/$id/output"
-  local dest="$ROOT/public/data/$id"
-  mkdir -p "$dest"
-  for f in curated-graph.json journeys.json review-log.json graph.json \
-           gaps.md quality-report.json collection-summary.md demo-experience.json; do
-    if [[ -f "$src/$f" ]]; then
-      cp "$src/$f" "$dest/$f"
-    fi
-  done
-  echo "Synced $id -> public/data/$id"
-}
-
-sync_dataset hbb
-sync_dataset arid1b
-
-# Catalog for multi-dataset UI
-cat > "$ROOT/public/data/catalog.json" <<'EOF'
 {
   "product_name": "Rare Disease Atlas",
   "product_one_liner": "Search a rare disease and follow sourced connections to related biology, communities, and research assets.",
@@ -44,6 +21,3 @@ cat > "$ROOT/public/data/catalog.json" <<'EOF'
     }
   ]
 }
-EOF
-
-echo "Wrote public/data/catalog.json"

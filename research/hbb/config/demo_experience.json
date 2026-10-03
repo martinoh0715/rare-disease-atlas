@@ -2,11 +2,26 @@
   "product_one_liner": "Search a rare disease and follow sourced connections to related biology, communities, and research assets.",
   "product_name": "Rare Disease Atlas",
   "example_searches": [
-    { "label": "sickle cell anemia", "query": "sickle cell anemia" },
-    { "label": "HbSS", "query": "HbSS" },
-    { "label": "beta-thalassemia", "query": "beta-thalassemia" },
-    { "label": "HBB", "query": "HBB" },
-    { "label": "c.20A>T", "query": "c.20A>T" }
+    {
+      "label": "sickle cell anemia",
+      "query": "sickle cell anemia"
+    },
+    {
+      "label": "HbSS",
+      "query": "HbSS"
+    },
+    {
+      "label": "beta-thalassemia",
+      "query": "beta-thalassemia"
+    },
+    {
+      "label": "HBB",
+      "query": "HBB"
+    },
+    {
+      "label": "c.20A>T",
+      "query": "c.20A>T"
+    }
   ],
   "search_entries": [
     {
@@ -27,7 +42,7 @@
       "id": "disease:scd_broad",
       "label": "Sickle cell disease (broad)",
       "category": "disease",
-      "disambiguation_note": "Umbrella clinical category that can include HbSS, HbSC, HbS/β-thalassemia, and other genotypes.",
+      "disambiguation_note": "Umbrella clinical category that can include HbSS, HbSC, HbS/\u03b2-thalassemia, and other genotypes.",
       "synonyms": [
         "sickle cell disease",
         "scd",
@@ -40,7 +55,12 @@
       "label": "Sickle cell trait",
       "category": "disease",
       "disambiguation_note": "Carrier state (HbAS), not sickle cell disease.",
-      "synonyms": ["sickle cell trait", "hbas", "carrier sickle", "sickle trait"]
+      "synonyms": [
+        "sickle cell trait",
+        "hbas",
+        "carrier sickle",
+        "sickle trait"
+      ]
     },
     {
       "id": "disease:beta_thal_genetic",
@@ -50,7 +70,7 @@
       "synonyms": [
         "beta-thalassemia",
         "beta thalassemia",
-        "β-thalassemia",
+        "\u03b2-thalassemia",
         "cooley anemia",
         "cooley's anemia",
         "beta thalassaemia"
@@ -58,14 +78,14 @@
     },
     {
       "id": "disease:tdt",
-      "label": "Transfusion-dependent β-thalassemia",
+      "label": "Transfusion-dependent \u03b2-thalassemia",
       "category": "disease",
       "disambiguation_note": "Clinical phenotype used in trials (transfusion dependence), not a single genotype.",
       "synonyms": [
         "transfusion-dependent beta-thalassemia",
         "transfusion dependent beta thalassemia",
         "tdt",
-        "transfusion-dependent β-thalassemia"
+        "transfusion-dependent \u03b2-thalassemia"
       ]
     },
     {
@@ -73,59 +93,119 @@
       "label": "Beta-thalassemia major",
       "category": "disease",
       "disambiguation_note": "Clinical severity label; often transfusion-dependent, but not identical to every genetic subtype.",
-      "synonyms": ["beta-thalassemia major", "thalassemia major", "beta thal major"]
+      "synonyms": [
+        "beta-thalassemia major",
+        "thalassemia major",
+        "beta thal major"
+      ]
     },
     {
       "id": "gene:HBB",
       "label": "HBB",
       "category": "gene",
       "disambiguation_note": "Hemoglobin subunit beta gene.",
-      "synonyms": ["hbb", "beta globin", "β-globin gene", "hemoglobin beta"]
+      "synonyms": [
+        "hbb",
+        "beta globin",
+        "\u03b2-globin gene",
+        "hemoglobin beta"
+      ]
     },
     {
       "id": "gene:BCL11A",
       "label": "BCL11A",
       "category": "gene",
-      "disambiguation_note": "Therapeutic target for HbF reactivation in curated evidence; not the disease-causing gene for HbSS/β-thalassemia.",
-      "synonyms": ["bcl11a", "bcl-11a"]
+      "disambiguation_note": "Therapeutic target for HbF reactivation in curated evidence; not the disease-causing gene for HbSS/\u03b2-thalassemia.",
+      "synonyms": [
+        "bcl11a",
+        "bcl-11a"
+      ]
     },
     {
       "id": "allele:HbS",
-      "label": "HbS (βS)",
+      "label": "HbS (\u03b2S)",
       "category": "variant",
-      "disambiguation_note": "HBB c.20A>T / p.Glu7Val (legacy β6).",
-      "synonyms": ["hbs", "c.20a>t", "p.glu7val", "hemoglobin s", "beta s"]
+      "disambiguation_note": "HBB c.20A>T / p.Glu7Val (legacy \u03b26).",
+      "synonyms": [
+        "hbs",
+        "c.20a>t",
+        "p.glu7val",
+        "hemoglobin s",
+        "beta s"
+      ]
     },
     {
       "id": "allele:HbC",
-      "label": "HbC (βC)",
+      "label": "HbC (\u03b2C)",
       "category": "variant",
-      "disambiguation_note": "HBB c.19G>A / p.Glu7Lys (legacy β6).",
-      "synonyms": ["hbc", "c.19g>a", "p.glu7lys", "hemoglobin c"]
+      "disambiguation_note": "HBB c.19G>A / p.Glu7Lys (legacy \u03b26).",
+      "synonyms": [
+        "hbc",
+        "c.19g>a",
+        "p.glu7lys",
+        "hemoglobin c"
+      ]
     },
     {
       "id": "mechanism:hbf_reactivation",
       "label": "Fetal hemoglobin (HbF) reactivation",
       "category": "mechanism",
-      "disambiguation_note": "Shared biology bridge under investigation across SCD and β-thalassemia communities.",
-      "synonyms": ["fetal hemoglobin", "hbf", "hbf reactivation", "gamma globin"]
+      "disambiguation_note": "Shared biology bridge under investigation across SCD and \u03b2-thalassemia communities.",
+      "synonyms": [
+        "fetal hemoglobin",
+        "hbf",
+        "hbf reactivation",
+        "gamma globin"
+      ]
     }
   ],
   "category_legend": [
-    { "id": "disease", "label": "Diseases", "color": "#2563eb" },
-    { "id": "gene_variant", "label": "Genes & variants", "color": "#0f766e" },
-    { "id": "mechanism", "label": "Mechanisms & processes", "color": "#ca8a04" },
-    { "id": "intervention", "label": "Interventions", "color": "#db2777" },
-    { "id": "study", "label": "Clinical studies", "color": "#7c3aed" },
-    { "id": "publication", "label": "Publications", "color": "#4f46e5" },
-    { "id": "organization_asset", "label": "Organizations & assets", "color": "#c2410c" },
-    { "id": "phenotype", "label": "Phenotypes", "color": "#64748b" }
+    {
+      "id": "disease",
+      "label": "Diseases",
+      "color": "#2563eb"
+    },
+    {
+      "id": "gene_variant",
+      "label": "Genes & variants",
+      "color": "#0f766e"
+    },
+    {
+      "id": "mechanism",
+      "label": "Mechanisms & processes",
+      "color": "#ca8a04"
+    },
+    {
+      "id": "intervention",
+      "label": "Interventions",
+      "color": "#db2777"
+    },
+    {
+      "id": "study",
+      "label": "Clinical studies",
+      "color": "#7c3aed"
+    },
+    {
+      "id": "publication",
+      "label": "Publications",
+      "color": "#4f46e5"
+    },
+    {
+      "id": "organization_asset",
+      "label": "Organizations & assets",
+      "color": "#c2410c"
+    },
+    {
+      "id": "phenotype",
+      "label": "Phenotypes",
+      "color": "#64748b"
+    }
   ],
   "stages": [
     {
       "id": "understand",
       "label": "Understand the connection",
-      "summary": "Follow HbSS to HbF/BCL11A biology and the related β-thalassemia research community.",
+      "summary": "Follow HbSS to HbF/BCL11A biology and the related \u03b2-thalassemia research community.",
       "anchor_node_id": "disease:hbss",
       "preferred_edge_id": "edge:mechanism:hbf:relevant:disease:hbss",
       "node_ids": [
@@ -159,7 +239,7 @@
     {
       "id": "explore",
       "label": "Explore resources",
-      "summary": "See studies, publications, organizations, and models linked through the HbF / BCL11A path — with reuse caveats.",
+      "summary": "See studies, publications, organizations, and models linked through the HbF / BCL11A path \u2014 with reuse caveats.",
       "anchor_node_id": "disease:hbss",
       "preferred_edge_id": "edge:nct:NCT03745287:tests:intervention:exa_cel",
       "node_ids": [
@@ -224,25 +304,25 @@
     "edge:genotype:hbss:has_allele:HbS": "The HbSS genotype includes two copies of the HbS allele.",
     "edge:allele:HbS:allele_of:gene:HBB": "HbS is an allele of the HBB gene (c.20A>T).",
     "edge:mechanism:hbf:relevant:disease:hbss": "Raising fetal hemoglobin is mechanistically relevant to sickle cell anemia pathophysiology.",
-    "edge:process:bcl11a:supports:mechanism:hbf": "Disrupting BCL11A’s repression of γ-globin supports HbF reactivation.",
+    "edge:process:bcl11a:supports:mechanism:hbf": "Disrupting BCL11A\u2019s repression of \u03b3-globin supports HbF reactivation.",
     "edge:gene:BCL11A:participates:process:bcl11a_repression": "BCL11A participates in repressing fetal hemoglobin after birth.",
-    "edge:intervention:exa_cel:targets:gene:BCL11A": "exa-cel is designed to edit the BCL11A erythroid enhancer — not HBB.",
+    "edge:intervention:exa_cel:targets:gene:BCL11A": "exa-cel is designed to edit the BCL11A erythroid enhancer \u2014 not HBB.",
     "edge:pmid:38661449:investigates_intervention:exa_cel": "A 2024 phase 3 publication reports exa-cel outcomes in severe sickle cell disease.",
     "edge:pmid:38661449:reports_on_study:nct:NCT03745287": "This publication reports results from the CLIMB SCD-121 clinical study (NCT03745287).",
     "edge:pmid:38661449:clinical_evidence_for:disease:scd_broad": "Trial clinical evidence supports VOC-related outcomes in the enrolled SCD population.",
-    "edge:pmid:38657265:investigates_intervention:exa_cel": "A parallel 2024 phase 3 publication reports exa-cel in transfusion-dependent β-thalassemia.",
+    "edge:pmid:38657265:investigates_intervention:exa_cel": "A parallel 2024 phase 3 publication reports exa-cel in transfusion-dependent \u03b2-thalassemia.",
     "edge:pmid:38657265:reports_on_study:nct:NCT03655678": "This publication reports results from the CLIMB THAL-111 clinical study (NCT03655678).",
     "edge:nct:NCT03745287:tests:intervention:exa_cel": "CLIMB SCD-121 is the clinical study registry record testing exa-cel in severe sickle cell disease.",
-    "edge:nct:NCT03655678:tests:intervention:exa_cel": "CLIMB THAL-111 is the clinical study registry record testing exa-cel in transfusion-dependent β-thalassemia.",
-    "edge:mechanism:hbf:relevant:disease:tdt": "HbF reactivation is relevant to transfusion-dependent β-thalassemia endpoints in the TDT trial.",
-    "edge:hypothesis:bridge:proposed_from:mechanism:hbf": "Shared HbF biology motivates a cross-community research bridge — still a hypothesis about asset reuse.",
+    "edge:nct:NCT03655678:tests:intervention:exa_cel": "CLIMB THAL-111 is the clinical study registry record testing exa-cel in transfusion-dependent \u03b2-thalassemia.",
+    "edge:mechanism:hbf:relevant:disease:tdt": "HbF reactivation is relevant to transfusion-dependent \u03b2-thalassemia endpoints in the TDT trial.",
+    "edge:hypothesis:bridge:proposed_from:mechanism:hbf": "Shared HbF biology motivates a cross-community research bridge \u2014 still a hypothesis about asset reuse.",
     "edge:org:scdaa:supports_community:disease:scd_broad": "SCDAA is a verified patient organization for the sickle cell community.",
-    "edge:org:caf:supports_community:disease:beta_thal_genetic": "Cooley’s Anemia Foundation is a verified patient organization for thalassemia.",
+    "edge:org:caf:supports_community:disease:beta_thal_genetic": "Cooley\u2019s Anemia Foundation is a verified patient organization for thalassemia.",
     "edge:asset:jax_townes:model_for:disease:hbss": "The JAX Townes mouse is an experimental model developed for sickle cell disease research.",
-    "edge:asset:jax_townes:hypothesis_not_validated:disease:beta_thal_genetic": "Suitability of the Townes SCD model for β-thalassemia is not established here.",
+    "edge:asset:jax_townes:hypothesis_not_validated:disease:beta_thal_genetic": "Suitability of the Townes SCD model for \u03b2-thalassemia is not established here.",
     "edge:hypothesis:bridge:leads_to:question": "The bridge hypothesis points to a concrete validation research question.",
-    "edge:org:caf:could_inform:question": "CAF is a potential stakeholder for β-thalassemia community priorities — availability not claimed.",
-    "edge:org:scdaa:could_inform:question": "SCDAA is a potential stakeholder for SCD-side priorities — availability not claimed."
+    "edge:org:caf:could_inform:question": "CAF is a potential stakeholder for \u03b2-thalassemia community priorities \u2014 availability not claimed.",
+    "edge:org:scdaa:could_inform:question": "SCDAA is a potential stakeholder for SCD-side priorities \u2014 availability not claimed."
   },
   "asset_assessments": [
     {
@@ -255,7 +335,7 @@
       "designed_for": {
         "disease": "Severe sickle cell disease (broad SCD enrollment framing)",
         "genotype": "Confirm genotype eligibility on the source record; do not assume HbSS-only",
-        "population": "Ages 12–35 with severe VOC history (per publication/registry)",
+        "population": "Ages 12\u201335 with severe VOC history (per publication/registry)",
         "species": "Homo sapiens"
       },
       "access": "Public protocol metadata on ClinicalTrials.gov. Does not grant access to participant-level data.",
@@ -270,35 +350,35 @@
           "Genotype mix in SCD trials may not equal HbSS-only populations"
         ],
         "needs_expert_review": [
-          "Whether any design element can inform a β-thalassemia collaboration without copying inapplicable eligibility",
+          "Whether any design element can inform a \u03b2-thalassemia collaboration without copying inapplicable eligibility",
           "Regulatory/ethical constraints on reusing protocol language vs data"
         ],
         "adaptation_status": "Potential adaptation to investigate",
-        "validation_question": "Which SCD trial-design elements (if any) are informative for a β-thalassemia HbF research collaboration without assuming shared eligibility?"
+        "validation_question": "Which SCD trial-design elements (if any) are informative for a \u03b2-thalassemia HbF research collaboration without assuming shared eligibility?"
       }
     },
     {
       "asset_id": "nct:NCT03655678",
       "asset_kind": "study_protocol",
       "title": "CLIMB THAL-111 study design (NCT03655678)",
-      "description": "Completed ClinicalTrials.gov protocol evaluating exa-cel (CTX001) in transfusion-dependent β-thalassemia.",
+      "description": "Completed ClinicalTrials.gov protocol evaluating exa-cel (CTX001) in transfusion-dependent \u03b2-thalassemia.",
       "owner": "ClinicalTrials.gov public registry record (sponsors listed on record)",
       "source_url": "https://clinicaltrials.gov/study/NCT03655678",
       "designed_for": {
-        "disease": "Transfusion-dependent β-thalassemia",
-        "genotype": "β0/β0, β0/β0-like, or non–β0/β0-like as enrolled",
-        "population": "Ages 12–35 (per publication/registry)",
+        "disease": "Transfusion-dependent \u03b2-thalassemia",
+        "genotype": "\u03b20/\u03b20, \u03b20/\u03b20-like, or non\u2013\u03b20/\u03b20-like as enrolled",
+        "population": "Ages 12\u201335 (per publication/registry)",
         "species": "Homo sapiens"
       },
       "access": "Public protocol metadata on ClinicalTrials.gov. Does not grant access to participant-level data.",
-      "relevance_to_journey": "Provides the β-thalassemia-side study design counterpart to the SCD exa-cel program.",
+      "relevance_to_journey": "Provides the \u03b2-thalassemia-side study design counterpart to the SCD exa-cel program.",
       "comparison": {
         "may_be_reusable": [
           "Transfusion-independence endpoint definitions for community-facing research conversations",
           "Public documentation of genotype strata used in TDT enrollment"
         ],
         "what_differs": [
-          "Clinical category is transfusion dependence, not every genetic β-thalassemia subtype",
+          "Clinical category is transfusion dependence, not every genetic \u03b2-thalassemia subtype",
           "Not interchangeable with SCD VOC endpoint packages"
         ],
         "needs_expert_review": [
@@ -330,14 +410,14 @@
         ],
         "what_differs": [
           "Animal findings are not human findings",
-          "Sickling pathophysiology ≠ ineffective erythropoiesis of β-thalassemia"
+          "Sickling pathophysiology \u2260 ineffective erythropoiesis of \u03b2-thalassemia"
         ],
         "needs_expert_review": [
-          "Whether any assay/outcome from Townes work could inform a β-thalassemia question",
+          "Whether any assay/outcome from Townes work could inform a \u03b2-thalassemia question",
           "Whether a different model is required instead"
         ],
         "adaptation_status": "Potential adaptation to investigate",
-        "validation_question": "Does a proposed experiment need a sickle-cell model, a β-thalassemia model, or a human-cell system?"
+        "validation_question": "Does a proposed experiment need a sickle-cell model, a \u03b2-thalassemia model, or a human-cell system?"
       }
     },
     {
@@ -348,19 +428,19 @@
       "owner": "Cooley's Anemia Foundation",
       "source_url": "https://www.thalassemia.org/",
       "designed_for": {
-        "disease": "Thalassemia / β-thalassemia community",
+        "disease": "Thalassemia / \u03b2-thalassemia community",
         "genotype": "Community-level; not a single genotype filter",
         "population": "Patients, families, and research stakeholders",
         "species": null
       },
       "access": "Public website. Primary site timed out in automated collection; archived snapshot used for usability. Verify current contact channels before outreach. No automatic contact is made by this atlas.",
-      "relevance_to_journey": "Potential partner for prioritizing β-thalassemia research questions and community constraints.",
+      "relevance_to_journey": "Potential partner for prioritizing \u03b2-thalassemia research questions and community constraints.",
       "comparison": {
         "may_be_reusable": [
           "Community priority-setting and patient-group framing for a collaboration brief"
         ],
         "what_differs": [
-          "Organization mission ≠ research protocol",
+          "Organization mission \u2260 research protocol",
           "No verified patient-registry extract is bundled in this atlas"
         ],
         "needs_expert_review": [
@@ -388,10 +468,10 @@
       "relevance_to_journey": "Potential partner for SCD-side priorities when discussing cross-community HbF research.",
       "comparison": {
         "may_be_reusable": [
-          "SCD community framing for what “shared research” should not overclaim"
+          "SCD community framing for what \u201cshared research\u201d should not overclaim"
         ],
         "what_differs": [
-          "SCD community assets are not automatically β-thalassemia assets"
+          "SCD community assets are not automatically \u03b2-thalassemia assets"
         ],
         "needs_expert_review": [
           "Whether SCDAA can advise on genotype-aware research questions",
@@ -413,13 +493,28 @@
   "unsupported_search": {
     "sources_searched": [
       "Curated HBB demonstration layer (ClinVar anchors, PubMed PMIDs 38657265/38661449, ClinicalTrials NCT03745287/NCT03655678, SCDAA, CAF, JAX Townes)",
-      "Discovery collection retained for review but not treated as validated leads"
+      "Discovery collection retained for review but not treated as validated leads",
+      "Curated ARID1B demonstration layer remains searchable as a separate dataset"
     ],
-    "coverage_note": "Coverage is limited to HBB-related hemoglobinopathy evidence assembled for this prototype."
+    "coverage_note": "Coverage is limited to the curated HBB and ARID1B demonstration datasets in this prototype."
   },
   "proposal_defaults": {
-    "research_question": "Which HbF-pathway research assets and collaborator networks can be responsibly evaluated for β-thalassemia community needs without assuming SCD-model compatibility?",
+    "research_question": "Which HbF-pathway research assets and collaborator networks can be responsibly evaluated for \u03b2-thalassemia community needs without assuming SCD-model compatibility?",
     "proposed_next_step": "Schedule an expert review call to compare CLIMB SCD-121 and CLIMB THAL-111 public protocol fields against the patient group's genotype-aware question, and decide whether Townes (or another model) is even in scope.",
     "partner_gap_if_unknown": "No individual researcher availability or email is asserted. Use organization public contact pages after human verification."
-  }
+  },
+  "dataset_id": "hbb",
+  "dataset_label": "HBB hemoglobinopathies",
+  "default_focus_id": "disease:hbss",
+  "default_partner_id": "org:caf",
+  "default_asset_ids": [
+    "nct:NCT03655678",
+    "asset:jax_townes"
+  ],
+  "landing_disclaimer": "These hemoglobinopathy conditions already have treatments. This atlas focuses on sourced research connections and reusable assets \u2014 not treatment advice.",
+  "unsupported_missing_evidence": [
+    "A curated entity match for this query in the demonstration layer",
+    "A reviewed edge connecting it into the selected dataset journey without merging unrelated disease labels"
+  ],
+  "unsupported_next_question_template": "What primary public source would establish whether \"{query}\" belongs in the Rare Disease Atlas curated layer, and which disease scope should it be mapped to without merging synonyms?"
 }

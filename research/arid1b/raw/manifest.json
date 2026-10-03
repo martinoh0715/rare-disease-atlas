@@ -1,0 +1,25 @@
+{
+  "retrieval_date": "2026-10-03",
+  "sources": [
+    {
+      "url": "https://www.arid1b.org/arid1b",
+      "path": "organizations/far_arid1b.md",
+      "license_access": "public website"
+    },
+    {
+      "url": "http://care4arid1b.org/intro.html",
+      "path": "studies/care4arid1b_intro.md",
+      "license_access": "public study page"
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6752273/",
+      "path": "publications/pmid31249371_note.json",
+      "license_access": "PMC open access"
+    },
+    {
+      "url": "https://www.ncbi.nlm.nih.gov/clinvar/variation/31210/",
+      "path": "clinvar/vcv31210_note.json",
+      "license_access": "NCBI ClinVar public"
+    }
+  ]
+}

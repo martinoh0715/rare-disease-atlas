@@ -12,11 +12,12 @@ import {
   neighborhood,
   pathNeighborhood,
   relationshipLabel,
-  searchDemoEntries,
+  searchAcrossDatasets,
   type SearchHit,
 } from "@/lib/graph";
 import type {
   AssetAssessment,
+  AtlasCatalog,
   AtlasData,
   DemoStage,
   ProposalDraft,
@@ -25,31 +26,98 @@ import { importantSummaryForEdge, sourceCardForEdge } from "@/lib/sourceMeta";
 
 type Mode = "landing" | "workspace" | "unsupported";
 
-export function AtlasApp({ curated, journey, demo }: AtlasData) {
+function partnerOptions(demo: AtlasData["demo"], nodes: GraphNode[]) {
+  const fromAssets = demo.asset_assessments
+    .filter((a) => a.asset_kind === "patient_organization")
+    .map((a) => ({ id: a.asset_id, label: a.title }));
+  if (fromAssets.length) return fromAssets;
+  return nodes
+    .filter((n) => n.type === "organization")
+    .map((n) => ({ id: n.id, label: n.label }));
+}
+
+export function AtlasApp({
+  catalog,
+  datasets,
+}: {
+  catalog: AtlasCatalog;
+  datasets: AtlasData[];
+}) {
+  const datasetMap = useMemo(
+    () => new Map(datasets.map((d) => [d.id, d])),
+    [datasets]
+  );
+  const defaultDatasetId = catalog.default_dataset_id || datasets[0]?.id;
+  const defaultDataset = datasetMap.get(defaultDatasetId) || datasets[0];
+
   const [mode, setMode] = useState<Mode>("landing");
+  const [datasetId, setDatasetId] = useState<string>(defaultDataset.id);
   const [query, setQuery] = useState("");
   const [hits, setHits] = useState<SearchHit[]>([]);
-  const [focusId, setFocusId] = useState<string>("disease:hbss");
+  const [focusId, setFocusId] = useState<string>(
+    defaultDataset.demo.default_focus_id ||
+      catalog.datasets.find((d) => d.id === defaultDataset.id)?.default_focus_id ||
+      defaultDataset.curated.nodes.find((n) => n.type === "disease")?.id ||
+      defaultDataset.curated.nodes[0]?.id ||
+      ""
+  );
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
   const [stageId, setStageId] = useState<string>("understand");
   const [expanded, setExpanded] = useState(false);
   const [proposalOpen, setProposalOpen] = useState(false);
-  const [selectedAssetIds, setSelectedAssetIds] = useState<string[]>([
-    "nct:NCT03655678",
-    "asset:jax_townes",
-  ]);
-  const [selectedPartnerId, setSelectedPartnerId] = useState("org:caf");
+  const [selectedAssetIds, setSelectedAssetIds] = useState<string[]>(
+    defaultDataset.demo.default_asset_ids || []
+  );
+  const [selectedPartnerId, setSelectedPartnerId] = useState(
+    defaultDataset.demo.default_partner_id ||
+      partnerOptions(defaultDataset.demo, defaultDataset.curated.nodes)[0]?.id ||
+      ""
+  );
   const [proposal, setProposal] = useState<ProposalDraft | null>(null);
   const [unsupportedQuery, setUnsupportedQuery] = useState("");
   const [focusHistory, setFocusHistory] = useState<string[]>([]);
   const [enabledCategories, setEnabledCategories] = useState<string[]>(() =>
-    demo.category_legend.map((c) => c.id)
+    defaultDataset.demo.category_legend.map((c) => c.id)
   );
   const [legendOpen, setLegendOpen] = useState(true);
   const graphSectionRef = useRef<HTMLElement | null>(null);
   const [graphSectionHeight, setGraphSectionHeight] = useState<number | null>(
     null
   );
+
+  const active = datasetMap.get(datasetId) || defaultDataset;
+  const curated = active.curated;
+  const journey = active.journey;
+  const demo = active.demo;
+
+  const allExampleSearches = useMemo(() => {
+    const seen = new Set<string>();
+    const out: { label: string; query: string }[] = [];
+    for (const d of datasets) {
+      for (const ex of d.demo.example_searches) {
+        const key = ex.query.toLowerCase();
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push(ex);
+      }
+    }
+    return out;
+  }, [datasets]);
+
+  const mergedUnsupported = useMemo(() => {
+    const sources = new Set<string>();
+    const notes: string[] = [];
+    for (const d of datasets) {
+      d.demo.unsupported_search.sources_searched.forEach((s) => sources.add(s));
+      notes.push(d.demo.unsupported_search.coverage_note);
+    }
+    return {
+      sources_searched: [...sources],
+      coverage_note:
+        notes[0] ||
+        "Coverage is limited to the curated demonstration datasets in this prototype.",
+    };
+  }, [datasets]);
 
   const nodeMap = useMemo(
     () => new Map(curated.nodes.map((n) => [n.id, n])),
@@ -59,10 +127,34 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
     () => new Map(curated.edges.map((e) => [e.id, e])),
     [curated]
   );
+  const partners = useMemo(
+    () => partnerOptions(demo, curated.nodes),
+    [demo, curated.nodes]
+  );
+
+  useEffect(() => {
+    const validAssets = new Set(demo.asset_assessments.map((a) => a.asset_id));
+    setSelectedAssetIds((prev) => {
+      const next = prev.filter((id) => validAssets.has(id));
+      if (next.length) return next;
+      return demo.default_asset_ids || [];
+    });
+    const partnerIds = new Set(partners.map((p) => p.id));
+    setSelectedPartnerId((prev) => {
+      if (partnerIds.has(prev)) return prev;
+      return (
+        demo.default_partner_id ||
+        partners[0]?.id ||
+        ""
+      );
+    });
+  }, [demo, partners]);
 
   const stages = (journey.stages || demo.stages) as DemoStage[];
   const stage = stages.find((s) => s.id === stageId) || stages[0];
-  const productName = demo.product_name || "Rare Disease Atlas";
+  const productName =
+    demo.product_name || catalog.product_name || "Rare Disease Atlas";
+  const datasetLabel = demo.dataset_label || active.id;
   const enabledCategorySet = useMemo(
     () => new Set(enabledCategories),
     [enabledCategories]
@@ -165,6 +257,17 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
         stageId === "prepare"
   );
 
+  function searchAll(q: string): SearchHit[] {
+    return searchAcrossDatasets(
+      datasets.map((d) => ({
+        id: d.id,
+        label: d.demo.dataset_label || d.id,
+        entries: d.demo.search_entries,
+      })),
+      q
+    );
+  }
+
   function runSearch(raw: string) {
     const q = raw.trim();
     setQuery(q);
@@ -172,7 +275,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
       setHits([]);
       return;
     }
-    const found = searchDemoEntries(demo.search_entries, q);
+    const found = searchAll(q);
     setHits(found);
     if (found.length === 0) {
       setUnsupportedQuery(q);
@@ -180,7 +283,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
       return;
     }
     if (!needsDisambiguation(found) && found.length === 1) {
-      enterWorkspace(found[0].entry.id);
+      enterWorkspace(found[0].entry.id, found[0].datasetId || datasetId);
       return;
     }
     setMode("landing");
@@ -220,24 +323,41 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
     });
   }
 
-  function enterWorkspace(nodeId: string) {
+  function enterWorkspace(nodeId: string, nextDatasetId: string = datasetId) {
+    const next = datasetMap.get(nextDatasetId) || active;
+    const nextDemo = next.demo;
+    const nextStages = (next.journey.stages || nextDemo.stages) as DemoStage[];
+    const nextEdges = next.curated.edges;
+    const switching = nextDatasetId !== datasetId;
+
+    if (switching) {
+      setDatasetId(nextDatasetId);
+      setSelectedAssetIds(nextDemo.default_asset_ids || []);
+      setSelectedPartnerId(
+        nextDemo.default_partner_id ||
+          partnerOptions(nextDemo, next.curated.nodes)[0]?.id ||
+          ""
+      );
+      setProposal(null);
+      setProposalOpen(false);
+      setSelectedEdgeId(null);
+    }
+
     setFocusHistory([]);
     setFocusId(nodeId);
     setMode("workspace");
     setExpanded(false);
-    setEnabledCategories(demo.category_legend.map((c) => c.id));
-    // Pick a sensible starting stage.
+    setEnabledCategories(nextDemo.category_legend.map((c) => c.id));
     const startStage =
-      stages.find((s) => s.node_ids.includes(nodeId))?.id || "understand";
+      nextStages.find((s) => s.node_ids.includes(nodeId))?.id || "understand";
     setStageId(startStage);
+    const stageEdges = nextStages.find((s) => s.id === startStage)?.edge_ids || [];
     const firstEdge =
-      stages
-        .find((s) => s.id === startStage)
-        ?.edge_ids.find((id) => {
-          const e = edgeMap.get(id);
-          return e && (e.source === nodeId || e.target === nodeId);
-        }) ||
-      curated.edges.find((e) => e.source === nodeId || e.target === nodeId)?.id ||
+      stageEdges.find((id) => {
+        const e = nextEdges.find((edge) => edge.id === id);
+        return e && (e.source === nodeId || e.target === nodeId);
+      }) ||
+      nextEdges.find((e) => e.source === nodeId || e.target === nodeId)?.id ||
       null;
     setSelectedEdgeId(firstEdge);
   }
@@ -291,8 +411,12 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
   }
 
   function buildProposal() {
+    const defaultDiseaseId =
+      demo.default_focus_id ||
+      stage?.anchor_node_id ||
+      curated.nodes.find((n) => n.type === "disease")?.id;
     const disease =
-      nodeMap.get("disease:hbss") ||
+      (defaultDiseaseId && nodeMap.get(defaultDiseaseId)) ||
       nodeMap.get(focusId) ||
       ({ label: "Selected disease" } as GraphNode);
     const partner = nodeMap.get(selectedPartnerId);
@@ -309,22 +433,23 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
       return `${relationshipLabel(e.type)}: ${passage} (${src})`;
     });
 
-    const differences = assets.flatMap((a) => a.comparison.what_differs);
+    const questionNode =
+      curated.nodes.find((n) => n.type === "research_question") || null;
     const uncertainties = [
-      ...(nodeMap.get("question:validate_hbf_asset_transfer")?.uncertainties ||
-        []),
+      ...(questionNode?.uncertainties || []),
       demo.registry_gap.explanation,
     ];
     const partnerQuestions = assets.map(
       (a) => a.comparison.validation_question
     );
+    const differences = assets.flatMap((a) => a.comparison.what_differs);
 
     const draft: ProposalDraft = {
       diseaseLabel: disease.label,
-      researchQuestion:
-        demo.proposal_defaults.research_question,
+      researchQuestion: demo.proposal_defaults.research_question,
       connectionSummary: journey.plain_language,
-      proposedResource: assets.map((a) => a.title).join("; ") || "No asset selected",
+      proposedResource:
+        assets.map((a) => a.title).join("; ") || "No asset selected",
       partnerLabel: partner
         ? `${partner.label} (public organization page; availability not claimed)`
         : demo.proposal_defaults.partner_gap_if_unknown,
@@ -341,19 +466,24 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
   if (mode === "landing") {
     return (
       <Landing
-        demo={demo}
+        productName={productName}
+        productOneLiner={catalog.product_one_liner}
+        disclaimer="This atlas focuses on sourced research connections and reusable assets — not treatment advice. Curated slices differ: some conditions already have treatments; ARID1B-RD has no approved disease-modifying therapy in this layer."
+        exampleSearches={allExampleSearches}
         query={query}
         hits={hits}
         onQueryChange={(v) => {
           setQuery(v);
-          setHits(searchDemoEntries(demo.search_entries, v));
+          setHits(searchAll(v));
         }}
         onSubmit={() => runSearch(query)}
         onPickExample={(q) => {
           setQuery(q);
           runSearch(q);
         }}
-        onSelectHit={(id) => enterWorkspace(id)}
+        onSelectHit={(id, hitDatasetId) =>
+          enterWorkspace(id, hitDatasetId || datasetId)
+        }
       />
     );
   }
@@ -362,7 +492,18 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
     return (
       <Unsupported
         query={unsupportedQuery}
-        demo={demo}
+        unsupportedSearch={mergedUnsupported}
+        missingEvidence={
+          demo.unsupported_missing_evidence || [
+            "A curated entity match for this query in the demonstration layer",
+            "A reviewed edge connecting it into a curated dataset journey",
+          ]
+        }
+        nextQuestion={(
+          demo.unsupported_next_question_template ||
+          'What primary public source would establish whether "{query}" belongs in the Rare Disease Atlas curated layer?'
+        ).replace("{query}", unsupportedQuery)}
+        exampleSearches={allExampleSearches}
         onBack={() => {
           setMode("landing");
           setHits([]);
@@ -386,6 +527,9 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
           >
             {productName}
           </button>
+          <span className="hidden rounded-atlas border border-slate-600 px-2 py-1 text-xs text-slate-200 sm:inline">
+            {datasetLabel}
+          </span>
           <form
             className="flex min-w-[240px] flex-1"
             onSubmit={(e) => {
@@ -643,10 +787,11 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               value={selectedPartnerId}
               onChange={(e) => setSelectedPartnerId(e.target.value)}
             >
-              <option value="org:caf">Cooley&apos;s Anemia Foundation</option>
-              <option value="org:scdaa">
-                Sickle Cell Disease Association of America
-              </option>
+              {partners.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.label}
+                </option>
+              ))}
             </select>
             <Button className="mt-3 w-full" onClick={buildProposal}>
               Prepare research proposal
@@ -667,6 +812,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
       {proposalOpen && proposal && (
         <ProposalModal
           proposal={proposal}
+          datasetId={datasetId}
           onClose={() => setProposalOpen(false)}
           onChange={setProposal}
         />
@@ -676,7 +822,10 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
 }
 
 function Landing({
-  demo,
+  productName,
+  productOneLiner,
+  disclaimer,
+  exampleSearches,
   query,
   hits,
   onQueryChange,
@@ -684,25 +833,28 @@ function Landing({
   onPickExample,
   onSelectHit,
 }: {
-  demo: AtlasData["demo"];
+  productName: string;
+  productOneLiner: string;
+  disclaimer: string;
+  exampleSearches: { label: string; query: string }[];
   query: string;
   hits: SearchHit[];
   onQueryChange: (v: string) => void;
   onSubmit: () => void;
   onPickExample: (q: string) => void;
-  onSelectHit: (id: string) => void;
+  onSelectHit: (id: string, datasetId?: string) => void;
 }) {
   const ambiguous = needsDisambiguation(hits);
   return (
     <div className="min-h-screen bg-soft">
       <div className="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-4 py-14 md:px-6 md:py-16">
         <h1 className="font-display text-[28px] font-bold leading-tight text-ink md:text-[30px]">
-          {demo.product_name || "Rare Disease Atlas"}
+          {productName}
         </h1>
         <p className="mt-3 text-lg text-slate-800 md:text-xl">
           Follow one search to sourced research connections
         </p>
-        <p className="atlas-meta mt-2 text-base">{demo.product_one_liner}</p>
+        <p className="atlas-meta mt-2 text-base">{productOneLiner}</p>
         <form
           className="mt-8"
           onSubmit={(e) => {
@@ -718,7 +870,7 @@ function Landing({
               id="atlas-search"
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
-              placeholder="Search a disease, a gene, or a variant — e.g. sickle cell anemia or HBB"
+              placeholder="Search a disease, a gene, or a variant — e.g. sickle cell anemia or ARID1B"
               className="h-12 text-base"
             />
             <Button type="submit" size="lg" className="sm:h-12 sm:px-6">
@@ -727,7 +879,7 @@ function Landing({
           </div>
         </form>
         <div className="mt-4 flex flex-wrap gap-2">
-          {demo.example_searches.map((ex) => (
+          {exampleSearches.map((ex) => (
             <button
               key={ex.query}
               type="button"
@@ -748,10 +900,10 @@ function Landing({
             </h2>
             <ul className="mt-3 space-y-2">
               {hits.map((h) => (
-                <li key={h.entry.id}>
+                <li key={`${h.datasetId || "dataset"}:${h.entry.id}`}>
                   <button
                     type="button"
-                    onClick={() => onSelectHit(h.entry.id)}
+                    onClick={() => onSelectHit(h.entry.id, h.datasetId)}
                     className="w-full rounded-atlas border border-line px-3 py-3 text-left transition-colors duration-atlas hover:border-slate-400 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
                   >
                     <span className="block text-base font-medium text-ink">
@@ -762,6 +914,7 @@ function Landing({
                     </span>
                     <span className="mt-1 block text-sm text-slate-500">
                       {h.matchReason}
+                      {h.datasetLabel ? ` · ${h.datasetLabel}` : ""}
                     </span>
                   </button>
                 </li>
@@ -770,11 +923,7 @@ function Landing({
           </div>
         )}
 
-        <p className="atlas-meta mt-8">
-          These conditions already have treatments. This atlas focuses on
-          sourced research connections and reusable assets — not treatment
-          advice.
-        </p>
+        <p className="atlas-meta mt-8">{disclaimer}</p>
       </div>
     </div>
   );
@@ -782,12 +931,18 @@ function Landing({
 
 function Unsupported({
   query,
-  demo,
+  unsupportedSearch,
+  missingEvidence,
+  nextQuestion,
+  exampleSearches,
   onBack,
   onTry,
 }: {
   query: string;
-  demo: AtlasData["demo"];
+  unsupportedSearch: { sources_searched: string[]; coverage_note: string };
+  missingEvidence: string[];
+  nextQuestion: string;
+  exampleSearches: { label: string; query: string }[];
   onBack: () => void;
   onTry: (q: string) => void;
 }) {
@@ -814,36 +969,31 @@ function Unsupported({
             Sources / scope searched
           </h2>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-base text-slate-700">
-            {demo.unsupported_search.sources_searched.map((s) => (
+            {unsupportedSearch.sources_searched.map((s) => (
               <li key={s}>{s}</li>
             ))}
           </ul>
-          <p className="atlas-meta mt-2">
-            {demo.unsupported_search.coverage_note}
-          </p>
+          <p className="atlas-meta mt-2">{unsupportedSearch.coverage_note}</p>
         </div>
         <div>
           <h2 className="text-base font-bold text-ink">Missing evidence</h2>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-base text-slate-700">
-            <li>A curated entity match for this query in the demonstration layer</li>
-            <li>A reviewed edge connecting it into the HbSS / β-thalassemia journey</li>
+            {missingEvidence.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
           </ul>
         </div>
         <div>
           <h2 className="text-base font-bold text-ink">
             Next research question
           </h2>
-          <p className="mt-2 text-base text-slate-800">
-            What primary public source would establish whether “{query}” belongs
-            in the HBB hemoglobinopathy atlas, and which disease scope should it
-            be mapped to without merging synonyms?
-          </p>
+          <p className="mt-2 text-base text-slate-800">{nextQuestion}</p>
         </div>
       </div>
       <div className="mt-6">
         <p className="atlas-meta">Try a supported example:</p>
         <div className="mt-2 flex flex-wrap gap-2">
-          {demo.example_searches.map((ex) => (
+          {exampleSearches.map((ex) => (
             <button
               key={ex.query}
               type="button"
@@ -1122,10 +1272,12 @@ function CompareCol({ title, items }: { title: string; items: string[] }) {
 
 function ProposalModal({
   proposal,
+  datasetId,
   onClose,
   onChange,
 }: {
   proposal: ProposalDraft;
+  datasetId: string;
   onClose: () => void;
   onChange: (p: ProposalDraft) => void;
 }) {
@@ -1140,7 +1292,7 @@ function ProposalModal({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "hbb-research-proposal-brief.md";
+    a.download = `${datasetId}-research-proposal-brief.md`;
     a.click();
     URL.revokeObjectURL(url);
   }

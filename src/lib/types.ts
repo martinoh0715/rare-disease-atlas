@@ -45,6 +45,14 @@ export type AssetAssessment = {
 export type DemoExperience = {
   product_one_liner: string;
   product_name?: string;
+  dataset_id?: string;
+  dataset_label?: string;
+  default_focus_id?: string;
+  default_partner_id?: string;
+  default_asset_ids?: string[];
+  landing_disclaimer?: string;
+  unsupported_missing_evidence?: string[];
+  unsupported_next_question_template?: string;
   example_searches: { label: string; query: string }[];
   search_entries: SearchEntry[];
   category_legend: { id: string; label: string; color: string }[];
@@ -68,7 +76,24 @@ export type DemoExperience = {
   };
 };
 
+export type DatasetCatalogEntry = {
+  id: string;
+  label: string;
+  path: string;
+  focus_gene?: string;
+  default_focus_id?: string;
+  description?: string;
+};
+
+export type AtlasCatalog = {
+  product_name: string;
+  product_one_liner: string;
+  default_dataset_id: string;
+  datasets: DatasetCatalogEntry[];
+};
+
 export type AtlasData = {
+  id: string;
   curated: GraphData;
   discovery: GraphData;
   journey: Journey & {
