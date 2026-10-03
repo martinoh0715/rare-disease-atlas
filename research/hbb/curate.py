@@ -1358,8 +1358,41 @@ def curate() -> None:
         ),
         encoding="utf-8",
     )
+    # Enrich journey + edges with demo experience (Maria patient-leader flow).
+    demo_path = ROOT / "config" / "demo_experience.json"
+    demo = json.loads(demo_path.read_text(encoding="utf-8"))
+    plain = demo.get("edge_plain_language") or {}
+    for e in edges:
+        if e["id"] in plain:
+            e["plain_language"] = plain[e["id"]]
+        # Ensure scientific curated edges expose reporting vs inference clearly.
+        if e.get("evidence") and "reporting_basis" not in e["evidence"]:
+            status = e.get("relationship_status")
+            if status == "hypothesis":
+                e["evidence"]["reporting_basis"] = "inferred_or_proposed"
+            elif status in {"established", "investigational"}:
+                e["evidence"]["reporting_basis"] = "directly_reported_or_sourced"
+            else:
+                e["evidence"]["reporting_basis"] = "sourced_mapping"
+
+    journey["stages"] = demo.get("stages") or []
+    journey["asset_assessment_ids"] = [
+        a["asset_id"] for a in demo.get("asset_assessments") or []
+    ]
+    journey["registry_gap"] = demo.get("registry_gap")
+    journey["proposal_defaults"] = demo.get("proposal_defaults")
+
     (OUTPUT / "journeys.json").write_text(
         json.dumps({"journeys": [journey]}, indent=2), encoding="utf-8"
+    )
+    (OUTPUT / "demo-experience.json").write_text(
+        json.dumps(demo, indent=2), encoding="utf-8"
+    )
+    # Rewrite curated graph after plain_language enrichment.
+    curated["edges"] = edges
+    curated["nodes"] = list(nodes.values())
+    (OUTPUT / "curated-graph.json").write_text(
+        json.dumps(curated, indent=2), encoding="utf-8"
     )
 
     gaps = f"""# Remaining scientific and data gaps

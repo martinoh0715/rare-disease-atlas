@@ -15,7 +15,7 @@ const body = Source_Serif_4({
 export const metadata: Metadata = {
   title: "HBB Evidence Atlas",
   description:
-    "Evidence-backed knowledge graph for HbSS and beta-thalassemia research collaboration.",
+    "Search hemoglobinopathies and follow sourced connections to related biology, communities, and research assets.",
 };
 
 export default function RootLayout({

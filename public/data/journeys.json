@@ -59,6 +59,98 @@
           "Researchers authoring the anchor HbF/BCL11A clinical papers (via publications; no availability claimed)"
         ],
         "next_step": "Investigate which HbF-pathway assets transfer responsibly to \u03b2-thalassemia research questions, with explicit validation for models, genotypes, and outcomes."
+      },
+      "stages": [
+        {
+          "id": "understand",
+          "label": "Understand the connection",
+          "summary": "Follow HbSS to HbF/BCL11A biology and the related \u03b2-thalassemia research community.",
+          "node_ids": [
+            "disease:hbss",
+            "genotype:hbss",
+            "allele:HbS",
+            "gene:HBB",
+            "mechanism:hbf_reactivation",
+            "process:bcl11a_repression_of_hbg",
+            "gene:BCL11A",
+            "intervention:exa_cel",
+            "pmid:38661449",
+            "disease:tdt",
+            "pmid:38657265",
+            "hypothesis:hbf_cross_disease_bridge"
+          ],
+          "edge_ids": [
+            "edge:genotype:hbss:causes:disease:hbss",
+            "edge:genotype:hbss:has_allele:HbS",
+            "edge:allele:HbS:allele_of:gene:HBB",
+            "edge:mechanism:hbf:relevant:disease:hbss",
+            "edge:process:bcl11a:supports:mechanism:hbf",
+            "edge:gene:BCL11A:participates:process:bcl11a_repression",
+            "edge:intervention:exa_cel:targets:gene:BCL11A",
+            "edge:pmid:38661449:investigates_intervention:exa_cel",
+            "edge:mechanism:hbf:relevant:disease:tdt",
+            "edge:pmid:38657265:investigates_intervention:exa_cel",
+            "edge:hypothesis:bridge:proposed_from:mechanism:hbf"
+          ]
+        },
+        {
+          "id": "explore",
+          "label": "Explore resources",
+          "summary": "Inspect verified organizations, study designs, and the SCD mouse model \u2014 with reuse caveats.",
+          "node_ids": [
+            "org:scdaa",
+            "org:caf",
+            "asset:jax_townes",
+            "nct:NCT03745287",
+            "nct:NCT03655678",
+            "disease:scd_broad",
+            "disease:beta_thal_genetic"
+          ],
+          "edge_ids": [
+            "edge:org:scdaa:supports_community:disease:scd_broad",
+            "edge:org:caf:supports_community:disease:beta_thal_genetic",
+            "edge:asset:jax_townes:model_for:disease:hbss",
+            "edge:asset:jax_townes:hypothesis_not_validated:disease:beta_thal_genetic",
+            "edge:nct:NCT03745287:tests:intervention:exa_cel",
+            "edge:nct:NCT03655678:tests:intervention:exa_cel"
+          ]
+        },
+        {
+          "id": "prepare",
+          "label": "Prepare next step",
+          "summary": "Turn verified differences and open questions into a sourced collaboration brief.",
+          "node_ids": [
+            "question:validate_hbf_asset_transfer",
+            "org:caf",
+            "org:scdaa",
+            "hypothesis:hbf_cross_disease_bridge"
+          ],
+          "edge_ids": [
+            "edge:hypothesis:bridge:leads_to:question",
+            "edge:org:caf:could_inform:question",
+            "edge:org:scdaa:could_inform:question"
+          ]
+        }
+      ],
+      "asset_assessment_ids": [
+        "nct:NCT03745287",
+        "nct:NCT03655678",
+        "asset:jax_townes",
+        "org:caf",
+        "org:scdaa"
+      ],
+      "registry_gap": {
+        "status": "missing_verified_patient_registry",
+        "explanation": "This curated demo includes public ClinicalTrials.gov study-design records, but does not include a verified patient registry with confirmed data-access pathway for either community.",
+        "missing_evidence": [
+          "Registry name, owner, genotype fields, consent scope, and access process verified from a primary public page"
+        ],
+        "next_question": "Which publicly documented patient registry (if any) can support genotype-aware HbSS vs broader SCD queries for this collaboration?"
+      },
+      "proposal_defaults": {
+        "research_question": "Which HbF-pathway research assets and collaborator networks can be responsibly evaluated for \u03b2-thalassemia community needs without assuming SCD-model compatibility?",
+        "proposed_next_step": "Schedule an expert review call to compare CLIMB SCD-121 and CLIMB THAL-111 public protocol fields against the patient group's genotype-aware question, and decide whether Townes (or another model) is even in scope.",
+        "partner_gap_if_unknown": "No individual researcher availability or email is asserted. Use organization public contact pages after human verification."
       }
     }
   ]

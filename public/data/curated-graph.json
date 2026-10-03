@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T20:11:35+00:00",
+  "generated_at": "2026-10-03T20:33:22+00:00",
   "layer": "curated",
   "nodes": [
     {
@@ -613,7 +613,7 @@
         "source_url": "https://www.ncbi.nlm.nih.gov/clinvar/",
         "supporting_passage": "HbS is the HBB c.20A>T (p.Glu7Val) allele; legacy protein numbering often cites codon 6.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "authoritative_variant_nomenclature",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "HbS allele",
@@ -623,8 +623,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Legacy vs modern protein numbering must both be preserved.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "HbS is an allele of the HBB gene (c.20A>T)."
     },
     {
       "id": "edge:allele:HbC:allele_of:gene:HBB",
@@ -638,7 +640,7 @@
         "source_url": "https://www.ncbi.nlm.nih.gov/clinvar/",
         "supporting_passage": "HbC is the HBB c.19G>A (p.Glu7Lys) allele; legacy numbering often cites codon 6.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "authoritative_variant_nomenclature",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "HbC allele",
@@ -648,7 +650,8 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": null,
-        "contradictory_evidence": null
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
       }
     },
     {
@@ -663,7 +666,7 @@
         "source_url": "https://www.ncbi.nlm.nih.gov/medgen/",
         "supporting_passage": "HbSS denotes homozygosity for the HbS allele.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "genotype_definition",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "HbS/HbS",
@@ -673,8 +676,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": null,
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "The HbSS genotype includes two copies of the HbS allele."
     },
     {
       "id": "edge:genotype:hbss:causes:disease:hbss",
@@ -688,7 +693,7 @@
         "source_url": "https://www.omim.org/entry/603903",
         "supporting_passage": "Sickle cell anemia (HbSS) is defined by homozygous HBB Glu6Val / c.20A>T.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "disease_definition",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "HbSS",
@@ -698,8 +703,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Other SCD genotypes (HbSC, HbS/\u03b2-thal) are related but distinct.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "HbSS is the genotype that defines sickle cell anemia in this atlas."
     },
     {
       "id": "edge:genotype:hbas:defines:disease:sct",
@@ -713,7 +720,7 @@
         "source_url": "https://www.cdc.gov/sickle-cell/about/index.html",
         "supporting_passage": "Sickle cell trait is the heterozygous carrier state (HbAS), distinct from sickle cell disease.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "public_health_definition",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "HbAS",
@@ -723,7 +730,8 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Trait is not equivalent to disease; do not conflate in graph queries.",
-        "contradictory_evidence": null
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
       }
     },
     {
@@ -748,7 +756,8 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "ClinVar clinical significance=Pathogenic; review status=criteria provided, multiple submitters, no conflicts; complexity=simple_variant",
-        "contradictory_evidence": null
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
       }
     },
     {
@@ -773,11 +782,12 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "ClinVar clinical significance=Pathogenic/Likely pathogenic; review status=criteria provided, multiple submitters, no conflicts; complexity=simple_variant",
-        "contradictory_evidence": null
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
       }
     },
     {
-      "id": "edge:disease:hbss:has_phenotype:phenotype:HP:0001903:32189347",
+      "id": "edge:disease:hbss:has_phenotype:phenotype:HP:0001903:68677491",
       "source": "disease:hbss",
       "target": "phenotype:HP:0001903",
       "type": "source_reports_association",
@@ -788,7 +798,7 @@
         "source_url": "https://hpo.jax.org/browse/term/HP:0001903",
         "supporting_passage": "Core feature of sickle cell anemia (hemolytic anemia).",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "manual_curation_from_disease_knowledge",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "disease-scoped; see disease node",
@@ -798,11 +808,12 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Frequency/onset not asserted when source does not provide them.",
-        "contradictory_evidence": null
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
       }
     },
     {
-      "id": "edge:disease:beta_thal_genetic:has_phenotype:phenotype:HP:0001903:33391481",
+      "id": "edge:disease:beta_thal_genetic:has_phenotype:phenotype:HP:0001903:72653140",
       "source": "disease:beta_thal_genetic",
       "target": "phenotype:HP:0001903",
       "type": "source_reports_association",
@@ -813,7 +824,7 @@
         "source_url": "https://hpo.jax.org/browse/term/HP:0001903",
         "supporting_passage": "Anemia from reduced/absent \u03b2-globin in \u03b2-thalassemia.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "manual_curation_from_disease_knowledge",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "disease-scoped; see disease node",
@@ -823,11 +834,12 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Frequency/onset not asserted when source does not provide them.",
-        "contradictory_evidence": null
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
       }
     },
     {
-      "id": "edge:disease:hbss:has_phenotype:phenotype:HP:0001878:58089748",
+      "id": "edge:disease:hbss:has_phenotype:phenotype:HP:0001878:48026659",
       "source": "disease:hbss",
       "target": "phenotype:HP:0001878",
       "type": "source_reports_association",
@@ -838,7 +850,7 @@
         "source_url": "https://hpo.jax.org/browse/term/HP:0001878",
         "supporting_passage": "Hemolysis secondary to HbS polymerization.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "manual_curation_from_disease_knowledge",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "disease-scoped; see disease node",
@@ -848,11 +860,12 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Frequency/onset not asserted when source does not provide them.",
-        "contradictory_evidence": null
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
       }
     },
     {
-      "id": "edge:disease:hbss:has_phenotype:phenotype:HP:0005265:87359305",
+      "id": "edge:disease:hbss:has_phenotype:phenotype:HP:0005265:64395828",
       "source": "disease:hbss",
       "target": "phenotype:HP:0005265",
       "type": "source_reports_association",
@@ -863,7 +876,7 @@
         "source_url": "https://pubmed.ncbi.nlm.nih.gov/38661449/",
         "supporting_passage": "Recurrent severe vaso-occlusive crises are used as SCD trial eligibility/endpoints; not a treatment claim.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "manual_curation_from_disease_knowledge",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "disease-scoped; see disease node",
@@ -873,7 +886,8 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Frequency/onset not asserted when source does not provide them.",
-        "contradictory_evidence": null
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
       }
     },
     {
@@ -898,8 +912,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "high",
         "limitations": "Trial enrolled sickle cell disease with severe VOCs; do not silently generalize every result to all SCD genotypes without checking eligibility. exa-cel edits BCL11A, not HBB.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "A 2024 phase 3 publication reports exa-cel outcomes in severe sickle cell disease."
     },
     {
       "id": "edge:intervention:exa_cel:targets:gene:BCL11A",
@@ -923,8 +939,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "high",
         "limitations": "Does not imply direct HBB editing.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "exa-cel is designed to edit the BCL11A erythroid enhancer \u2014 not HBB."
     },
     {
       "id": "edge:gene:BCL11A:participates:process:bcl11a_repression",
@@ -948,8 +966,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "high",
         "limitations": null,
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "BCL11A participates in repressing fetal hemoglobin after birth."
     },
     {
       "id": "edge:process:bcl11a:supports:mechanism:hbf",
@@ -973,8 +993,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "high",
         "limitations": null,
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "Disrupting BCL11A\u2019s repression of \u03b3-globin supports HbF reactivation."
     },
     {
       "id": "edge:mechanism:hbf:relevant:disease:scd_broad",
@@ -998,7 +1020,8 @@
         "extraction_confidence": "high",
         "evidence_strength": "high",
         "limitations": "Outcome is freedom from severe VOCs in the trial population; not a claim that all SCD genotypes were identical to HbSS. Study status elsewhere \u2260 efficacy.",
-        "contradictory_evidence": null
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
       }
     },
     {
@@ -1023,8 +1046,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Primary trial reports SCD with severe VOCs; mapping to HbSS specifically requires checking that genotype inclusion matches the user's question.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "Raising fetal hemoglobin is mechanistically relevant to sickle cell anemia pathophysiology."
     },
     {
       "id": "edge:pmid:38661449:clinical_evidence_for:disease:scd_broad",
@@ -1048,8 +1073,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "high",
         "limitations": "Human clinical finding; not an animal result. Not medical advice.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "Trial clinical evidence supports VOC-related outcomes in the enrolled SCD population."
     },
     {
       "id": "edge:pmid:38657265:investigates_intervention:exa_cel",
@@ -1073,8 +1100,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "high",
         "limitations": "Transfusion dependence is a clinical category, not a single HBB genotype.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "A parallel 2024 phase 3 publication reports exa-cel in transfusion-dependent \u03b2-thalassemia."
     },
     {
       "id": "edge:mechanism:hbf:relevant:disease:tdt",
@@ -1098,8 +1127,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "high",
         "limitations": "Do not equate TDT with every genetic \u03b2-thalassemia subtype. exa-cel does not directly edit HBB.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "HbF reactivation is relevant to transfusion-dependent \u03b2-thalassemia endpoints in the TDT trial."
     },
     {
       "id": "edge:disease:tdt:overlap:disease:beta_thal_genetic",
@@ -1123,7 +1154,8 @@
         "extraction_confidence": "high",
         "evidence_strength": "high",
         "limitations": "Preserve genetic vs transfusion-dependence labels as distinct nodes.",
-        "contradictory_evidence": null
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
       }
     },
     {
@@ -1138,7 +1170,7 @@
         "source_url": "https://pubmed.ncbi.nlm.nih.gov/38661449/",
         "supporting_passage": "Both SCD and \u03b2-thalassemia publications describe BCL11A enhancer editing to raise HbF; shared mechanism \u2260 automatic interchangeability of models, eligibility, or assets.",
         "publication_date": "2024 May 9",
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "cross_disease_hypothesis",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": null,
@@ -1148,8 +1180,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Hypothesis about research collaboration / asset evaluation pathways, not a claim of identical disease biology or treatment recommendations.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "inferred_or_proposed"
+      },
+      "plain_language": "Shared HbF biology motivates a cross-community research bridge \u2014 still a hypothesis about asset reuse."
     },
     {
       "id": "edge:org:scdaa:supports_community:disease:scd_broad",
@@ -1173,8 +1207,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Organization relevance \u2260 endorsement of any therapy or trial eligibility.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "SCDAA is a verified patient organization for the sickle cell community."
     },
     {
       "id": "edge:org:caf:supports_community:disease:beta_thal_genetic",
@@ -1198,8 +1234,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Not all 'thalassemia' search hits are HBB-caused; CAF focus is thalassemia community.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "Cooley\u2019s Anemia Foundation is a verified patient organization for thalassemia."
     },
     {
       "id": "edge:asset:jax_townes:model_for:disease:hbss",
@@ -1223,8 +1261,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Animal findings are not human findings. A sickle-cell model is not automatically suitable for \u03b2-thalassemia experiments.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "The JAX Townes mouse is an experimental model developed for sickle cell disease research."
     },
     {
       "id": "edge:asset:jax_townes:hypothesis_not_validated:disease:beta_thal_genetic",
@@ -1238,7 +1278,7 @@
         "source_url": "https://www.jax.org/strain/013071",
         "supporting_passage": "No automatic suitability claim: Townes sickle-cell mice model SCD pathophysiology; reuse for \u03b2-thalassemia would require explicit experimental validation.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "negative_or_missing_link",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": null,
@@ -1248,8 +1288,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "low",
         "limitations": "Missing validated link; shown to guide next research questions.",
-        "contradictory_evidence": "Model catalog positions this strain for sickle cell disease, not \u03b2-thalassemia."
-      }
+        "contradictory_evidence": "Model catalog positions this strain for sickle cell disease, not \u03b2-thalassemia.",
+        "reporting_basis": "inferred_or_proposed"
+      },
+      "plain_language": "Suitability of the Townes SCD model for \u03b2-thalassemia is not established here."
     },
     {
       "id": "edge:nct:NCT03655678:tests:intervention:exa_cel",
@@ -1273,8 +1315,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Registry status is not outcome evidence; see peer-reviewed publications for results.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "CLIMB THAL-111 is the registry record for the TDT exa-cel study design."
     },
     {
       "id": "edge:nct:NCT03745287:tests:intervention:exa_cel",
@@ -1298,8 +1342,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
         "limitations": "Registry status is not outcome evidence; see peer-reviewed publications for results.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "directly_reported_or_sourced"
+      },
+      "plain_language": "CLIMB SCD-121 is the registry record for the SCD exa-cel study design."
     },
     {
       "id": "edge:hypothesis:bridge:leads_to:question",
@@ -1313,7 +1359,7 @@
         "source_url": "https://pubmed.ncbi.nlm.nih.gov/38657265/",
         "supporting_passage": "Shared HbF biology across SCD and TDT motivates cross-community learning, while model and eligibility differences require explicit next-step validation.",
         "publication_date": "2024 May 9",
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "curated_research_planning",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": null,
@@ -1323,8 +1369,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "low",
         "limitations": "Planning hypothesis only; no invented collaborator availability or patient eligibility.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "inferred_or_proposed"
+      },
+      "plain_language": "The bridge hypothesis points to a concrete validation research question."
     },
     {
       "id": "edge:org:caf:could_inform:question",
@@ -1338,7 +1386,7 @@
         "source_url": "https://www.thalassemia.org/",
         "supporting_passage": "Patient-group leadership is a stakeholder for prioritizing \u03b2-thalassemia research questions and assets.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "stakeholder_mapping",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": null,
@@ -1348,8 +1396,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "low",
         "limitations": "Does not assert CAF commitment, capacity, or endorsement.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "inferred_or_proposed"
+      },
+      "plain_language": "CAF is a potential stakeholder for \u03b2-thalassemia community priorities \u2014 availability not claimed."
     },
     {
       "id": "edge:org:scdaa:could_inform:question",
@@ -1363,7 +1413,7 @@
         "source_url": "https://www.sicklecelldisease.org/",
         "supporting_passage": "SCD community organizations can advise which SCD-side assets and priorities are appropriate to discuss in cross-disease settings.",
         "publication_date": null,
-        "retrieval_date": "2026-10-03T20:11:35+00:00",
+        "retrieval_date": "2026-10-03T20:33:22+00:00",
         "evidence_type": "stakeholder_mapping",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": null,
@@ -1373,8 +1423,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "low",
         "limitations": "Does not assert availability or endorsement.",
-        "contradictory_evidence": null
-      }
+        "contradictory_evidence": null,
+        "reporting_basis": "inferred_or_proposed"
+      },
+      "plain_language": "SCDAA is a potential stakeholder for SCD-side priorities \u2014 availability not claimed."
     }
   ],
   "stats": {

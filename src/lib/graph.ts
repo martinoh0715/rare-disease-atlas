@@ -1,3 +1,5 @@
+import type { DemoExperience, SearchEntry } from "@/lib/types";
+
 export type Evidence = {
   source_url?: string | null;
   supporting_passage?: string | null;
@@ -13,6 +15,7 @@ export type Evidence = {
   evidence_strength?: string | null;
   limitations?: string | null;
   contradictory_evidence?: string | null;
+  reporting_basis?: string | null;
 };
 
 export type GraphNode = {
@@ -55,6 +58,7 @@ export type GraphEdge = {
   relationship_status?: string;
   review_status?: string;
   layer?: string;
+  plain_language?: string;
   evidence?: Evidence;
   limitations?: string;
   [key: string]: unknown;
@@ -93,44 +97,126 @@ export function isHypothesisEdge(edge: GraphEdge): boolean {
   );
 }
 
-export function searchNodes(nodes: GraphNode[], query: string): GraphNode[] {
+export function legendCategoryForType(type: string): string {
+  switch (type) {
+    case "disease":
+      return "disease";
+    case "gene":
+    case "protein":
+    case "variant":
+    case "allele":
+    case "genotype":
+      return "gene_variant";
+    case "mechanism":
+    case "biological_process":
+    case "hypothesis":
+      return "mechanism";
+    case "phenotype":
+      return "phenotype";
+    case "organization":
+    case "research_asset":
+    case "institution":
+    case "research_question":
+      return "organization_asset";
+    case "publication":
+    case "clinical_study":
+    case "intervention":
+    case "grant":
+      return "study";
+    default:
+      return "phenotype";
+  }
+}
+
+export function typeColor(
+  type: string,
+  legend?: DemoExperience["category_legend"]
+): string {
+  const cat = legendCategoryForType(type);
+  const fromLegend = legend?.find((l) => l.id === cat)?.color;
+  if (fromLegend) return fromLegend;
+  switch (cat) {
+    case "disease":
+      return "#2563eb";
+    case "gene_variant":
+      return "#0f766e";
+    case "mechanism":
+      return "#ca8a04";
+    case "phenotype":
+      return "#64748b";
+    case "organization_asset":
+      return "#c2410c";
+    case "study":
+      return "#7c3aed";
+    default:
+      return "#475569";
+  }
+}
+
+export type SearchHit = {
+  entry: SearchEntry;
+  score: number;
+  matchReason: string;
+};
+
+export function searchDemoEntries(
+  entries: SearchEntry[],
+  query: string
+): SearchHit[] {
   const q = query.trim().toLowerCase();
   if (!q) return [];
-  return nodes
-    .filter((n) => {
-      const hay = [
-        n.id,
-        n.label,
-        n.type,
-        n.canonical_allele,
-        n.hgvs_c,
-        n.pmid,
-        n.nct_id,
-        n.genotype_scope,
-        String(n.hpo_id ?? ""),
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-      return hay.includes(q);
-    })
-    .slice(0, 25);
+  const hits: SearchHit[] = [];
+  for (const entry of entries) {
+    const label = entry.label.toLowerCase();
+    if (label === q) {
+      hits.push({ entry, score: 100, matchReason: "Exact label match" });
+      continue;
+    }
+    if (entry.synonyms.some((s) => s.toLowerCase() === q)) {
+      hits.push({ entry, score: 95, matchReason: "Synonym match" });
+      continue;
+    }
+    if (label.startsWith(q) || entry.synonyms.some((s) => s.toLowerCase().startsWith(q))) {
+      hits.push({ entry, score: 80, matchReason: "Starts with query" });
+      continue;
+    }
+    if (label.includes(q) || entry.synonyms.some((s) => s.toLowerCase().includes(q))) {
+      hits.push({ entry, score: 60, matchReason: "Partial match" });
+    }
+  }
+  return hits.sort((a, b) => b.score - a.score || a.entry.label.localeCompare(b.entry.label));
+}
+
+export function needsDisambiguation(hits: SearchHit[]): boolean {
+  if (hits.length <= 1) return false;
+  // Ambiguous if top hits are close in score (e.g. sickle cell vs HbSS)
+  return hits.length > 1 && hits[0].score - hits[1].score < 20;
 }
 
 export function neighborhood(
   graph: GraphData,
   nodeId: string,
-  options?: { maxEdges?: number }
+  options?: { maxEdges?: number; includeIds?: Set<string> }
 ): { nodes: GraphNode[]; edges: GraphEdge[]; truncated: boolean } {
-  const maxEdges = options?.maxEdges ?? 18;
+  const maxEdges = options?.maxEdges ?? 12;
   const nodeMap = new Map(graph.nodes.map((n) => [n.id, n]));
-  const all = graph.edges.filter(
+  let all = graph.edges.filter(
     (e) => e.source === nodeId || e.target === nodeId
   );
-  // Prefer curated/established relationships, then keep a readable sample.
+  if (options?.includeIds?.size) {
+    const preferred = all.filter(
+      (e) =>
+        options.includeIds!.has(e.id) ||
+        options.includeIds!.has(e.source) ||
+        options.includeIds!.has(e.target)
+    );
+    const rest = all.filter((e) => !preferred.includes(e));
+    all = [...preferred, ...rest];
+  }
   const ranked = [...all].sort((a, b) => {
     const score = (e: GraphEdge) => {
       let s = 0;
+      if (options?.includeIds?.has(e.id)) s += 8;
       if (e.review_status === "curated") s += 4;
       if (e.relationship_status === "established") s += 3;
       if (e.relationship_status === "hypothesis") s += 2;
@@ -153,34 +239,25 @@ export function neighborhood(
   };
 }
 
-export function typeColor(type: string): string {
-  switch (type) {
-    case "disease":
-      return "#9a3412";
-    case "gene":
-    case "protein":
-      return "#1d4ed8";
-    case "variant":
-    case "allele":
-    case "genotype":
-      return "#7c2d12";
-    case "mechanism":
-    case "biological_process":
-      return "#0f766e";
-    case "publication":
-    case "clinical_study":
-    case "intervention":
-      return "#6d28d9";
-    case "organization":
-    case "research_asset":
-    case "institution":
-      return "#a16207";
-    case "hypothesis":
-    case "research_question":
-      return "#be185d";
-    case "phenotype":
-      return "#334155";
-    default:
-      return "#475569";
-  }
+export function pathNeighborhood(
+  graph: GraphData,
+  nodeIds: string[],
+  edgeIds: string[]
+): { nodes: GraphNode[]; edges: GraphEdge[] } {
+  const nodeMap = new Map(graph.nodes.map((n) => [n.id, n]));
+  const edgeMap = new Map(graph.edges.map((e) => [e.id, e]));
+  const edges = edgeIds.map((id) => edgeMap.get(id)).filter(Boolean) as GraphEdge[];
+  const ids = new Set(nodeIds);
+  edges.forEach((e) => {
+    ids.add(e.source);
+    ids.add(e.target);
+  });
+  return {
+    nodes: [...ids].map((id) => nodeMap.get(id)!).filter(Boolean),
+    edges,
+  };
+}
+
+export function relationshipLabel(type: string): string {
+  return type.replace(/_/g, " ");
 }
