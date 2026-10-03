@@ -1,0 +1,47 @@
+{
+  "journeys": [
+    {
+      "id": "journey:gata6_research_discovery",
+      "title": "GATA6 spectrum research discovery journey",
+      "intended_user": "Patient-group organizer or rare-disease research coordinator",
+      "plain_language": "Start from the GATA6-related spectrum, follow haploinsufficiency biology and variant-specific NMD evidence, then connect to publications and the Chicago Monogenic Diabetes Registry. A dedicated GATA6 patient foundation was not verified \u2014 that gap is shown explicitly. No treatment recommendation is made.",
+      "node_path": [
+        "disease:gata6_spectrum",
+        "gene:GATA6",
+        "mechanism:gata6_haploinsufficiency",
+        "disease:hdca_gata6",
+        "allele:GATA6_p.Arg493Ter",
+        "pmid:22158542",
+        "pmid:23223019",
+        "asset:uchicago_monogenic_diabetes_registry",
+        "gap:gata6_dedicated_patient_org",
+        "question:gata6_partner_and_natural_history_gap"
+      ],
+      "edge_path": [
+        "edge:mechanism:haplo:relevant:spectrum",
+        "edge:gene:GATA6:participates:endoderm",
+        "edge:hdca:narrower:spectrum",
+        "edge:Arg493Ter:nmd_supports:haplo",
+        "edge:pmid22158542:reports:hdca",
+        "edge:pmid23223019:reports:spectrum",
+        "edge:registry:asset_for:spectrum",
+        "edge:gap:leads_to:question",
+        "edge:registry:could_inform:question"
+      ],
+      "answers": {
+        "relevant_communities": [
+          "asset:uchicago_monogenic_diabetes_registry",
+          "org:international_pancreatic_agenesis_consortium"
+        ],
+        "existing_assets": [
+          "asset:uchicago_monogenic_diabetes_registry",
+          "asset:exeter_neonatal_diabetes_testing"
+        ],
+        "who_could_help": [
+          "asset:uchicago_monogenic_diabetes_registry"
+        ],
+        "next_step": "Verify registry access for GATA6-specific questions and identify whether any CHD or neonatal-diabetes community partner can fill the missing foundation gap."
+      }
+    }
+  ]
+}

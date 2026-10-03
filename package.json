@@ -10,10 +10,15 @@
     "collect": "python3 research/hbb/collect.py",
     "graph": "python3 research/hbb/build_graph.py && python3 research/hbb/curate.py",
     "graph:arid1b": "python3 research/arid1b/curate.py",
+    "graph:gata6": "python3 research/gata6/curate.py",
+    "graph:odc1": "python3 research/odc1/curate.py",
+    "graph:all": "npm run graph:arid1b && npm run graph:gata6 && npm run graph:odc1",
     "sync-data": "bash scripts/sync-data.sh",
-    "pipeline": "npm run collect && npm run graph && npm run graph:arid1b && npm run sync-data",
+    "pipeline": "npm run collect && npm run graph && npm run graph:all && npm run sync-data",
     "validate": "python3 research/hbb/validate.py",
     "validate:arid1b": "python3 research/arid1b/validate.py",
+    "validate:gata6": "python3 research/gata6/validate.py",
+    "validate:odc1": "python3 research/odc1/validate.py",
     "regression": "python3 scripts/regression_check.py"
   },
   "dependencies": {

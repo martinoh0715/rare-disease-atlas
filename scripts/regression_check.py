@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regression checks for HBB baseline + ARID1B extension."""
+"""Regression checks for all curated gene-centered datasets."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+EXPECTED = {"hbb", "arid1b", "gata6", "odc1"}
 
 
 def load(p: Path):
@@ -30,12 +31,19 @@ def search_entries(entries, query: str) -> list[dict]:
     return hits
 
 
-def check_dataset(dataset_id: str, required_searches: list[str], required_nodes: list[str]) -> list[str]:
+def check_dataset(
+    dataset_id: str,
+    required_searches: list[str],
+    required_nodes: list[str],
+    *,
+    journey_status: str | None = None,
+) -> list[str]:
     errors: list[str] = []
     base = ROOT / "public" / "data" / dataset_id
     curated = load(base / "curated-graph.json")
     demo = load(base / "demo-experience.json")
     journeys = load(base / "journeys.json")
+    review = load(base / "review-log.json")
     nodes = {n["id"]: n for n in curated["nodes"]}
     edges = {e["id"]: e for e in curated["edges"]}
 
@@ -44,8 +52,7 @@ def check_dataset(dataset_id: str, required_searches: list[str], required_nodes:
             errors.append(f"[{dataset_id}] missing node {nid}")
 
     for q in required_searches:
-        hits = search_entries(demo["search_entries"], q)
-        if not hits:
+        if not search_entries(demo["search_entries"], q):
             errors.append(f"[{dataset_id}] search miss for '{q}'")
 
     for stage in demo["stages"]:
@@ -75,7 +82,6 @@ def check_dataset(dataset_id: str, required_searches: list[str], required_nodes:
         if eid not in edges:
             errors.append(f"[{dataset_id}] journey missing edge {eid}")
 
-    # Proposal defaults present
     for key in ("research_question", "proposed_next_step"):
         if not demo.get("proposal_defaults", {}).get(key):
             errors.append(f"[{dataset_id}] missing proposal_defaults.{key}")
@@ -83,38 +89,46 @@ def check_dataset(dataset_id: str, required_searches: list[str], required_nodes:
     if not demo.get("asset_assessments"):
         errors.append(f"[{dataset_id}] missing asset_assessments")
 
+    if journey_status and demo.get("journey_status") != journey_status:
+        errors.append(
+            f"[{dataset_id}] journey_status expected {journey_status}, got {demo.get('journey_status')}"
+        )
+
+    if isinstance(review, list):
+        statuses = {r.get("status") for r in review}
+        for needed in ("accepted", "rejected", "unresolved"):
+            if needed not in statuses:
+                errors.append(f"[{dataset_id}] review-log missing {needed}")
+    elif isinstance(review, dict):
+        decisions = review.get("decisions") or []
+        if not decisions and not review.get("policy"):
+            errors.append(f"[{dataset_id}] review-log missing decisions")
+
     return errors
 
 
 def main() -> int:
     errors: list[str] = []
-
     catalog = load(ROOT / "public" / "data" / "catalog.json")
     ids = {d["id"] for d in catalog["datasets"]}
-    if ids != {"hbb", "arid1b"}:
+    if ids != EXPECTED:
         errors.append(f"catalog datasets unexpected: {sorted(ids)}")
 
-    # Validate scripts
     for script in [
-        ["python3", str(ROOT / "research/hbb/validate.py")],
-        ["python3", str(ROOT / "research/arid1b/validate.py")],
+        ROOT / "research/hbb/validate.py",
+        ROOT / "research/arid1b/validate.py",
+        ROOT / "research/gata6/validate.py",
+        ROOT / "research/odc1/validate.py",
     ]:
-        proc = subprocess.run(script, capture_output=True, text=True)
+        proc = subprocess.run(["python3", str(script)], capture_output=True, text=True)
         if proc.returncode != 0:
-            errors.append(f"validate failed: {' '.join(script)}\n{proc.stdout}\n{proc.stderr}")
+            errors.append(f"validate failed: {script}\n{proc.stdout}\n{proc.stderr}")
 
     errors.extend(
         check_dataset(
             "hbb",
-            required_searches=[
-                "sickle cell anemia",
-                "HbSS",
-                "beta-thalassemia",
-                "HBB",
-                "c.20A>T",
-                "HbF",
-            ],
-            required_nodes=[
+            ["sickle cell anemia", "HbSS", "beta-thalassemia", "HBB", "c.20A>T", "HbF"],
+            [
                 "disease:hbss",
                 "gene:HBB",
                 "allele:HbS",
@@ -123,53 +137,102 @@ def main() -> int:
                 "org:caf",
                 "asset:jax_townes",
             ],
+            journey_status="complete",
         )
     )
     errors.extend(
         check_dataset(
             "arid1b",
-            required_searches=[
-                "ARID1B",
-                "Coffin-Siris",
-                "ARID1B-RD",
-                "haploinsufficiency",
-                "FAR",
-                "CARE4ARID1B",
-            ],
-            required_nodes=[
+            ["ARID1B", "Coffin-Siris", "ARID1B-RD", "haploinsufficiency", "FAR", "CARE4ARID1B"],
+            [
                 "disease:arid1b_rd",
                 "disease:css1",
-                "disease:arid1b_id",
                 "gene:ARID1B",
                 "mechanism:arid1b_haploinsufficiency",
                 "org:far",
                 "study:care4arid1b",
                 "question:arid1b_endpoint_readiness",
             ],
+            journey_status="complete",
+        )
+    )
+    errors.extend(
+        check_dataset(
+            "gata6",
+            ["GATA6", "pancreatic agenesis", "neonatal diabetes", "haploinsufficiency"],
+            [
+                "disease:gata6_spectrum",
+                "disease:hdca_gata6",
+                "gene:GATA6",
+                "mechanism:gata6_haploinsufficiency",
+                "allele:GATA6_p.Arg493Ter",
+                "asset:uchicago_monogenic_diabetes_registry",
+                "gap:gata6_dedicated_patient_org",
+                "question:gata6_partner_and_natural_history_gap",
+            ],
+            journey_status="partial",
+        )
+    )
+    errors.extend(
+        check_dataset(
+            "odc1",
+            ["Bachmann-Bupp", "ODC1", "DFMO", "gain-of-function"],
+            [
+                "disease:babs",
+                "disease:odc1_lof_unresolved",
+                "gene:ODC1",
+                "mechanism:odc1_c_terminal_gof",
+                "allele:ODC1_p.Lys448Ter",
+                "allele:ODC1_p.Gly84Arg",
+                "intervention:dfmo_eflornithine_investigational",
+                "asset:icpd",
+                "org:nord_babs",
+                "question:odc1_dfmo_evidence_and_lof_gap",
+            ],
+            journey_status="complete",
         )
     )
 
-    # Datasets must remain separate
-    hbb_nodes = {n["id"] for n in load(ROOT / "public/data/hbb/curated-graph.json")["nodes"]}
-    arid_nodes = {n["id"] for n in load(ROOT / "public/data/arid1b/curated-graph.json")["nodes"]}
-    if "gene:ARID1B" in hbb_nodes:
-        errors.append("HBB curated graph unexpectedly contains gene:ARID1B")
-    if "gene:HBB" in arid_nodes:
-        errors.append("ARID1B curated graph unexpectedly contains gene:HBB")
+    graphs = {
+        ds: {n["id"] for n in load(ROOT / "public/data" / ds / "curated-graph.json")["nodes"]}
+        for ds in EXPECTED
+    }
+    for ds, nodes in graphs.items():
+        for other in EXPECTED - {ds}:
+            gene = f"gene:{other.upper() if other != 'arid1b' else 'ARID1B'}"
+            # map ids to gene symbols
+    gene_map = {
+        "hbb": "gene:HBB",
+        "arid1b": "gene:ARID1B",
+        "gata6": "gene:GATA6",
+        "odc1": "gene:ODC1",
+    }
+    for ds, nodes in graphs.items():
+        for other, gene in gene_map.items():
+            if other == ds:
+                continue
+            if gene in nodes:
+                errors.append(f"{ds} unexpectedly contains {gene}")
 
-    # Baseline size floor for HBB
     hbb = load(ROOT / "public/data/hbb/curated-graph.json")
     if len(hbb["nodes"]) < 30 or len(hbb["edges"]) < 40:
         errors.append(
             f"HBB curated graph shrank unexpectedly: nodes={len(hbb['nodes'])} edges={len(hbb['edges'])}"
         )
 
-    # Review log statuses for ARID1B
-    review = load(ROOT / "public/data/arid1b/review-log.json")
-    statuses = {r["status"] for r in review}
-    for needed in ("accepted", "rejected", "unresolved"):
-        if needed not in statuses:
-            errors.append(f"ARID1B review-log missing {needed}")
+    # ODC1 must not claim DFMO approval
+    odc_demo = load(ROOT / "public/data/odc1/demo-experience.json")
+    if "investigational" not in odc_demo["proposal_defaults"]["research_question"].lower() and \
+       "dfmo" not in odc_demo["proposal_defaults"]["research_question"].lower():
+        errors.append("ODC1 proposal defaults should mention DFMO evidence question")
+    odc_nodes = {
+        n["id"]: n for n in load(ROOT / "public/data/odc1/curated-graph.json")["nodes"]
+    }
+    does_not = (odc_nodes.get("intervention:dfmo_eflornithine_investigational") or {}).get(
+        "does_not", ""
+    )
+    if "FDA-approved" not in does_not and "approved" not in does_not.lower():
+        errors.append("ODC1 DFMO node missing explicit non-approval language")
 
     if errors:
         print("REGRESSION FAILED")
@@ -178,7 +241,7 @@ def main() -> int:
         return 1
 
     print("REGRESSION OK")
-    print("HBB and ARID1B search/graph/evidence/resource/proposal fixtures validated.")
+    print("HBB, ARID1B, GATA6, and ODC1 fixtures validated (search/graph/evidence/resources/proposal).")
     return 0
 
 

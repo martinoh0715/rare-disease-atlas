@@ -1,0 +1,70 @@
+{
+  "dataset_id": "gata6",
+  "focus_gene": "GATA6",
+  "inheritance_pattern": "autosomal_dominant_often_de_novo",
+  "genotype_structure_note": "Heterozygous pathogenic variants; parental mosaicism reported. Do not assume recessive homozygous genotypes.",
+  "journey_status": "partial",
+  "journey_status_note": "Biology → publication → registry/testing assets are sourced. No dedicated GATA6-only patient foundation was verified for this slice; partner pathway uses the Chicago Monogenic Diabetes Registry as a research asset with access caveats.",
+  "diseases": [
+    {
+      "id": "disease:hdca_gata6",
+      "label": "Pancreatic agenesis / hypoplasia with congenital heart defects (GATA6; OMIM 600001)",
+      "mondo": "MONDO:0100540",
+      "orphanet": "Orphanet:2255",
+      "omim": "OMIM:600001",
+      "genotype_scope": "Heterozygous pathogenic GATA6 variant with pancreatic + cardiac developmental features",
+      "notes": "OMIM HDCA / pancreatic agenesis and congenital heart defects. Keep distinct from isolated CHD labels and from adult-onset diabetes without agenesis."
+    },
+    {
+      "id": "disease:gata6_spectrum",
+      "label": "GATA6-related diabetes / developmental spectrum",
+      "notes": "Gene-centered umbrella spanning pancreatic agenesis, permanent/transient neonatal diabetes, and later-onset diabetes with variable exocrine involvement — not proof of identical mechanisms across every presentation."
+    },
+    {
+      "id": "disease:gata6_chd",
+      "label": "GATA6-related congenital heart disease (with or without pancreatic features)",
+      "notes": "Cardiac presentations can occur with or without pancreatic agenesis; keep separate from the OMIM 600001 pancreatic+heart framing when sources do."
+    }
+  ],
+  "representative_variants": [
+    {
+      "id": "allele:GATA6_p.Lys502fs",
+      "clinvar_variation_id": "39844",
+      "hgvs_c": "NM_005257.6:c.1504_1505del",
+      "hgvs_p": "p.Lys502fs",
+      "predicted_consequence": "frameshift / predicted LoF",
+      "notes": "Familial frameshift associated with variable pancreatic hypoplasia and diabetes severity (Yorifuji). Predicted LoF ≠ measured NMD for this allele unless separately shown."
+    },
+    {
+      "id": "allele:GATA6_p.Arg493Ter",
+      "clinvar_variation_id": "653141",
+      "hgvs_c": "NM_005257.6:c.1477C>T",
+      "hgvs_p": "p.Arg493Ter",
+      "predicted_consequence": "nonsense / predicted LoF",
+      "experimental_effect": "Suzuki et al. report NMD with reduced GATA6 transcript in patient blood RNA",
+      "notes": "Example where predicted nonsense consequence is supported by experimental NMD evidence — still allele-specific."
+    }
+  ],
+  "inclusion_criteria": [
+    "Germline GATA6 monogenic developmental / diabetes presentations with public primary sources",
+    "Edges require source URL + supporting passage",
+    "Keep pancreatic-agenesis framing distinct from later-onset diabetes without agenesis"
+  ],
+  "exclusion_criteria": [
+    "Merging all CHD percentages from mixed cohorts without denominators",
+    "Dedicated GATA6 patient-foundation claims without a verified public org page",
+    "Cross-links to HBB/ARID1B/ODC1 without supporting sources",
+    "Inferring functional loss solely from pLoF annotation"
+  ],
+  "anchor_publications": ["PMID:22158542", "PMID:23223019", "PMID:24310933"],
+  "demo_path": [
+    "disease:gata6_spectrum",
+    "gene:GATA6",
+    "mechanism:gata6_haploinsufficiency",
+    "disease:hdca_gata6",
+    "pmid:22158542",
+    "pmid:23223019",
+    "asset:uchicago_monogenic_diabetes_registry",
+    "question:gata6_partner_and_natural_history_gap"
+  ]
+}

@@ -1,0 +1,106 @@
+[
+  {
+    "decision": "accept",
+    "status": "accepted",
+    "claim": "BABS is caused by heterozygous ODC1 C-terminal gain-of-function variants",
+    "reason": "GeneReviews, OMIM 619075, Bupp/Rodan papers",
+    "sources": [
+      "PMID:30063100",
+      "PMID:30475435",
+      "NBK583220",
+      "OMIM:619075"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "accept",
+    "status": "accepted",
+    "claim": "DFMO/eflornithine for BABS is investigational / compassionate-use, not FDA-approved for BABS",
+    "reason": "GeneReviews and NORD explicit statements",
+    "sources": [
+      "NBK583220",
+      "https://rarediseases.org/rare-diseases/bachmann-bupp-syndrome/"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "accept",
+    "status": "accepted",
+    "claim": "Keep predicted truncation distinct from functional loss for K448X",
+    "reason": "Patient biochemistry shows elevated ODC/putrescine (GoF)",
+    "sources": [
+      "PMID:30063100"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "reject",
+    "status": "rejected",
+    "claim": "ODC1 loss-of-function is an established Mendelian disease equivalent to BABS",
+    "reason": "GeneReviews: LoF phenotype unclear / unlikely deleterious",
+    "sources": [
+      "NBK583220"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "reject",
+    "status": "rejected",
+    "claim": "Cancer ODC1 upregulation is the same disease mechanism as BABS",
+    "reason": "Somatic/expression oncology context \u2260 germline C-terminal GoF syndrome",
+    "sources": [
+      "NBK583220",
+      "hackathon notes caution"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "reject",
+    "status": "rejected",
+    "claim": "Infer BABS pathogenicity from any pLoF annotation automatically",
+    "reason": "BABS alleles are GoF C-terminal cluster; pLoF rules would misclassify mechanism",
+    "sources": [
+      "PMID:38671509",
+      "NBK583220"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "unresolved",
+    "status": "unresolved",
+    "claim": "Whether G84R has any Mendelian disease role",
+    "reason": "Enrichment reports exist but causation not established; functional interpretations contested",
+    "sources": [
+      "PMID:33806076",
+      "NBK583220"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "unresolved",
+    "status": "unresolved",
+    "claim": "Current number of patients on DFMO and open/closed compassionate-use status",
+    "reason": "Time-sensitive; NORD/GeneReviews describe IND/compassionate-use without freezing enrollment counts here",
+    "sources": [
+      "NBK583220",
+      "NORD BABS page"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  }
+]

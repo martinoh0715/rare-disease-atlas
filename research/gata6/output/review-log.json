@@ -1,0 +1,103 @@
+[
+  {
+    "decision": "accept",
+    "status": "accepted",
+    "claim": "GATA6 haploinsufficiency causes pancreatic agenesis with frequent CHD in discovery cohorts",
+    "reason": "Allen 2012 + OMIM 600001 + ClinGen definitive gene-disease validity",
+    "sources": [
+      "PMID:22158542",
+      "OMIM:600001",
+      "ClinGen GATA6 gene validity"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "accept",
+    "status": "accepted",
+    "claim": "Keep pancreatic-agenesis/HDCA distinct from broader later-onset diabetes spectrum",
+    "reason": "De Franco 2013 explicitly describes spectrum; collapsing labels would hide differences",
+    "sources": [
+      "PMID:23223019"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "accept",
+    "status": "accepted",
+    "claim": "p.Arg493Ter has allele-specific NMD evidence supporting haploinsufficiency",
+    "reason": "Suzuki 2014 reports NMD and reduced transcript",
+    "sources": [
+      "PMID:24310933"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "reject",
+    "status": "rejected",
+    "claim": "All GATA6 presentations involve identical variants or identical severity",
+    "reason": "Familial Lys502fs and spectrum papers show variable diabetes and CHD expressivity",
+    "sources": [
+      "ClinVar 39844",
+      "PMID:23223019"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "reject",
+    "status": "rejected",
+    "claim": "Infer functional loss for every predicted LoF GATA6 annotation automatically",
+    "reason": "Require allele-level evidence; pLoF clustering is not a universal rule",
+    "sources": [
+      "PMID:38671509",
+      "PMID:24310933"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "reject",
+    "status": "rejected",
+    "claim": "Claim a dedicated GATA6 patient foundation partnership in this atlas",
+    "reason": "No verified GATA6-only foundation primary site found; consortium \u2260 patient org",
+    "sources": [
+      "curator search 2026-10-03"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "unresolved",
+    "status": "unresolved",
+    "claim": "Current access pathway and GATA6-specific fields in Chicago registry",
+    "reason": "Public pages confirm registry exists; consent/access details need human verification",
+    "sources": [
+      "https://monogenicdiabetes.uchicago.edu/"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  },
+  {
+    "decision": "unresolved",
+    "status": "unresolved",
+    "claim": "Whether CHD percentages from notes (80\u201387%) apply outside cited cohorts",
+    "reason": "Only source-attributed cohort percentages are retained on edges",
+    "sources": [
+      "PMID:23223019",
+      "PMID:22158542"
+    ],
+    "reviewed_at": "2026-10-03",
+    "reviewer_role": "curator_public_source_check",
+    "expert_reviewed": false
+  }
+]

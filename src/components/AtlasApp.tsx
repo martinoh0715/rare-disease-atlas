@@ -19,6 +19,7 @@ import type {
   AssetAssessment,
   AtlasCatalog,
   AtlasData,
+  DatasetCatalogEntry,
   DemoStage,
   ProposalDraft,
 } from "@/lib/types";
@@ -27,13 +28,37 @@ import { importantSummaryForEdge, sourceCardForEdge } from "@/lib/sourceMeta";
 type Mode = "landing" | "workspace" | "unsupported";
 
 function partnerOptions(demo: AtlasData["demo"], nodes: GraphNode[]) {
+  const partnerKinds = new Set([
+    "patient_organization",
+    "patient_registry",
+    "research_center",
+    "research_consortium",
+  ]);
   const fromAssets = demo.asset_assessments
-    .filter((a) => a.asset_kind === "patient_organization")
+    .filter((a) => partnerKinds.has(a.asset_kind))
     .map((a) => ({ id: a.asset_id, label: a.title }));
-  if (fromAssets.length) return fromAssets;
-  return nodes
-    .filter((n) => n.type === "organization")
+  const fromNodes = nodes
+    .filter((n) => n.type === "organization" || n.type === "research_asset")
     .map((n) => ({ id: n.id, label: n.label }));
+  const merged = new Map<string, string>();
+  [...fromAssets, ...fromNodes].forEach((p) => merged.set(p.id, p.label));
+  if (demo.default_partner_id && !merged.has(demo.default_partner_id)) {
+    const n = nodes.find((x) => x.id === demo.default_partner_id);
+    const a = demo.asset_assessments.find(
+      (x) => x.asset_id === demo.default_partner_id
+    );
+    merged.set(
+      demo.default_partner_id,
+      a?.title || n?.label || demo.default_partner_id
+    );
+  }
+  return [...merged.entries()].map(([id, label]) => ({ id, label }));
+}
+
+function journeyStatusLabel(status?: string) {
+  if (status === "partial") return "Partial path";
+  if (status === "complete") return "Complete path";
+  return null;
 }
 
 export function AtlasApp({
@@ -158,6 +183,12 @@ export function AtlasApp({
   const productName =
     demo.product_name || catalog.product_name || "Rare Disease Atlas";
   const datasetLabel = demo.dataset_label || active.id;
+  const journeyStatus = demo.journey_status;
+  const journeyStatusNote = demo.journey_status_note;
+  const catalogById = useMemo(
+    () => new Map(catalog.datasets.map((d) => [d.id, d])),
+    [catalog.datasets]
+  );
   const enabledCategorySet = useMemo(
     () => new Set(enabledCategories),
     [enabledCategories]
@@ -427,7 +458,14 @@ export function AtlasApp({
       (defaultDiseaseId && nodeMap.get(defaultDiseaseId)) ||
       nodeMap.get(focusId) ||
       ({ label: "Selected disease" } as GraphNode);
-    const partner = nodeMap.get(selectedPartnerId);
+    const partnerNode = nodeMap.get(selectedPartnerId);
+    const partnerAsset = assetAssessments.find(
+      (a) => a.asset_id === selectedPartnerId
+    );
+    const partnerLabel =
+      partnerNode?.label ||
+      partnerAsset?.title ||
+      null;
     const assets = assetAssessments.filter((a) =>
       selectedAssetIds.includes(a.asset_id)
     );
@@ -458,8 +496,8 @@ export function AtlasApp({
       connectionSummary: journey.plain_language,
       proposedResource:
         assets.map((a) => a.title).join("; ") || "No asset selected",
-      partnerLabel: partner
-        ? `${partner.label} (public organization page; availability not claimed)`
+      partnerLabel: partnerLabel
+        ? `${partnerLabel} (public page; availability not claimed)`
         : demo.proposal_defaults.partner_gap_if_unknown,
       evidenceBullets,
       differences: [...new Set(differences)],
@@ -476,8 +514,9 @@ export function AtlasApp({
       <Landing
         productName={productName}
         productOneLiner={catalog.product_one_liner}
-        disclaimer="This atlas focuses on sourced research connections and reusable assets — not treatment advice. Curated slices differ: some conditions already have treatments; ARID1B-RD has no approved disease-modifying therapy in this layer."
+        disclaimer="This atlas focuses on sourced research connections and reusable assets — not treatment advice. Journey completeness differs by collection; partial paths show missing partners or evidence explicitly."
         exampleSearches={allExampleSearches}
+        catalogById={catalogById}
         query={query}
         hits={hits}
         onQueryChange={(v) => {
@@ -537,6 +576,9 @@ export function AtlasApp({
           </button>
           <span className="hidden rounded-atlas border border-slate-600 px-2 py-1 text-xs text-slate-200 sm:inline">
             {datasetLabel}
+            {journeyStatusLabel(journeyStatus)
+              ? ` · ${journeyStatusLabel(journeyStatus)}`
+              : ""}
           </span>
           <form
             className="flex min-w-[240px] flex-1"
@@ -580,6 +622,12 @@ export function AtlasApp({
                 <p className="atlas-meta mt-1 capitalize">
                   {(focusNode?.type || "").replace(/_/g, " ")}
                 </p>
+                {journeyStatusLabel(journeyStatus) ? (
+                  <p className="atlas-meta mt-1">
+                    {journeyStatusLabel(journeyStatus)}
+                    {journeyStatusNote ? ` — ${journeyStatusNote}` : ""}
+                  </p>
+                ) : null}
                 {focusNode?.does_not ? (
                   <p className="mt-1 text-sm text-amber-900">
                     What this is not: {focusNode.does_not.toLowerCase()}.
@@ -834,6 +882,7 @@ function Landing({
   productOneLiner,
   disclaimer,
   exampleSearches,
+  catalogById,
   query,
   hits,
   onQueryChange,
@@ -845,6 +894,7 @@ function Landing({
   productOneLiner: string;
   disclaimer: string;
   exampleSearches: { label: string; query: string }[];
+  catalogById: Map<string, DatasetCatalogEntry>;
   query: string;
   hits: SearchHit[];
   onQueryChange: (v: string) => void;
@@ -923,6 +973,14 @@ function Landing({
                     <span className="mt-1 block text-sm text-slate-500">
                       {h.matchReason}
                       {h.datasetLabel ? ` · ${h.datasetLabel}` : ""}
+                      {h.datasetId &&
+                      journeyStatusLabel(
+                        catalogById.get(h.datasetId)?.journey_status
+                      )
+                        ? ` · ${journeyStatusLabel(
+                            catalogById.get(h.datasetId)?.journey_status
+                          )}`
+                        : ""}
                     </span>
                   </button>
                 </li>

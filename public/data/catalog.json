@@ -9,7 +9,8 @@
       "path": "hbb",
       "focus_gene": "HBB",
       "default_focus_id": "disease:hbss",
-      "description": "Sickle cell / β-thalassemia demonstration with HbF–BCL11A research bridge."
+      "journey_status": "complete",
+      "description": "Sickle cell / \u03b2-thalassemia demonstration with HbF\u2013BCL11A research bridge."
     },
     {
       "id": "arid1b",
@@ -17,7 +18,26 @@
       "path": "arid1b",
       "focus_gene": "ARID1B",
       "default_focus_id": "disease:arid1b_rd",
+      "journey_status": "complete",
       "description": "ARID1B-RD / CSS1 spectrum with haploinsufficiency biology, CARE4ARID1B, and FAR."
+    },
+    {
+      "id": "gata6",
+      "label": "GATA6-related disorders",
+      "path": "gata6",
+      "focus_gene": "GATA6",
+      "default_focus_id": "disease:gata6_spectrum",
+      "journey_status": "partial",
+      "description": "GATA6 spectrum with haploinsufficiency biology and registry assets; dedicated foundation gap explicit."
+    },
+    {
+      "id": "odc1",
+      "label": "ODC1 / Bachmann-Bupp syndrome",
+      "path": "odc1",
+      "focus_gene": "ODC1",
+      "default_focus_id": "disease:babs",
+      "journey_status": "complete",
+      "description": "BABS gain-of-function path with investigational DFMO/ICPD; LoF and cancer contexts separated."
     }
   ]
 }

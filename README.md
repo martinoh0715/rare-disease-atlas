@@ -2,8 +2,10 @@
 
 Local prototype for an evidence-backed rare-disease knowledge graph. Curated demonstration datasets:
 
-1. **HBB hemoglobinopathies** — HbSS / β-thalassemia journey with HbF–BCL11A research bridge  
-2. **ARID1B-related disorders** — ARID1B-RD / CSS1 spectrum with haploinsufficiency biology, CARE4ARID1B, and FAR  
+1. **HBB hemoglobinopathies** — complete path (HbF–BCL11A bridge)  
+2. **ARID1B-related disorders** — complete path (CARE4ARID1B + FAR)  
+3. **GATA6-related disorders** — partial path (registry/testing assets; dedicated foundation gap explicit)  
+4. **ODC1 / Bachmann-Bupp** — complete path for established GoF BABS; LoF/cancer separated  
 
 This is **not** medical advice and does **not** generate treatment recommendations.
 
@@ -15,18 +17,20 @@ npm run sync-data
 npm run dev         # http://127.0.0.1:43123
 ```
 
-Validate both curated slices:
+Validate all curated slices:
 
 ```bash
-npm run validate              # HBB
-python3 research/arid1b/validate.py
-python3 scripts/regression_check.py
+npm run validate
+npm run validate:arid1b
+npm run validate:gata6
+npm run validate:odc1
+npm run regression
 ```
 
-Rebuild ARID1B curated outputs:
+Rebuild extension datasets:
 
 ```bash
-npm run graph:arid1b
+npm run graph:all
 npm run sync-data
 ```
 

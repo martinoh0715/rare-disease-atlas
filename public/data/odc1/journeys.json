@@ -1,0 +1,51 @@
+{
+  "journeys": [
+    {
+      "id": "journey:odc1_babs_research_discovery",
+      "title": "ODC1 / BABS research discovery journey",
+      "intended_user": "Patient-group organizer or rare-disease research coordinator",
+      "plain_language": "Start from Bachmann-Bupp syndrome, follow C-terminal gain-of-function biology (not loss-of-function), connect to GeneReviews/NORD evidence, then to ICPD investigational DFMO research and a next question that keeps LoF and cancer contexts separate. No approval or treatment recommendation is asserted.",
+      "node_path": [
+        "disease:babs",
+        "gene:ODC1",
+        "mechanism:odc1_c_terminal_gof",
+        "allele:ODC1_p.Lys448Ter",
+        "pmid:30063100",
+        "pmid:36007106",
+        "intervention:dfmo_eflornithine_investigational",
+        "asset:icpd",
+        "org:nord_babs",
+        "disease:odc1_lof_unresolved",
+        "question:odc1_dfmo_evidence_and_lof_gap"
+      ],
+      "edge_path": [
+        "edge:mechanism:gof:relevant:babs",
+        "edge:gene:ODC1:participates:polyamine",
+        "edge:K448X:supports:gof",
+        "edge:pmid30063100:reports:babs",
+        "edge:pmid36007106:reports:babs",
+        "edge:dfmo:investigates:babs",
+        "edge:icpd:asset_for:babs",
+        "edge:nord:supports:babs",
+        "edge:lof_disease:related_distinct:babs",
+        "edge:dfmo:leads_to:question",
+        "edge:icpd:could_inform:question"
+      ],
+      "answers": {
+        "relevant_communities": [
+          "org:nord_babs",
+          "org:snyder_robinson"
+        ],
+        "existing_assets": [
+          "asset:icpd",
+          "intervention:dfmo_eflornithine_investigational"
+        ],
+        "who_could_help": [
+          "asset:icpd",
+          "org:nord_babs"
+        ],
+        "next_step": "Verify current ICPD compassionate-use DFMO public information and keep LoF/cancer claims labeled unresolved/separate in any collaboration brief."
+      }
+    }
+  ]
+}

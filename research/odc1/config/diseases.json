@@ -1,0 +1,73 @@
+{
+  "dataset_id": "odc1",
+  "focus_gene": "ODC1",
+  "inheritance_pattern": "autosomal_dominant_de_novo_typical_for_BABS",
+  "genotype_structure_note": "BABS alleles are heterozygous C-terminal gain-of-function variants, not HBB-style recessive genotypes and not equivalent to predicted LoF.",
+  "journey_status": "complete",
+  "journey_status_note": "Complete research-to-action path for established BABS (GoF): biology → GeneReviews/NORD → ICPD investigational DFMO asset → collaboration question. LoF disease association and cancer expression remain explicitly out of the established path.",
+  "diseases": [
+    {
+      "id": "disease:babs",
+      "label": "Bachmann-Bupp syndrome (BABS)",
+      "omim": "OMIM:619075",
+      "orphanet": null,
+      "genotype_scope": "Heterozygous ODC1 C-terminal gain-of-function pathogenic variant",
+      "notes": "Established germline monogenic disorder. Synonyms include ODC1-related neurodevelopmental disorder / NEDABA in some sources."
+    },
+    {
+      "id": "disease:odc1_lof_unresolved",
+      "label": "ODC1 loss-of-function neurologic association (unresolved)",
+      "notes": "Not an established Mendelian disease entity here. GeneReviews states LoF is unclear / unlikely deleterious; G84R enrichment and activity claims remain unresolved."
+    }
+  ],
+  "representative_variants": [
+    {
+      "id": "allele:ODC1_p.Lys448Ter",
+      "clinvar_variation_id": "983289",
+      "hgvs_c": "NM_002539.3:c.1342A>T",
+      "hgvs_p": "p.Lys448Ter",
+      "predicted_consequence": "nonsense near C-terminus (predicted truncation)",
+      "experimental_effect": "Elevated ODC protein and putrescine in patient cells; escape from normal C-terminal degradation (gain-of-function)",
+      "notes": "Canonical BABS example: predicted truncation ≠ loss of enzyme activity; mechanism is accumulation of active enzyme."
+    },
+    {
+      "id": "allele:ODC1_p.Gln419Ter",
+      "clinvar_variation_id": "983287",
+      "hgvs_c": "NM_002539.3 (C-terminal cluster; verify current HGVS on ClinVar)",
+      "hgvs_p": "p.Gln419Ter",
+      "predicted_consequence": "nonsense in C-terminal region",
+      "notes": "Second BABS allele example in C-terminal cluster (Rodan/OMIM). Keep transcript numbering explicit when citing."
+    },
+    {
+      "id": "allele:ODC1_p.Gly84Arg",
+      "clinvar_variation_id": "1299887",
+      "hgvs_c": "NM_002539.3:c.250G>A (verify)",
+      "hgvs_p": "p.Gly84Arg",
+      "predicted_consequence": "missense; sometimes discussed as partial LoF",
+      "notes": "NOT a BABS allele. Population-enriched variant with contested functional interpretation — unresolved disease association."
+    }
+  ],
+  "inclusion_criteria": [
+    "Established BABS germline GoF evidence with public sources",
+    "Explicit unresolved LoF and cancer-expression caveats in review log",
+    "DFMO framed as investigational/compassionate-use, not regulatory approval for BABS"
+  ],
+  "exclusion_criteria": [
+    "Treating cancer ODC1 upregulation as the BABS monogenic mechanism",
+    "Claiming FDA approval of DFMO for BABS",
+    "Inferring BABS from any pLoF annotation",
+    "Cross-links to HBB/ARID1B/GATA6 without sources"
+  ],
+  "anchor_publications": ["PMID:30063100", "PMID:30475435", "PMID:36007106"],
+  "demo_path": [
+    "disease:babs",
+    "gene:ODC1",
+    "mechanism:odc1_c_terminal_gof",
+    "allele:ODC1_p.Lys448Ter",
+    "pmid:30063100",
+    "intervention:dfmo_eflornithine_investigational",
+    "asset:icpd",
+    "org:nord_babs",
+    "question:odc1_dfmo_evidence_and_lof_gap"
+  ]
+}

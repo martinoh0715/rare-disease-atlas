@@ -1,0 +1,10 @@
+{
+  "dataset_id": "gata6",
+  "generated_at": "2026-10-03T23:04:19+00:00",
+  "nodes": 23,
+  "edges": 25,
+  "edges_with_source_url": 23,
+  "journey_status": "partial",
+  "expert_reviewed": false,
+  "private_patient_data": false
+}

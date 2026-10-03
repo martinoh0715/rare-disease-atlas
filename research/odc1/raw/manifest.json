@@ -1,0 +1,11 @@
+{
+  "retrieval_date": "2026-10-03",
+  "sources": [
+    {"url": "https://www.ncbi.nlm.nih.gov/books/NBK583220/", "role": "genereviews"},
+    {"url": "https://rarediseases.org/rare-diseases/bachmann-bupp-syndrome/", "role": "nord"},
+    {"url": "https://pubmed.ncbi.nlm.nih.gov/30063100/", "role": "anchor_publication"},
+    {"url": "https://www.ncbi.nlm.nih.gov/clinvar/variation/983289/", "role": "clinvar_gof"},
+    {"url": "https://www.ncbi.nlm.nih.gov/clinvar/variation/1299887/", "role": "clinvar_lof_lead"}
+  ],
+  "private_patient_data": false
+}

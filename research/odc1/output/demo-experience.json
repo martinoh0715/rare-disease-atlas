@@ -1,0 +1,396 @@
+{
+  "product_one_liner": "Search a rare disease and follow sourced connections to related biology, communities, and research assets.",
+  "product_name": "Rare Disease Atlas",
+  "dataset_id": "odc1",
+  "dataset_label": "ODC1 / Bachmann-Bupp syndrome",
+  "journey_status": "complete",
+  "journey_status_note": "Complete path for established BABS GoF \u2192 investigational DFMO/ICPD \u2192 next question. LoF and cancer contexts remain explicit gaps/separations.",
+  "default_focus_id": "disease:babs",
+  "default_partner_id": "org:nord_babs",
+  "default_asset_ids": [
+    "asset:icpd",
+    "intervention:dfmo_eflornithine_investigational"
+  ],
+  "landing_disclaimer": "DFMO for BABS is investigational/compassionate-use in this curated layer \u2014 not an approval claim.",
+  "example_searches": [
+    {
+      "label": "Bachmann-Bupp",
+      "query": "Bachmann-Bupp"
+    },
+    {
+      "label": "ODC1",
+      "query": "ODC1"
+    },
+    {
+      "label": "DFMO",
+      "query": "DFMO"
+    }
+  ],
+  "search_entries": [
+    {
+      "id": "disease:babs",
+      "label": "Bachmann-Bupp syndrome (BABS)",
+      "category": "disease",
+      "disambiguation_note": "Established ODC1 C-terminal gain-of-function disorder. Distinct from unresolved LoF leads.",
+      "synonyms": [
+        "bachmann-bupp",
+        "bachmann bupp",
+        "babs",
+        "odc1-related neurodevelopmental disorder",
+        "nedaba"
+      ]
+    },
+    {
+      "id": "disease:odc1_lof_unresolved",
+      "label": "ODC1 loss-of-function neurologic association (unresolved)",
+      "category": "disease",
+      "disambiguation_note": "Not established Mendelian disease; kept separate from BABS.",
+      "synonyms": [
+        "odc1 lof",
+        "odc1 loss of function",
+        "g84r"
+      ]
+    },
+    {
+      "id": "gene:ODC1",
+      "label": "ODC1",
+      "category": "gene",
+      "disambiguation_note": "Ornithine decarboxylase 1 gene.",
+      "synonyms": [
+        "odc1",
+        "ornithine decarboxylase",
+        "odc"
+      ]
+    },
+    {
+      "id": "allele:ODC1_p.Lys448Ter",
+      "label": "ODC1 p.Lys448Ter (K448X)",
+      "category": "variant",
+      "disambiguation_note": "C-terminal nonsense with GoF biochemistry \u2014 not enzyme loss.",
+      "synonyms": [
+        "k448x",
+        "p.lys448ter",
+        "c.1342a>t"
+      ]
+    },
+    {
+      "id": "mechanism:odc1_c_terminal_gof",
+      "label": "ODC1 C-terminal gain-of-function",
+      "category": "mechanism",
+      "disambiguation_note": "Reduced degradation / accumulated active ODC.",
+      "synonyms": [
+        "odc1 gain of function",
+        "c-terminal gof",
+        "gain-of-function"
+      ]
+    },
+    {
+      "id": "intervention:dfmo_eflornithine_investigational",
+      "label": "DFMO / eflornithine (investigational for BABS)",
+      "category": "intervention",
+      "disambiguation_note": "Investigational/compassionate-use for BABS \u2014 not asserted as approved for BABS.",
+      "synonyms": [
+        "dfmo",
+        "eflornithine",
+        "difluoromethylornithine"
+      ]
+    },
+    {
+      "id": "org:nord_babs",
+      "label": "NORD Bachmann-Bupp page",
+      "category": "organization",
+      "disambiguation_note": "Umbrella rare-disease organization page for BABS.",
+      "synonyms": [
+        "nord",
+        "nord bachmann-bupp"
+      ]
+    }
+  ],
+  "category_legend": [
+    {
+      "id": "disease",
+      "label": "Diseases",
+      "color": "#2563eb"
+    },
+    {
+      "id": "gene_variant",
+      "label": "Genes & variants",
+      "color": "#0f766e"
+    },
+    {
+      "id": "mechanism",
+      "label": "Mechanisms & processes",
+      "color": "#ca8a04"
+    },
+    {
+      "id": "intervention",
+      "label": "Interventions",
+      "color": "#db2777"
+    },
+    {
+      "id": "study",
+      "label": "Clinical studies",
+      "color": "#7c3aed"
+    },
+    {
+      "id": "publication",
+      "label": "Publications",
+      "color": "#4f46e5"
+    },
+    {
+      "id": "organization_asset",
+      "label": "Organizations & assets",
+      "color": "#c2410c"
+    },
+    {
+      "id": "phenotype",
+      "label": "Phenotypes",
+      "color": "#64748b"
+    }
+  ],
+  "stages": [
+    {
+      "id": "understand",
+      "label": "Understand the connection",
+      "summary": "Follow BABS to C-terminal GoF biology and keep unresolved LoF separate.",
+      "anchor_node_id": "disease:babs",
+      "preferred_edge_id": "edge:mechanism:gof:relevant:babs",
+      "node_ids": [
+        "disease:babs",
+        "genotype:odc1_het_gof",
+        "allele:ODC1_p.Lys448Ter",
+        "allele:ODC1_p.Gln419Ter",
+        "gene:ODC1",
+        "protein:ODC",
+        "mechanism:odc1_c_terminal_gof",
+        "process:polyamine_biosynthesis",
+        "phenotype:alopecia",
+        "phenotype:developmental_delay",
+        "disease:odc1_lof_unresolved",
+        "allele:ODC1_p.Gly84Arg"
+      ],
+      "edge_ids": [
+        "edge:genotype:defines:babs",
+        "edge:genotype:has:K448X",
+        "edge:K448X:allele_of:ODC1",
+        "edge:gene:ODC1:encodes:protein",
+        "edge:gene:ODC1:participates:polyamine",
+        "edge:process:polyamine:supports:gof",
+        "edge:mechanism:gof:relevant:babs",
+        "edge:K448X:supports:gof",
+        "edge:babs:phenotype:alopecia",
+        "edge:babs:phenotype:dd",
+        "edge:lof_disease:related_distinct:babs",
+        "edge:G84R:assoc:lof_unresolved"
+      ]
+    },
+    {
+      "id": "explore",
+      "label": "Explore resources",
+      "summary": "GeneReviews/NORD evidence, investigational DFMO, ICPD, and related polyaminopathy support \u2014 with approval caveats.",
+      "anchor_node_id": "disease:babs",
+      "preferred_edge_id": "edge:dfmo:investigates:babs",
+      "node_ids": [
+        "disease:babs",
+        "mechanism:odc1_c_terminal_gof",
+        "pmid:30063100",
+        "pmid:30475435",
+        "pmid:36007106",
+        "intervention:dfmo_eflornithine_investigational",
+        "asset:icpd",
+        "org:nord_babs",
+        "org:snyder_robinson",
+        "hypothesis:odc1_cancer_expression_separate",
+        "gene:ODC1"
+      ],
+      "edge_ids": [
+        "edge:mechanism:gof:relevant:babs",
+        "edge:pmid30063100:reports:babs",
+        "edge:pmid30475435:reports:babs",
+        "edge:pmid36007106:reports:babs",
+        "edge:dfmo:targets:ODC1",
+        "edge:dfmo:investigates:babs",
+        "edge:icpd:asset_for:babs",
+        "edge:nord:supports:babs",
+        "edge:snyder:related_support:babs",
+        "edge:cancer_hypothesis:from:gene"
+      ]
+    },
+    {
+      "id": "prepare",
+      "label": "Prepare next step",
+      "summary": "Prepare a sourced brief about DFMO evidence/access without approving therapy or merging LoF leads.",
+      "anchor_node_id": "question:odc1_dfmo_evidence_and_lof_gap",
+      "preferred_edge_id": "edge:dfmo:leads_to:question",
+      "node_ids": [
+        "question:odc1_dfmo_evidence_and_lof_gap",
+        "intervention:dfmo_eflornithine_investigational",
+        "asset:icpd",
+        "org:nord_babs",
+        "disease:odc1_lof_unresolved"
+      ],
+      "edge_ids": [
+        "edge:dfmo:leads_to:question",
+        "edge:icpd:could_inform:question",
+        "edge:nord:could_inform:question"
+      ]
+    }
+  ],
+  "edge_plain_language": {
+    "edge:mechanism:gof:relevant:babs": "C-terminal gain-of-function is the established BABS mechanism.",
+    "edge:K448X:supports:gof": "K448X shows elevated ODC/putrescine \u2014 predicted truncation \u2260 loss of function.",
+    "edge:lof_disease:related_distinct:babs": "Unresolved LoF associations are kept distinct from BABS.",
+    "edge:dfmo:investigates:babs": "DFMO is investigational/compassionate-use for BABS, not asserted as approved.",
+    "edge:icpd:asset_for:babs": "ICPD is the research center described for DFMO investigation.",
+    "edge:nord:supports:babs": "NORD provides a verified public BABS information page."
+  },
+  "asset_assessments": [
+    {
+      "asset_id": "asset:icpd",
+      "asset_kind": "research_center",
+      "title": "International Center for Polyamine Disorders (ICPD)",
+      "description": "Translational/clinical program described as investigating DFMO compassionate-use for BABS.",
+      "owner": "Corewell Health / Michigan State University collaboration (as described in public pages)",
+      "source_url": "https://rarediseases.org/rare-diseases/bachmann-bupp-syndrome/",
+      "designed_for": {
+        "disease": "Polyaminopathies including BABS",
+        "genotype": "ODC1 GoF / related disorders",
+        "population": "Ultra-rare diagnosed patients (verify eligibility)",
+        "species": "Homo sapiens"
+      },
+      "access": "Described via NORD/GeneReviews; verify current contact. Atlas sends nothing automatically.",
+      "relevance_to_journey": "Primary research asset for investigational DFMO pathway questions.",
+      "comparison": {
+        "may_be_reusable": [
+          "Compassionate-use / IND framing for collaboration briefs",
+          "Polyaminopathy natural-history research model"
+        ],
+        "what_differs": [
+          "Investigational access \u2260 regulatory approval",
+          "BABS GoF biology \u2260 cancer ODC1 expression context"
+        ],
+        "needs_expert_review": [
+          "Current protocol status and eligibility",
+          "What can be stated publicly vs requires direct contact"
+        ],
+        "adaptation_status": "Potential collaboration to investigate",
+        "validation_question": "What public evidence exists today for DFMO compassionate-use status in BABS?"
+      }
+    },
+    {
+      "asset_id": "intervention:dfmo_eflornithine_investigational",
+      "asset_kind": "investigational_intervention",
+      "title": "DFMO / eflornithine (investigational for BABS)",
+      "description": "ODC inhibitor used under compassionate-use/IND investigation for BABS per GeneReviews/NORD.",
+      "owner": "Various; BABS investigation described via ICPD",
+      "source_url": "https://www.ncbi.nlm.nih.gov/books/NBK583220/",
+      "designed_for": {
+        "disease": "BABS (investigational)",
+        "genotype": "ODC1 C-terminal GoF",
+        "population": "Diagnosed BABS patients under protocol",
+        "species": "Homo sapiens"
+      },
+      "access": "Not presented as generally available approved therapy for BABS.",
+      "relevance_to_journey": "Concrete intervention node that must keep approval status honest.",
+      "comparison": {
+        "may_be_reusable": [
+          "Mechanism-aligned inhibitor rationale for expert discussion"
+        ],
+        "what_differs": [
+          "FDA-approved uses in other indications \u2260 BABS approval",
+          "Individual-patient reports \u2260 population efficacy"
+        ],
+        "needs_expert_review": [
+          "How to discuss benefits/risks without overclaiming",
+          "Whether any formal trial registry record should be cited"
+        ],
+        "adaptation_status": "Investigational \u2014 not approved for BABS in this atlas",
+        "validation_question": "Which public sources should a brief cite for DFMO status without implying approval?"
+      }
+    },
+    {
+      "asset_id": "org:nord_babs",
+      "asset_kind": "patient_organization",
+      "title": "NORD Bachmann-Bupp syndrome information page",
+      "description": "Public rare-disease information page with clinical summary and research pointers.",
+      "owner": "National Organization for Rare Disorders",
+      "source_url": "https://rarediseases.org/rare-diseases/bachmann-bupp-syndrome/",
+      "designed_for": {
+        "disease": "Bachmann-Bupp syndrome",
+        "genotype": "Community-level",
+        "population": "Patients, families, clinicians",
+        "species": null
+      },
+      "access": "Public webpage.",
+      "relevance_to_journey": "Verified community-facing information partner lead.",
+      "comparison": {
+        "may_be_reusable": [
+          "Family-facing disease summary language"
+        ],
+        "what_differs": [
+          "Umbrella org page \u2260 BABS-only foundation"
+        ],
+        "needs_expert_review": [
+          "Whether NORD can connect to family coalitions"
+        ],
+        "adaptation_status": "Information resource",
+        "validation_question": "What community priorities should appear alongside investigational DFMO language?"
+      }
+    },
+    {
+      "asset_id": "org:snyder_robinson",
+      "asset_kind": "patient_organization",
+      "title": "Snyder-Robinson Foundation",
+      "description": "Related polyaminopathy advocacy organization listed in NORD BABS resources.",
+      "owner": "Snyder-Robinson Foundation",
+      "source_url": "https://www.snyder-robinson.org/",
+      "designed_for": {
+        "disease": "Snyder-Robinson syndrome (primary); polyaminopathy community overlap",
+        "genotype": "Not ODC1-specific",
+        "population": "Polyaminopathy families/research stakeholders",
+        "species": null
+      },
+      "access": "Public website.",
+      "relevance_to_journey": "Possible adjacent collaborator; not a BABS-only org.",
+      "comparison": {
+        "may_be_reusable": [
+          "Polyaminopathy community networking patterns"
+        ],
+        "what_differs": [
+          "Different primary gene/disease"
+        ],
+        "needs_expert_review": [
+          "Whether they advise on BABS questions"
+        ],
+        "adaptation_status": "Potential adjacent collaboration",
+        "validation_question": "Can Snyder-Robinson advise on polyaminopathy research infrastructure relevant to BABS without implying shared treatments?"
+      }
+    }
+  ],
+  "registry_gap": {
+    "status": "investigational_treatment_present_formal_registry_not_verified",
+    "explanation": "ICPD/DFMO investigational pathway is publicly described, but this slice does not include a verified standalone BABS patient registry with a confirmed data-access SOP.",
+    "missing_evidence": [
+      "Standalone BABS registry name/owner/access process",
+      "Current DFMO compassionate-use enrollment status frozen with a retrieval date"
+    ],
+    "next_question": "Is there a publicly documented BABS registry distinct from ICPD clinical investigation?"
+  },
+  "unsupported_search": {
+    "sources_searched": [
+      "Curated ODC1/BABS demonstration layer (GeneReviews, NORD, ClinVar GoF alleles, ICPD/DFMO investigational framing)",
+      "Other curated datasets remain separate"
+    ],
+    "coverage_note": "Coverage is limited to curated demonstration datasets in this prototype."
+  },
+  "proposal_defaults": {
+    "research_question": "What evidence is still needed to evaluate DFMO access pathways for BABS without conflating unresolved ODC1 loss-of-function associations or cancer-expression findings?",
+    "proposed_next_step": "Review GeneReviews/NORD DFMO status language with ICPD public materials, list what remains investigational, and keep G84R/LoF and cancer upregulation in a separate unresolved section of the brief.",
+    "partner_gap_if_unknown": "No individual clinician availability is asserted. Use public organization contacts after human verification."
+  },
+  "unsupported_missing_evidence": [
+    "A curated entity match for this query in the demonstration layer",
+    "A reviewed edge connecting it into a curated dataset journey without merging unrelated disease labels"
+  ],
+  "unsupported_next_question_template": "What primary public source would establish whether \"{query}\" belongs in the Rare Disease Atlas curated layer, and which disease scope should it be mapped to without merging synonyms?"
+}

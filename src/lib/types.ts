@@ -47,6 +47,8 @@ export type DemoExperience = {
   product_name?: string;
   dataset_id?: string;
   dataset_label?: string;
+  journey_status?: "complete" | "partial";
+  journey_status_note?: string;
   default_focus_id?: string;
   default_partner_id?: string;
   default_asset_ids?: string[];
@@ -82,6 +84,7 @@ export type DatasetCatalogEntry = {
   path: string;
   focus_gene?: string;
   default_focus_id?: string;
+  journey_status?: "complete" | "partial";
   description?: string;
 };
 

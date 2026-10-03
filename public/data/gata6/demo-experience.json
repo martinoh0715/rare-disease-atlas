@@ -1,0 +1,372 @@
+{
+  "product_one_liner": "Search a rare disease and follow sourced connections to related biology, communities, and research assets.",
+  "product_name": "Rare Disease Atlas",
+  "dataset_id": "gata6",
+  "dataset_label": "GATA6-related disorders",
+  "journey_status": "partial",
+  "journey_status_note": "Biology and publications are sourced; dedicated patient-foundation partner not verified \u2014 gap shown in Prepare step.",
+  "default_focus_id": "disease:gata6_spectrum",
+  "default_partner_id": "asset:uchicago_monogenic_diabetes_registry",
+  "default_asset_ids": [
+    "asset:uchicago_monogenic_diabetes_registry",
+    "asset:exeter_neonatal_diabetes_testing"
+  ],
+  "landing_disclaimer": "GATA6 presentations vary widely; this atlas does not recommend treatments.",
+  "example_searches": [
+    {
+      "label": "GATA6",
+      "query": "GATA6"
+    },
+    {
+      "label": "pancreatic agenesis",
+      "query": "pancreatic agenesis"
+    },
+    {
+      "label": "neonatal diabetes",
+      "query": "neonatal diabetes"
+    }
+  ],
+  "search_entries": [
+    {
+      "id": "disease:gata6_spectrum",
+      "label": "GATA6-related diabetes / developmental spectrum",
+      "category": "disease",
+      "disambiguation_note": "Gene-centered umbrella; keep distinct from OMIM 600001 pancreatic+heart subset.",
+      "synonyms": [
+        "gata6",
+        "gata6-related",
+        "gata6 spectrum",
+        "gata6 diabetes"
+      ]
+    },
+    {
+      "id": "disease:hdca_gata6",
+      "label": "Pancreatic agenesis/hypoplasia with congenital heart defects (OMIM 600001)",
+      "category": "disease",
+      "disambiguation_note": "OMIM 600001 / HDCA framing for GATA6.",
+      "synonyms": [
+        "pancreatic agenesis",
+        "pancreatic hypoplasia",
+        "hdca",
+        "omim 600001",
+        "pachd"
+      ]
+    },
+    {
+      "id": "disease:gata6_chd",
+      "label": "GATA6-related congenital heart disease",
+      "category": "disease",
+      "disambiguation_note": "Cardiac focus with or without pancreatic features.",
+      "synonyms": [
+        "gata6 chd",
+        "gata6 congenital heart"
+      ]
+    },
+    {
+      "id": "gene:GATA6",
+      "label": "GATA6",
+      "category": "gene",
+      "disambiguation_note": "GATA-binding transcription factor gene on 18q11.2.",
+      "synonyms": [
+        "gata6",
+        "gata binding protein 6"
+      ]
+    },
+    {
+      "id": "allele:GATA6_p.Arg493Ter",
+      "label": "GATA6 p.Arg493Ter",
+      "category": "variant",
+      "disambiguation_note": "Nonsense allele with published NMD evidence.",
+      "synonyms": [
+        "p.arg493ter",
+        "c.1477c>t",
+        "arg493x"
+      ]
+    },
+    {
+      "id": "allele:GATA6_p.Lys502fs",
+      "label": "GATA6 p.Lys502fs",
+      "category": "variant",
+      "disambiguation_note": "Frameshift allele with variable familial expressivity.",
+      "synonyms": [
+        "p.lys502fs",
+        "c.1504_1505del",
+        "1504delaa"
+      ]
+    },
+    {
+      "id": "mechanism:gata6_haploinsufficiency",
+      "label": "GATA6 haploinsufficiency",
+      "category": "mechanism",
+      "disambiguation_note": "Primary disease-mechanism framing for heterozygous LoF-class patterns.",
+      "synonyms": [
+        "gata6 haploinsufficiency",
+        "haploinsufficiency"
+      ]
+    },
+    {
+      "id": "phenotype:neonatal_diabetes",
+      "label": "Neonatal / early-onset diabetes",
+      "category": "phenotype",
+      "disambiguation_note": "Clinical phenotype used in GATA6 ascertainment \u2014 not a single genotype.",
+      "synonyms": [
+        "neonatal diabetes",
+        "ndm",
+        "permanent neonatal diabetes"
+      ]
+    }
+  ],
+  "category_legend": [
+    {
+      "id": "disease",
+      "label": "Diseases",
+      "color": "#2563eb"
+    },
+    {
+      "id": "gene_variant",
+      "label": "Genes & variants",
+      "color": "#0f766e"
+    },
+    {
+      "id": "mechanism",
+      "label": "Mechanisms & processes",
+      "color": "#ca8a04"
+    },
+    {
+      "id": "intervention",
+      "label": "Interventions",
+      "color": "#db2777"
+    },
+    {
+      "id": "study",
+      "label": "Clinical studies",
+      "color": "#7c3aed"
+    },
+    {
+      "id": "publication",
+      "label": "Publications",
+      "color": "#4f46e5"
+    },
+    {
+      "id": "organization_asset",
+      "label": "Organizations & assets",
+      "color": "#c2410c"
+    },
+    {
+      "id": "phenotype",
+      "label": "Phenotypes",
+      "color": "#64748b"
+    }
+  ],
+  "stages": [
+    {
+      "id": "understand",
+      "label": "Understand the connection",
+      "summary": "Follow GATA6 spectrum to haploinsufficiency, OMIM 600001 subset, and variant-specific NMD evidence.",
+      "anchor_node_id": "disease:gata6_spectrum",
+      "preferred_edge_id": "edge:mechanism:haplo:relevant:spectrum",
+      "node_ids": [
+        "disease:gata6_spectrum",
+        "genotype:gata6_het",
+        "allele:GATA6_p.Lys502fs",
+        "allele:GATA6_p.Arg493Ter",
+        "gene:GATA6",
+        "mechanism:gata6_haploinsufficiency",
+        "process:endoderm_organogenesis",
+        "disease:hdca_gata6",
+        "disease:gata6_chd",
+        "phenotype:pancreatic_agenesis",
+        "phenotype:congenital_heart_defect",
+        "pmid:22158542"
+      ],
+      "edge_ids": [
+        "edge:genotype:defines:spectrum",
+        "edge:genotype:has:Lys502fs",
+        "edge:Lys502fs:allele_of:GATA6",
+        "edge:Arg493Ter:allele_of:GATA6",
+        "edge:gene:GATA6:participates:endoderm",
+        "edge:process:endoderm:supports:haploinsufficiency",
+        "edge:mechanism:haplo:relevant:spectrum",
+        "edge:hdca:narrower:spectrum",
+        "edge:chd:related_distinct:hdca",
+        "edge:Arg493Ter:nmd_supports:haplo",
+        "edge:spectrum:phenotype:pancreas",
+        "edge:pmid22158542:reports:hdca"
+      ]
+    },
+    {
+      "id": "explore",
+      "label": "Explore resources",
+      "summary": "Publications, registry/testing assets, and the explicit missing dedicated patient-foundation gap.",
+      "anchor_node_id": "disease:gata6_spectrum",
+      "preferred_edge_id": "edge:registry:asset_for:spectrum",
+      "node_ids": [
+        "disease:gata6_spectrum",
+        "disease:hdca_gata6",
+        "mechanism:gata6_haploinsufficiency",
+        "pmid:22158542",
+        "pmid:23223019",
+        "pmid:24310933",
+        "asset:uchicago_monogenic_diabetes_registry",
+        "asset:exeter_neonatal_diabetes_testing",
+        "org:international_pancreatic_agenesis_consortium",
+        "gap:gata6_dedicated_patient_org",
+        "phenotype:neonatal_diabetes"
+      ],
+      "edge_ids": [
+        "edge:mechanism:haplo:relevant:spectrum",
+        "edge:pmid22158542:reports:hdca",
+        "edge:pmid23223019:reports:spectrum",
+        "edge:pmid24310933:supports:nmd",
+        "edge:registry:asset_for:spectrum",
+        "edge:panelapp:asset_for:spectrum",
+        "edge:consortium:supports:hdca",
+        "edge:spectrum:phenotype:ndm",
+        "edge:spectrum:phenotype:chd"
+      ]
+    },
+    {
+      "id": "prepare",
+      "label": "Prepare next step",
+      "summary": "Turn the partner/natural-history gap into a sourced collaboration brief \u2014 without inventing a foundation.",
+      "anchor_node_id": "question:gata6_partner_and_natural_history_gap",
+      "preferred_edge_id": "edge:registry:could_inform:question",
+      "node_ids": [
+        "question:gata6_partner_and_natural_history_gap",
+        "gap:gata6_dedicated_patient_org",
+        "asset:uchicago_monogenic_diabetes_registry",
+        "org:international_pancreatic_agenesis_consortium"
+      ],
+      "edge_ids": [
+        "edge:gap:leads_to:question",
+        "edge:registry:could_inform:question"
+      ]
+    }
+  ],
+  "edge_plain_language": {
+    "edge:mechanism:haplo:relevant:spectrum": "Haploinsufficiency is the core mechanism framing for GATA6-related disease.",
+    "edge:hdca:narrower:spectrum": "OMIM 600001 pancreatic+heart disease is a narrower subset of the broader spectrum.",
+    "edge:Arg493Ter:nmd_supports:haplo": "Published NMD supports haploinsufficiency for p.Arg493Ter specifically.",
+    "edge:pmid22158542:reports:hdca": "Allen 2012 linked heterozygous GATA6 variants to pancreatic agenesis with CHD.",
+    "edge:registry:asset_for:spectrum": "Chicago Monogenic Diabetes Registry is a public research asset including GATA6 context.",
+    "edge:gap:leads_to:question": "Missing dedicated foundation evidence motivates the next collaboration question."
+  },
+  "asset_assessments": [
+    {
+      "asset_id": "asset:uchicago_monogenic_diabetes_registry",
+      "asset_kind": "patient_registry",
+      "title": "University of Chicago Monogenic Diabetes Registry",
+      "description": "Longitudinal research registry for families with known or suspected monogenic diabetes; public pages mention GATA6.",
+      "owner": "University of Chicago Monogenic Diabetes program",
+      "source_url": "https://monogenicdiabetes.uchicago.edu/",
+      "designed_for": {
+        "disease": "Monogenic diabetes (includes GATA6 among others)",
+        "genotype": "Gene-specific fields not verified here",
+        "population": "Families with known/suspected monogenic diabetes",
+        "species": "Homo sapiens"
+      },
+      "access": "Public program pages; participation/data access require contacting the program. Atlas sends nothing automatically.",
+      "relevance_to_journey": "Best verified research-community asset while a dedicated GATA6 foundation remains missing.",
+      "comparison": {
+        "may_be_reusable": [
+          "Longitudinal monogenic-diabetes follow-up framing",
+          "Public education pages on GATA6-associated malformations"
+        ],
+        "what_differs": [
+          "Registry is not GATA6-only",
+          "Research registry \u2260 patient advocacy foundation"
+        ],
+        "needs_expert_review": [
+          "Current GATA6 enrollment and data-access pathway",
+          "Whether cardiac-only GATA6 cases are in scope"
+        ],
+        "adaptation_status": "Potential research collaboration to investigate",
+        "validation_question": "Can the registry answer a genotype-aware GATA6 natural-history question under its current consent model?"
+      }
+    },
+    {
+      "asset_id": "asset:exeter_neonatal_diabetes_testing",
+      "asset_kind": "diagnostic_panel_curation",
+      "title": "PanelApp / neonatal diabetes gene curation for GATA6",
+      "description": "Green gene curation linking GATA6 to pancreatic agenesis and congenital heart defects / neonatal diabetes panels.",
+      "owner": "Genomics England PanelApp / NHS GMS curation",
+      "source_url": "https://panelapp.genomicsengland.co.uk/panels/293/gene/GATA6/",
+      "designed_for": {
+        "disease": "Neonatal diabetes / pancreatic agenesis and CHD",
+        "genotype": "Diagnostic sequencing context",
+        "population": "Clinical testing referrals",
+        "species": "Homo sapiens"
+      },
+      "access": "Public curation page.",
+      "relevance_to_journey": "Shows diagnostic-testing infrastructure exists even when advocacy infrastructure is thin.",
+      "comparison": {
+        "may_be_reusable": [
+          "Panel inclusion rationale for research briefs"
+        ],
+        "what_differs": [
+          "Panel curation \u2260 natural-history study"
+        ],
+        "needs_expert_review": [
+          "How panel language should appear in community materials"
+        ],
+        "adaptation_status": "Evidence/reference asset",
+        "validation_question": "Which panel phenotype terms should be preserved vs avoided when speaking with families?"
+      }
+    },
+    {
+      "asset_id": "org:international_pancreatic_agenesis_consortium",
+      "asset_kind": "research_consortium",
+      "title": "International Pancreatic Agenesis Consortium",
+      "description": "Authorship/research consortium on Allen et al. 2012; not verified as a patient foundation.",
+      "owner": "Multi-institution research group (see publication)",
+      "source_url": "https://pubmed.ncbi.nlm.nih.gov/22158542/",
+      "designed_for": {
+        "disease": "Pancreatic agenesis research ascertainment",
+        "genotype": "GATA6 discovery cohort context",
+        "population": "Clinician-referred agenesis cases",
+        "species": "Homo sapiens"
+      },
+      "access": "No standalone public org site verified; publication only.",
+      "relevance_to_journey": "Historical research network \u2014 do not treat as a current partner contact.",
+      "comparison": {
+        "may_be_reusable": [
+          "Ascertainment definitions from the discovery paper"
+        ],
+        "what_differs": [
+          "Consortium authorship \u2260 ongoing advocacy organization"
+        ],
+        "needs_expert_review": [
+          "Whether any consortium site still operates"
+        ],
+        "adaptation_status": "Historical reference only",
+        "validation_question": "Is there a current public contact for pancreatic-agenesis research collaboration beyond publications?"
+      }
+    }
+  ],
+  "registry_gap": {
+    "status": "registry_present_dedicated_org_missing",
+    "explanation": "A monogenic-diabetes research registry is publicly documented, but this curated slice did not verify a GATA6-dedicated patient foundation or a confirmed registry data-access SOP for GATA6-only queries.",
+    "missing_evidence": [
+      "Dedicated GATA6 patient organization primary website",
+      "Registry access process + genotype fields verified for GATA6 extracts"
+    ],
+    "next_question": "Which organization can represent GATA6 family priorities while registry access is clarified?"
+  },
+  "unsupported_search": {
+    "sources_searched": [
+      "Curated GATA6 demonstration layer (Allen/De Franco/Suzuki, ClinVar examples, Chicago registry, PanelApp)",
+      "Other curated datasets remain separate"
+    ],
+    "coverage_note": "Coverage is limited to curated demonstration datasets in this prototype."
+  },
+  "proposal_defaults": {
+    "research_question": "Which public natural-history or community partner can support genotype-aware GATA6 research questions without collapsing pancreatic-agenesis and later-onset diabetes presentations?",
+    "proposed_next_step": "Contact the Chicago Monogenic Diabetes Registry via its public channels to ask about GATA6-specific follow-up fields, and separately search for any CHD/neonatal-diabetes advocacy partner willing to advise \u2014 without claiming a dedicated GATA6 foundation exists.",
+    "partner_gap_if_unknown": "No individual researcher availability is asserted. Dedicated GATA6 foundation not verified."
+  },
+  "unsupported_missing_evidence": [
+    "A curated entity match for this query in the demonstration layer",
+    "A reviewed edge connecting it into a curated dataset journey without merging unrelated disease labels"
+  ],
+  "unsupported_next_question_template": "What primary public source would establish whether \"{query}\" belongs in the Rare Disease Atlas curated layer, and which disease scope should it be mapped to without merging synonyms?"
+}

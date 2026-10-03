@@ -420,5 +420,7 @@
     "A curated entity match for this query in the demonstration layer",
     "A reviewed edge connecting it into the selected dataset journey without merging unrelated disease labels"
   ],
-  "unsupported_next_question_template": "What primary public source would establish whether \"{query}\" belongs in the Rare Disease Atlas curated layer, and which disease scope should it be mapped to without merging synonyms?"
+  "unsupported_next_question_template": "What primary public source would establish whether \"{query}\" belongs in the Rare Disease Atlas curated layer, and which disease scope should it be mapped to without merging synonyms?",
+  "journey_status": "complete",
+  "journey_status_note": "Full path with CARE4ARID1B, FAR, and endpoint-readiness question."
 }

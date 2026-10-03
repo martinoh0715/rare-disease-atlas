@@ -1,6 +1,6 @@
 # How to add a third curated dataset
 
-This guide assumes the HBB and ARID1B slices already work. Goal: prove generalization, not maximize node count.
+This guide assumes the HBB, ARID1B, GATA6, and ODC1 slices already work. Goal: prove generalization, not maximize node count. Prefer copying `research/gata6/` or `research/odc1/` (shared helpers in `research/_shared/curate_lib.py`).
 
 ## 1. Create a research folder
 
