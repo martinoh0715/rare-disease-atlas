@@ -157,14 +157,31 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
     setExpanded(false);
     const s = stages.find((x) => x.id === id);
     if (!s) return;
-    // Prefer keeping current focus if on stage; else jump to first disease/org on stage.
-    if (!s.node_ids.includes(focusId)) {
-      const preferred =
-        s.node_ids.find((nid) => nodeMap.get(nid)?.type === "disease") ||
-        s.node_ids[0];
+    // Highlight this step's path only — do not steal the user's selected center.
+    // Prefer selecting a path edge attached to the current center when possible.
+    const edgeOnFocus =
+      s.edge_ids.find((eid) => {
+        const e = edgeMap.get(eid);
+        return e && (e.source === focusId || e.target === focusId);
+      }) || null;
+    setSelectedEdgeId(edgeOnFocus || s.edge_ids[0] || null);
+  }
+
+  function jumpToStageFocus(id: string) {
+    const s = stages.find((x) => x.id === id);
+    if (!s) return;
+    const preferred =
+      s.node_ids.find((nid) => nodeMap.get(nid)?.type === "disease") ||
+      s.node_ids[0];
+    if (preferred) {
       setFocusId(preferred);
+      const e =
+        s.edge_ids.find((eid) => {
+          const edge = edgeMap.get(eid);
+          return edge && (edge.source === preferred || edge.target === preferred);
+        }) || s.edge_ids[0];
+      setSelectedEdgeId(e || null);
     }
-    setSelectedEdgeId(s.edge_ids[0] || null);
   }
 
   function toggleAsset(id: string) {
@@ -345,6 +362,11 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
             <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
               Guided discovery
             </h2>
+            <p className="mt-2 text-xs leading-relaxed text-slate-600">
+              A 3-step tour of the curated story. Each step highlights which
+              links matter now. It does not change your selected center unless
+              you ask it to.
+            </p>
             <ol className="mt-3 space-y-2">
               {stages.map((s, idx) => (
                 <li key={s.id}>
@@ -358,7 +380,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                     }`}
                   >
                     <span className="block text-[11px] uppercase tracking-wide opacity-70">
-                      {idx + 1}
+                      Step {idx + 1}
                     </span>
                     <span className="font-medium">{s.label}</span>
                   </button>
@@ -366,6 +388,15 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               ))}
             </ol>
             <p className="mt-3 text-xs text-slate-600">{stage?.summary}</p>
+            {stage && !stage.node_ids.includes(focusId) && (
+              <button
+                type="button"
+                onClick={() => jumpToStageFocus(stage.id)}
+                className="mt-2 text-xs font-medium text-teal-800 hover:underline"
+              >
+                Move center to this step’s starting point
+              </button>
+            )}
           </section>
         </aside>
 
@@ -445,7 +476,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
         </main>
 
         <aside className="space-y-4">
-          <EvidencePanel
+          <SourcePanel
             edge={selectedEdge}
             nodeMap={nodeMap}
             plainFallback={
@@ -709,7 +740,7 @@ function Unsupported({
   );
 }
 
-function EvidencePanel({
+function SourcePanel({
   edge,
   nodeMap,
   plainFallback,
@@ -721,9 +752,10 @@ function EvidencePanel({
   if (!edge) {
     return (
       <section className="rounded-xl border border-slate-200 bg-white p-4">
-        <h2 className="font-display text-lg">Evidence</h2>
+        <h2 className="font-display text-lg">Source</h2>
         <p className="mt-2 text-sm text-slate-600">
-          Select a connection to inspect its explanation and source.
+          Select a connection in the graph or list to see what source supports
+          it.
         </p>
       </section>
     );
@@ -732,7 +764,7 @@ function EvidencePanel({
   const hypo = isHypothesisEdge(edge);
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4">
-      <h2 className="font-display text-lg">Evidence</h2>
+      <h2 className="font-display text-lg">Source</h2>
       <div
         className={`mt-3 rounded-md px-3 py-2 text-xs font-semibold uppercase tracking-wide ${
           hypo
@@ -740,7 +772,7 @@ function EvidencePanel({
             : "bg-teal-50 text-teal-900"
         }`}
       >
-        {hypo ? "Proposed / hypothesis" : "Established / sourced"} ·{" "}
+        {hypo ? "Proposed / hypothesis" : "Established"} ·{" "}
         {relationshipLabel(edge.type)}
       </div>
       <p className="mt-3 text-sm font-medium text-slate-900">
@@ -750,25 +782,18 @@ function EvidencePanel({
         {edge.plain_language || plainFallback || "No plain-language summary yet."}
       </p>
       <dl className="mt-4 space-y-2 text-sm text-slate-700">
-        <Detail label="Supporting passage / locator" value={ev?.supporting_passage} />
-        <Detail label="Source" value={ev?.source_url} />
+        <Detail label="What the source says" value={ev?.supporting_passage} />
+        <Detail label="Link" value={ev?.source_url} />
         <Detail label="Publication date" value={ev?.publication_date} />
-        <Detail label="Retrieval date" value={ev?.retrieval_date} />
-        <Detail label="Evidence type" value={ev?.evidence_type} />
         <Detail
-          label="Directly reported vs inferred"
-          value={ev?.reporting_basis || (hypo ? "inferred_or_proposed" : "sourced")}
+          label="Genotype / population"
+          value={ev?.genotype_context || ev?.population_context}
         />
-        <Detail label="Species / context" value={ev?.species || ev?.experimental_context} />
-        <Detail label="Genotype / population" value={ev?.genotype_context || ev?.population_context} />
-        <Detail label="Extraction review status" value={ev?.extraction_review_status} />
-        <Detail
-          label="Extraction confidence (not clinical certainty)"
-          value={ev?.extraction_confidence}
-        />
-        <Detail label="Scientific evidence strength" value={ev?.evidence_strength} />
         <Detail label="Limitations" value={ev?.limitations || edge.limitations} />
-        <Detail label="Contradictory / missing-link notes" value={ev?.contradictory_evidence} />
+        <Detail
+          label="Contradictory or missing-link notes"
+          value={ev?.contradictory_evidence}
+        />
       </dl>
       {ev?.source_url && (
         <a
@@ -905,8 +930,13 @@ function ConnectionList({
   return (
     <div className="mt-4">
       <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-        Displayed connections
+        Links from this center
       </h3>
+      <p className="mt-1 text-xs text-slate-500">
+        Text-only list of the relationships currently drawn around the selected
+        center. Click one to open its source panel — useful if the graph feels
+        crowded.
+      </p>
       <ul className="mt-2 max-h-40 space-y-1 overflow-auto">
         {edges.map((e) => (
           <li key={e.id}>
