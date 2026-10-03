@@ -435,9 +435,9 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               </Button>
             </div>
 
-            <div className="mb-3 flex justify-end">
-              <div className="w-full max-w-[280px] rounded-md border border-slate-300 bg-white shadow-sm">
-                <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-3 py-2">
+            <div className="relative overflow-hidden rounded-xl">
+              <div className="pointer-events-auto absolute right-3 top-3 z-20 w-[250px] rounded-md border border-slate-300 bg-white/95 shadow-md backdrop-blur-sm">
+                <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/95 px-3 py-2">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">
                     Legend
                   </p>
@@ -460,7 +460,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                     </button>
                   </div>
                 </div>
-                <ul className="max-h-52 space-y-0.5 overflow-auto px-2 py-2">
+                <ul className="max-h-48 space-y-0.5 overflow-auto px-2 py-2">
                   {demo.category_legend.map((c) => {
                     const count = local.allNodes.filter(
                       (n) => legendCategoryForType(n.type) === c.id
@@ -501,17 +501,17 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                   Toggle categories to show or hide nodes. Dashed = proposed.
                 </p>
               </div>
-            </div>
 
-            <NetworkCanvas
-              focusId={focusId}
-              nodes={local.nodes}
-              edges={local.edges}
-              selectedEdgeId={selectedEdgeId}
-              legend={demo.category_legend}
-              onSelectNode={(id) => goToNode(id)}
-              onSelectEdge={setSelectedEdgeId}
-            />
+              <NetworkCanvas
+                focusId={focusId}
+                nodes={local.nodes}
+                edges={local.edges}
+                selectedEdgeId={selectedEdgeId}
+                legend={demo.category_legend}
+                onSelectNode={(id) => goToNode(id)}
+                onSelectEdge={setSelectedEdgeId}
+              />
+            </div>
 
             {local.emptyReason && (
               <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">

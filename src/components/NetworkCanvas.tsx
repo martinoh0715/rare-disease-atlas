@@ -25,7 +25,10 @@ type Pos = { x: number; y: number };
 const WIDTH = 1700;
 const HEIGHT = 720;
 const CX = WIDTH / 2;
-const CY = HEIGHT / 2;
+const CY = HEIGHT / 2 + 24;
+
+/** Keep nodes/labels out of the embedded legend (top-right). */
+const LEGEND_ZONE = { x0: WIDTH - 340, y0: 0, x1: WIDTH, y1: 290 };
 
 function wrapLabel(label: string, maxChars = 22): string[] {
   const words = label.split(/\s+/);
@@ -44,6 +47,22 @@ function wrapLabel(label: string, maxChars = 22): string[] {
   return lines.slice(0, 3);
 }
 
+function inLegendZone(p: Pos, pad = 40): boolean {
+  return (
+    p.x >= LEGEND_ZONE.x0 - pad &&
+    p.x <= LEGEND_ZONE.x1 + pad &&
+    p.y >= LEGEND_ZONE.y0 - pad &&
+    p.y <= LEGEND_ZONE.y1 + pad
+  );
+}
+
+function escapeLegendZone(p: Pos) {
+  if (!inLegendZone(p)) return;
+  // Push toward center-left / down, away from the legend corner.
+  p.x = Math.min(p.x, LEGEND_ZONE.x0 - 50);
+  p.y = Math.max(p.y, LEGEND_ZONE.y1 + 36);
+}
+
 /** Horizontal ellipse layout with light collision nudging. */
 function layoutNodes(focusId: string, nodes: GraphNode[]): Map<string, Pos> {
   const positions = new Map<string, Pos>();
@@ -53,18 +72,19 @@ function layoutNodes(focusId: string, nodes: GraphNode[]): Map<string, Pos> {
   const n = others.length;
   if (n === 0) return positions;
 
-  const radiusX = Math.min(720, 320 + n * 22);
-  const radiusY = Math.min(280, 160 + n * 10);
+  const radiusX = Math.min(640, 300 + n * 20);
+  const radiusY = Math.min(260, 150 + n * 9);
 
   others.forEach((node, i) => {
-    const angle = (2 * Math.PI * i) / n - Math.PI / 2;
+    // Start near top but rotate slightly so fewer nodes land in the NE legend corner.
+    const angle = (2 * Math.PI * i) / n - Math.PI / 2 + 0.18;
     positions.set(node.id, {
       x: CX + Math.cos(angle) * radiusX,
       y: CY + Math.sin(angle) * radiusY,
     });
   });
 
-  for (let iter = 0; iter < 10; iter++) {
+  for (let iter = 0; iter < 12; iter++) {
     for (let i = 0; i < others.length; i++) {
       for (let j = i + 1; j < others.length; j++) {
         const a = positions.get(others[i].id)!;
@@ -93,6 +113,7 @@ function layoutNodes(focusId: string, nodes: GraphNode[]): Map<string, Pos> {
       p.y = CY + (dy / dist) * radiusY;
       p.x = Math.min(WIDTH - 140, Math.max(140, p.x));
       p.y = Math.min(HEIGHT - 90, Math.max(70, p.y));
+      escapeLegendZone(p);
     }
   }
 
