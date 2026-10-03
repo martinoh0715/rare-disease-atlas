@@ -15,7 +15,6 @@ type Props = {
   edges: GraphEdge[];
   selectedEdgeId: string | null;
   legend: DemoExperience["category_legend"];
-  legendCollapsed?: boolean;
   onSelectNode: (id: string) => void;
   onSelectEdge: (id: string) => void;
 };
@@ -28,9 +27,7 @@ const HEIGHT = 720;
 const CX = WIDTH / 2;
 const CY = HEIGHT / 2 + 24;
 
-/** Keep nodes/labels out of the embedded chrome (top corners). */
-const LEGEND_ZONE_OPEN = { x0: WIDTH - 340, y0: 0, x1: WIDTH, y1: 290 };
-const LEGEND_ZONE_COLLAPSED = { x0: WIDTH - 180, y0: 0, x1: WIDTH, y1: 70 };
+/** Keep nodes/labels out of the Back control (top-left). */
 const BACK_ZONE = { x0: 0, y0: 0, x1: 320, y1: 80 };
 
 function wrapLabel(label: string, maxChars = 22): string[] {
@@ -50,7 +47,7 @@ function wrapLabel(label: string, maxChars = 22): string[] {
   return lines.slice(0, 3);
 }
 
-function inLegendZone(
+function inOverlayZone(
   p: Pos,
   zone: { x0: number; y0: number; x1: number; y1: number },
   pad = 40
@@ -68,7 +65,7 @@ function escapeOverlayZone(
   zone: { x0: number; y0: number; x1: number; y1: number },
   side: "left" | "right"
 ) {
-  if (!inLegendZone(p, zone)) return;
+  if (!inOverlayZone(p, zone)) return;
   if (side === "right") {
     p.x = Math.min(p.x, zone.x0 - 50);
   } else {
@@ -78,14 +75,9 @@ function escapeOverlayZone(
 }
 
 /** Horizontal ellipse layout with light collision nudging. */
-function layoutNodes(
-  focusId: string,
-  nodes: GraphNode[],
-  legendCollapsed: boolean
-): Map<string, Pos> {
+function layoutNodes(focusId: string, nodes: GraphNode[]): Map<string, Pos> {
   const positions = new Map<string, Pos>();
   positions.set(focusId, { x: CX, y: CY });
-  const zone = legendCollapsed ? LEGEND_ZONE_COLLAPSED : LEGEND_ZONE_OPEN;
 
   const others = nodes.filter((n) => n.id !== focusId);
   const n = others.length;
@@ -95,7 +87,6 @@ function layoutNodes(
   const radiusY = Math.min(260, 150 + n * 9);
 
   others.forEach((node, i) => {
-    // Start near top but rotate slightly so fewer nodes land in the NE legend corner.
     const angle = (2 * Math.PI * i) / n - Math.PI / 2 + 0.18;
     positions.set(node.id, {
       x: CX + Math.cos(angle) * radiusX,
@@ -132,7 +123,6 @@ function layoutNodes(
       p.y = CY + (dy / dist) * radiusY;
       p.x = Math.min(WIDTH - 140, Math.max(140, p.x));
       p.y = Math.min(HEIGHT - 90, Math.max(70, p.y));
-      escapeOverlayZone(p, zone, "right");
       escapeOverlayZone(p, BACK_ZONE, "left");
     }
   }
@@ -168,15 +158,14 @@ export function NetworkCanvas({
   edges,
   selectedEdgeId,
   legend,
-  legendCollapsed = false,
   onSelectNode,
   onSelectEdge,
 }: Props) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const positions = useMemo(
-    () => layoutNodes(focusId, nodes, legendCollapsed),
-    [focusId, legendCollapsed, nodes]
+    () => layoutNodes(focusId, nodes),
+    [focusId, nodes]
   );
 
   return (

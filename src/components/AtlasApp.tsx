@@ -104,7 +104,6 @@ export function AtlasApp({
   const [enabledCategories, setEnabledCategories] = useState<string[]>(() =>
     defaultDataset.demo.category_legend.map((c) => c.id)
   );
-  const [legendOpen, setLegendOpen] = useState(true);
   const graphSectionRef = useRef<HTMLElement | null>(null);
   const [graphSectionHeight, setGraphSectionHeight] = useState<number | null>(
     null
@@ -279,7 +278,7 @@ export function AtlasApp({
     const ro = new ResizeObserver(update);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [mode, stageId, focusId, expanded, local.nodes.length, legendOpen]);
+  }, [mode, stageId, focusId, expanded, local.nodes.length]);
 
   const assetAssessments = demo.asset_assessments;
   const visibleAssets = assetAssessments.filter((a) =>
@@ -665,100 +664,50 @@ export function AtlasApp({
                 </span>
               </div>
 
-              <div className="pointer-events-auto absolute right-3 top-3 z-20 w-[250px] rounded-atlas border border-line bg-white shadow-atlas">
-                <div className="flex items-center justify-between gap-2 border-b border-line bg-slate-50 px-3 py-2">
-                  <button
-                    type="button"
-                    className="flex min-w-0 flex-1 items-center justify-between rounded-sm text-left transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
-                    onClick={() => setLegendOpen((v) => !v)}
-                    aria-expanded={legendOpen}
-                    aria-controls="graph-legend-body"
-                  >
-                    <span className="text-sm font-semibold text-slate-700">
-                      Legend
-                    </span>
-                    <span className="text-sm text-slate-500" aria-hidden>
-                      {legendOpen ? "▲" : "▼"}
-                    </span>
-                  </button>
-                </div>
-                {legendOpen ? (
-                  <div id="graph-legend-body">
-                    <div className="flex justify-end gap-1 border-b border-slate-100 px-2 py-1.5">
-                      <button
-                        type="button"
-                        className="rounded px-2 py-1 text-sm font-medium text-moss-800 transition-colors duration-atlas hover:bg-moss-50"
-                        onClick={() =>
-                          setEnabledCategories(
-                            demo.category_legend.map((c) => c.id)
-                          )
-                        }
-                      >
-                        Check all
-                      </button>
-                      <button
-                        type="button"
-                        className="rounded px-2 py-1 text-sm font-medium text-slate-600 transition-colors duration-atlas hover:bg-slate-100"
-                        onClick={() => setEnabledCategories([])}
-                      >
-                        Uncheck all
-                      </button>
-                    </div>
-                    <ul className="max-h-48 space-y-0.5 overflow-auto px-2 py-2">
-                      {demo.category_legend.map((c) => {
-                        const count = local.allNodes.filter(
-                          (n) => legendCategoryForType(n.type) === c.id
-                        ).length;
-                        if (count === 0) return null;
-                        const checked = enabledCategorySet.has(c.id);
-                        return (
-                          <li key={c.id}>
-                            <label
-                              className={`flex min-h-9 cursor-pointer items-center gap-2 rounded px-1.5 py-1 text-sm transition-colors duration-atlas ${
-                                checked
-                                  ? "bg-white text-slate-800"
-                                  : "bg-slate-50 text-slate-400"
-                              } hover:bg-slate-100`}
-                            >
-                              <input
-                                type="checkbox"
-                                className="h-4 w-4 accent-teal-700"
-                                checked={checked}
-                                onChange={() => toggleCategory(c.id)}
-                              />
-                              <span
-                                className="inline-block h-2.5 w-2.5 shrink-0 rounded-sm"
-                                style={{
-                                  background: checked ? c.color : "#cbd5e1",
-                                }}
-                                aria-hidden
-                              />
-                              <span className="flex-1">{c.label}</span>
-                              <span className="tabular-nums text-slate-500">
-                                {count}
-                              </span>
-                            </label>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                    <p className="border-t border-line px-3 py-2 text-sm leading-snug text-slate-500">
-                      Toggle categories to show or hide nodes. Dashed = proposed.
-                    </p>
-                  </div>
-                ) : null}
-              </div>
-
               <NetworkCanvas
                 focusId={focusId}
                 nodes={local.nodes}
                 edges={local.edges}
                 selectedEdgeId={selectedEdgeId}
                 legend={demo.category_legend}
-                legendCollapsed={!legendOpen}
                 onSelectNode={(id) => goToNode(id)}
                 onSelectEdge={setSelectedEdgeId}
               />
+            </div>
+
+            <div
+              className="mt-3 flex flex-wrap items-center gap-2"
+              role="group"
+              aria-label="Legend filters"
+            >
+              {demo.category_legend.map((c) => {
+                const count = local.allNodes.filter(
+                  (n) => legendCategoryForType(n.type) === c.id
+                ).length;
+                if (count === 0) return null;
+                const checked = enabledCategorySet.has(c.id);
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => toggleCategory(c.id)}
+                    aria-pressed={checked}
+                    className={`inline-flex min-h-9 items-center gap-2 rounded-atlas border px-2.5 py-1.5 text-sm transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss ${
+                      checked
+                        ? "border-line bg-white text-ink"
+                        : "border-transparent bg-slate-100 text-slate-400"
+                    }`}
+                  >
+                    <span
+                      className="inline-block h-2.5 w-2.5 shrink-0 rounded-sm"
+                      style={{ background: checked ? c.color : "#cbd5e1" }}
+                      aria-hidden
+                    />
+                    <span>{c.label}</span>
+                    <span className="tabular-nums text-slate-500">{count}</span>
+                  </button>
+                );
+              })}
             </div>
 
             {local.emptyReason && (
@@ -904,8 +853,12 @@ function Landing({
 }) {
   const ambiguous = needsDisambiguation(hits);
   return (
-    <div className="min-h-screen bg-soft">
-      <div className="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-4 py-14 md:px-6 md:py-16">
+    <div className="relative min-h-screen overflow-hidden bg-soft">
+      <div
+        className="pointer-events-none absolute inset-0 dna-helix-bg"
+        aria-hidden
+      />
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-4 py-14 md:px-6 md:py-16">
         <h1 className="font-display text-[28px] font-bold leading-tight text-ink md:text-[30px]">
           {productName}
         </h1>
@@ -929,7 +882,7 @@ function Landing({
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
               placeholder="Search a disease, a gene, or a variant — e.g. sickle cell anemia or ARID1B"
-              className="h-12 text-base"
+              className="h-12 border-slate-200/90 bg-white/90 text-base shadow-sm backdrop-blur-sm"
             />
             <Button type="submit" size="lg" className="sm:h-12 sm:px-6">
               Search
@@ -942,7 +895,7 @@ function Landing({
               key={ex.query}
               type="button"
               onClick={() => onPickExample(ex.query)}
-              className="min-h-9 rounded-atlas border border-line bg-white px-3 py-1.5 text-sm text-slate-700 transition-colors duration-atlas hover:border-slate-400 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
+              className="min-h-9 rounded-atlas border border-line bg-white/85 px-3 py-1.5 text-sm text-slate-700 backdrop-blur-sm transition-colors duration-atlas hover:border-slate-400 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
             >
               {ex.label}
             </button>
@@ -950,7 +903,7 @@ function Landing({
         </div>
 
         {hits.length > 0 && (
-          <div className="atlas-panel mt-6 p-4 md:p-5">
+          <div className="atlas-panel mt-6 bg-white/92 p-4 backdrop-blur-sm md:p-5">
             <h2 className="text-[18px] font-semibold text-ink">
               {ambiguous
                 ? "Multiple conditions match — choose the intended one"
@@ -962,7 +915,7 @@ function Landing({
                   <button
                     type="button"
                     onClick={() => onSelectHit(h.entry.id, h.datasetId)}
-                    className="w-full rounded-atlas border border-line px-3 py-3 text-left transition-colors duration-atlas hover:border-slate-400 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
+                    className="w-full rounded-atlas border border-line bg-white/80 px-3 py-3 text-left transition-colors duration-atlas hover:border-slate-400 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
                   >
                     <span className="block text-base font-medium text-ink">
                       {h.entry.label}

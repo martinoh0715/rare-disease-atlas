@@ -75,3 +75,23 @@ body {
   font-size: 14px;
   line-height: 1.45;
 }
+
+/* Subtle futuristic DNA double-helix for the landing screen only. */
+.dna-helix-bg {
+  background-color: transparent;
+  background-image:
+    radial-gradient(ellipse 80% 55% at 50% 42%, rgba(148, 163, 184, 0.12), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='720' height='900' viewBox='0 0 720 900'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M260 40 C 120 140, 600 220, 260 340 C 120 460, 600 540, 260 660 C 120 780, 600 860, 260 980' stroke='%23475569' stroke-width='1.4' opacity='0.22'/%3E%3Cpath d='M460 40 C 600 140, 120 220, 460 340 C 600 460, 120 540, 460 660 C 600 780, 120 860, 460 980' stroke='%230f766e' stroke-width='1.4' opacity='0.2'/%3E%3Cg stroke='%2364748b' stroke-width='1' opacity='0.18'%3E%3Cline x1='290' y1='100' x2='430' y2='100'/%3E%3Cline x1='250' y1='160' x2='470' y2='160'/%3E%3Cline x1='290' y1='220' x2='430' y2='220'/%3E%3Cline x1='250' y1='280' x2='470' y2='280'/%3E%3Cline x1='290' y1='340' x2='430' y2='340'/%3E%3Cline x1='250' y1='400' x2='470' y2='400'/%3E%3Cline x1='290' y1='460' x2='430' y2='460'/%3E%3Cline x1='250' y1='520' x2='470' y2='520'/%3E%3Cline x1='290' y1='580' x2='430' y2='580'/%3E%3Cline x1='250' y1='640' x2='470' y2='640'/%3E%3Cline x1='290' y1='700' x2='430' y2='700'/%3E%3Cline x1='250' y1='760' x2='470' y2='760'/%3E%3Cline x1='290' y1='820' x2='430' y2='820'/%3E%3C/g%3E%3Cg fill='%23475569' opacity='0.16'%3E%3Ccircle cx='290' cy='100' r='2.2'/%3E%3Ccircle cx='430' cy='100' r='2.2'/%3E%3Ccircle cx='250' cy='160' r='2.2'/%3E%3Ccircle cx='470' cy='160' r='2.2'/%3E%3Ccircle cx='290' cy='220' r='2.2'/%3E%3Ccircle cx='430' cy='220' r='2.2'/%3E%3Ccircle cx='250' cy='280' r='2.2'/%3E%3Ccircle cx='470' cy='280' r='2.2'/%3E%3Ccircle cx='290' cy='340' r='2.2'/%3E%3Ccircle cx='430' cy='340' r='2.2'/%3E%3Ccircle cx='250' cy='400' r='2.2'/%3E%3Ccircle cx='470' cy='400' r='2.2'/%3E%3Ccircle cx='290' cy='460' r='2.2'/%3E%3Ccircle cx='430' cy='460' r='2.2'/%3E%3Ccircle cx='250' cy='520' r='2.2'/%3E%3Ccircle cx='470' cy='520' r='2.2'/%3E%3Ccircle cx='290' cy='580' r='2.2'/%3E%3Ccircle cx='430' cy='580' r='2.2'/%3E%3Ccircle cx='250' cy='640' r='2.2'/%3E%3Ccircle cx='470' cy='640' r='2.2'/%3E%3Ccircle cx='290' cy='700' r='2.2'/%3E%3Ccircle cx='430' cy='700' r='2.2'/%3E%3Ccircle cx='250' cy='760' r='2.2'/%3E%3Ccircle cx='470' cy='760' r='2.2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 58% 42%;
+  background-size: min(920px, 120vw) auto;
+  opacity: 0.55;
+}
+
+@media (max-width: 640px) {
+  .dna-helix-bg {
+    background-position: 70% 38%;
+    background-size: min(780px, 160vw) auto;
+    opacity: 0.4;
+  }
+}

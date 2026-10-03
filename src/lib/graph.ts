@@ -140,21 +140,21 @@ export function typeColor(
   if (fromLegend) return fromLegend;
   switch (cat) {
     case "disease":
-      return "#2563eb";
+      return "#1d4ed8";
     case "gene_variant":
       return "#0f766e";
     case "mechanism":
-      return "#ca8a04";
+      return "#b45309";
     case "intervention":
-      return "#db2777";
+      return "#be123c";
     case "study":
       return "#7c3aed";
     case "publication":
-      return "#4f46e5";
+      return "#0e7490";
     case "phenotype":
-      return "#64748b";
+      return "#57534e";
     case "organization_asset":
-      return "#c2410c";
+      return "#ea580c";
     default:
       return "#475569";
   }

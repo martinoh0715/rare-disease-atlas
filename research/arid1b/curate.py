@@ -1306,14 +1306,14 @@ def build_demo_experience() -> dict[str, Any]:
             },
         ],
         "category_legend": [
-            {"id": "disease", "label": "Diseases", "color": "#2563eb"},
+            {"id": "disease", "label": "Diseases", "color": "#1d4ed8"},
             {"id": "gene_variant", "label": "Genes & variants", "color": "#0f766e"},
-            {"id": "mechanism", "label": "Mechanisms & processes", "color": "#ca8a04"},
-            {"id": "intervention", "label": "Interventions", "color": "#db2777"},
+            {"id": "mechanism", "label": "Mechanisms & processes", "color": "#b45309"},
+            {"id": "intervention", "label": "Interventions", "color": "#be123c"},
             {"id": "study", "label": "Clinical studies", "color": "#7c3aed"},
-            {"id": "publication", "label": "Publications", "color": "#4f46e5"},
-            {"id": "organization_asset", "label": "Organizations & assets", "color": "#c2410c"},
-            {"id": "phenotype", "label": "Phenotypes", "color": "#64748b"},
+            {"id": "publication", "label": "Publications", "color": "#0e7490"},
+            {"id": "organization_asset", "label": "Organizations & assets", "color": "#ea580c"},
+            {"id": "phenotype", "label": "Phenotypes", "color": "#57534e"},
         ],
         "stages": [
             {
