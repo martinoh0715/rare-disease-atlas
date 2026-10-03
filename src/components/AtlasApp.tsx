@@ -22,7 +22,7 @@ import type {
   DemoStage,
   ProposalDraft,
 } from "@/lib/types";
-import { sourceCardForEdge } from "@/lib/sourceMeta";
+import { importantSummaryForEdge, sourceCardForEdge } from "@/lib/sourceMeta";
 
 type Mode = "landing" | "workspace" | "unsupported";
 
@@ -393,8 +393,12 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                 </h1>
                 <p className="mt-1 text-sm capitalize text-slate-600">
                   {(focusNode?.type || "").replace(/_/g, " ")}
-                  {focusNode?.does_not ? ` · does not: ${focusNode.does_not}` : ""}
                 </p>
+                {focusNode?.does_not ? (
+                  <p className="mt-1 text-sm text-amber-900">
+                    What this is not: {focusNode.does_not.toLowerCase()}.
+                  </p>
+                ) : null}
               </div>
               <div className="flex flex-wrap gap-2">
                 <Button
@@ -457,6 +461,15 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
           <SourcePanel
             edge={selectedEdge}
             nodeMap={nodeMap}
+            plainFallback={
+              selectedEdge
+                ? demo.edge_plain_language[selectedEdge.id]
+                : undefined
+            }
+          />
+
+          <SummaryPanel
+            edge={selectedEdge}
             plainFallback={
               selectedEdge
                 ? demo.edge_plain_language[selectedEdge.id]
@@ -745,7 +758,6 @@ function SourcePanel({
         {card.title}
       </p>
       <p className="mt-1 text-sm text-slate-500">{card.organization}</p>
-      <p className="mt-3 text-sm leading-relaxed text-slate-700">{card.summary}</p>
       {card.url ? (
         <a
           href={card.url}
@@ -758,6 +770,37 @@ function SourcePanel({
       ) : (
         <p className="mt-4 text-sm text-slate-500">No website link available.</p>
       )}
+    </section>
+  );
+}
+
+function SummaryPanel({
+  edge,
+  plainFallback,
+}: {
+  edge: GraphEdge | null;
+  plainFallback?: string;
+}) {
+  if (!edge) {
+    return (
+      <section className="rounded-xl border border-slate-200 bg-white p-4">
+        <h2 className="font-display text-lg">Summary</h2>
+        <p className="mt-2 text-sm text-slate-600">
+          Select a connection to see a short takeaway.
+        </p>
+      </section>
+    );
+  }
+  const { summary, caveat } = importantSummaryForEdge(edge, plainFallback);
+  return (
+    <section className="rounded-xl border border-slate-200 bg-white p-4">
+      <h2 className="font-display text-lg">Summary</h2>
+      <p className="mt-3 text-sm leading-relaxed text-slate-800">{summary}</p>
+      {caveat ? (
+        <p className="mt-2 text-xs leading-relaxed text-slate-500">
+          Caveat: {caveat}
+        </p>
+      ) : null}
     </section>
   );
 }

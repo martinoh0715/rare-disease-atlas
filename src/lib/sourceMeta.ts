@@ -4,6 +4,7 @@ export type SourceCard = {
   title: string;
   organization: string;
   summary: string;
+  caveat: string | null;
   url: string | null;
 };
 
@@ -30,10 +31,26 @@ function orgFromUrl(url?: string | null): string | null {
   }
 }
 
-function truncate(text: string, max = 220): string {
+function truncate(text: string, max = 160): string {
   const t = text.replace(/\s+/g, " ").trim();
   if (t.length <= max) return t;
   return `${t.slice(0, max - 1)}…`;
+}
+
+/** One short takeaway + optional caveat for the Summary panel. */
+export function importantSummaryForEdge(
+  edge: GraphEdge,
+  plainFallback?: string
+): { summary: string; caveat: string | null } {
+  const summary = truncate(
+    edge.plain_language ||
+      plainFallback ||
+      edge.evidence?.supporting_passage ||
+      "No short summary is available for this link yet."
+  );
+  const lim = edge.evidence?.limitations || edge.limitations || null;
+  const caveat = lim ? truncate(String(lim), 120) : null;
+  return { summary, caveat };
 }
 
 export function sourceCardForEdge(
@@ -77,12 +94,7 @@ export function sourceCardForEdge(
     (targetNode?.type === "organization" && targetNode.label) ||
     "Source organization not identified";
 
-  const summary = truncate(
-    edge.plain_language ||
-      plainFallback ||
-      ev?.supporting_passage ||
-      "No summary available for this connection."
-  );
+  const { summary, caveat } = importantSummaryForEdge(edge, plainFallback);
 
-  return { title, organization, summary, url };
+  return { title, organization, summary, caveat, url };
 }

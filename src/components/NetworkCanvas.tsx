@@ -135,6 +135,7 @@ export function NetworkCanvas({
 }: Props) {
   const [scale, setScale] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const dragRef = useRef<{
     mode: "pan" | null;
     startX: number;
@@ -247,7 +248,8 @@ export function NetworkCanvas({
             const p = positions.get(n.id);
             if (!p) return null;
             const focused = n.id === focusId;
-            const r = focused ? 28 : 16;
+            const hovered = n.id === hoveredId;
+            const r = focused ? 28 : hovered ? 20 : 16;
             const color = typeColor(n.type, legend);
             const lines = wrapLabel(n.label, focused ? 22 : 16);
             // Place label outside the ring, away from center.
@@ -259,12 +261,22 @@ export function NetworkCanvas({
             const ly = focused ? p.y + r + 18 : p.y + (dy / dist) * labelOffset;
             const anchor =
               focused || Math.abs(dx) < 40 ? "middle" : dx > 0 ? "start" : "end";
+            const hoverLines = wrapLabel(n.label, 28);
+            const hoverWidth = Math.min(
+              320,
+              Math.max(96, ...hoverLines.map((l) => l.length * 9.2)) + 24
+            );
+            const hoverHeight = 14 + hoverLines.length * 20;
 
             return (
               <g
                 key={n.id}
                 data-node
                 className="cursor-pointer"
+                onMouseEnter={() => setHoveredId(n.id)}
+                onMouseLeave={() =>
+                  setHoveredId((id) => (id === n.id ? null : id))
+                }
                 onClick={(ev) => {
                   ev.stopPropagation();
                   onSelectNode(n.id);
@@ -281,22 +293,50 @@ export function NetworkCanvas({
                   />
                 )}
                 <circle cx={p.x} cy={p.y} r={r} fill={color} />
-                <text
-                  x={lx}
-                  y={ly}
-                  textAnchor={anchor}
-                  className="fill-slate-900"
-                  style={{
-                    fontSize: focused ? 13 : 12,
-                    fontWeight: focused ? 700 : 600,
-                  }}
-                >
-                  {lines.map((line, i) => (
-                    <tspan key={i} x={lx} dy={i === 0 ? 0 : 15}>
-                      {line}
-                    </tspan>
-                  ))}
-                </text>
+                {!hovered && (
+                  <text
+                    x={lx}
+                    y={ly}
+                    textAnchor={anchor}
+                    className="fill-slate-900"
+                    style={{
+                      fontSize: focused ? 13 : 12,
+                      fontWeight: focused ? 700 : 600,
+                    }}
+                  >
+                    {lines.map((line, i) => (
+                      <tspan key={i} x={lx} dy={i === 0 ? 0 : 15}>
+                        {line}
+                      </tspan>
+                    ))}
+                  </text>
+                )}
+                {hovered && (
+                  <g pointerEvents="none">
+                    <rect
+                      x={p.x - hoverWidth / 2}
+                      y={p.y - r - 12 - hoverHeight}
+                      width={hoverWidth}
+                      height={hoverHeight}
+                      rx={8}
+                      fill="#0f172a"
+                      opacity={0.94}
+                    />
+                    <text
+                      x={p.x}
+                      y={p.y - r - 18 - (hoverLines.length - 1) * 10}
+                      textAnchor="middle"
+                      className="fill-white"
+                      style={{ fontSize: 17, fontWeight: 700 }}
+                    >
+                      {hoverLines.map((line, i) => (
+                        <tspan key={i} x={p.x} dy={i === 0 ? 0 : 20}>
+                          {line}
+                        </tspan>
+                      ))}
+                    </text>
+                  </g>
+                )}
               </g>
             );
           })}
