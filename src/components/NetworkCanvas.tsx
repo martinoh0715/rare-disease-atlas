@@ -276,12 +276,12 @@ export function NetworkCanvas({
                   textAnchor={anchor}
                   className="fill-slate-900"
                   style={{
-                    fontSize: focused ? 16 : 14,
-                    fontWeight: focused ? 700 : 600,
+                    fontSize: focused ? 20 : 18,
+                    fontWeight: focused ? 700 : 650,
                   }}
                 >
                   {lines.map((line, i) => (
-                    <tspan key={i} x={lx} dy={i === 0 ? 0 : 17}>
+                    <tspan key={i} x={lx} dy={i === 0 ? 0 : 21}>
                       {line}
                     </tspan>
                   ))}
@@ -307,7 +307,7 @@ export function NetworkCanvas({
                       borderRadius: "8px",
                       background: "rgba(15, 23, 42, 0.95)",
                       color: "#fff",
-                      fontSize: "16px",
+                      fontSize: "18px",
                       fontWeight: 700,
                       lineHeight: 1.25,
                       textAlign: "center",

@@ -933,7 +933,7 @@ function SummaryPanel({
         ) : null}
         {findings.length > 0 ? (
           <div className="mt-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <h3 className="text-sm font-bold text-slate-900">
               Main findings
             </h3>
             <ul className="mt-1.5 list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-slate-700">
@@ -945,7 +945,7 @@ function SummaryPanel({
         ) : null}
         {edge.evidence?.supporting_passage ? (
           <div className="mt-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <h3 className="text-sm font-bold text-slate-900">
               Supporting detail
             </h3>
             <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
@@ -955,7 +955,7 @@ function SummaryPanel({
         ) : null}
         {edge.evidence?.genotype_context || edge.evidence?.population_context ? (
           <div className="mt-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <h3 className="text-sm font-bold text-slate-900">
               Context
             </h3>
             <dl className="mt-1.5 space-y-1 text-sm text-slate-700">
