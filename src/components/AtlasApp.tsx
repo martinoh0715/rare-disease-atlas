@@ -21,6 +21,7 @@ import type {
   DemoStage,
   ProposalDraft,
 } from "@/lib/types";
+import { sourceCardForEdge } from "@/lib/sourceMeta";
 
 type Mode = "landing" | "workspace" | "unsupported";
 
@@ -52,7 +53,6 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
 
   const stages = (journey.stages || demo.stages) as DemoStage[];
   const stage = stages.find((s) => s.id === stageId) || stages[0];
-  const pathNodeIds = new Set(stage?.node_ids || []);
   const pathEdgeIds = new Set(stage?.edge_ids || []);
 
   const focusNode = nodeMap.get(focusId) || null;
@@ -430,8 +430,6 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               focusId={focusId}
               nodes={local.nodes}
               edges={local.edges}
-              pathNodeIds={pathNodeIds}
-              pathEdgeIds={pathEdgeIds}
               selectedEdgeId={selectedEdgeId}
               legend={demo.category_legend}
               onSelectNode={(id) => {
@@ -754,56 +752,31 @@ function SourcePanel({
       <section className="rounded-xl border border-slate-200 bg-white p-4">
         <h2 className="font-display text-lg">Source</h2>
         <p className="mt-2 text-sm text-slate-600">
-          Select a connection in the graph or list to see what source supports
-          it.
+          Select a connection to see its source.
         </p>
       </section>
     );
   }
-  const ev = edge.evidence;
-  const hypo = isHypothesisEdge(edge);
+  const card = sourceCardForEdge(edge, nodeMap, plainFallback);
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4">
       <h2 className="font-display text-lg">Source</h2>
-      <div
-        className={`mt-3 rounded-md px-3 py-2 text-xs font-semibold uppercase tracking-wide ${
-          hypo
-            ? "bg-pink-50 text-pink-900"
-            : "bg-teal-50 text-teal-900"
-        }`}
-      >
-        {hypo ? "Proposed / hypothesis" : "Established"} ·{" "}
-        {relationshipLabel(edge.type)}
-      </div>
-      <p className="mt-3 text-sm font-medium text-slate-900">
-        {nodeMap.get(edge.source)?.label} → {nodeMap.get(edge.target)?.label}
+      <p className="mt-3 text-base font-semibold leading-snug text-slate-950">
+        {card.title}
       </p>
-      <p className="mt-2 text-sm leading-relaxed text-slate-700">
-        {edge.plain_language || plainFallback || "No plain-language summary yet."}
-      </p>
-      <dl className="mt-4 space-y-2 text-sm text-slate-700">
-        <Detail label="What the source says" value={ev?.supporting_passage} />
-        <Detail label="Link" value={ev?.source_url} />
-        <Detail label="Publication date" value={ev?.publication_date} />
-        <Detail
-          label="Genotype / population"
-          value={ev?.genotype_context || ev?.population_context}
-        />
-        <Detail label="Limitations" value={ev?.limitations || edge.limitations} />
-        <Detail
-          label="Contradictory or missing-link notes"
-          value={ev?.contradictory_evidence}
-        />
-      </dl>
-      {ev?.source_url && (
+      <p className="mt-1 text-sm text-slate-500">{card.organization}</p>
+      <p className="mt-3 text-sm leading-relaxed text-slate-700">{card.summary}</p>
+      {card.url ? (
         <a
-          href={ev.source_url}
+          href={card.url}
           target="_blank"
           rel="noreferrer"
-          className="mt-3 inline-block text-sm font-medium text-teal-800 hover:underline"
+          className="mt-4 block break-all rounded-lg border border-teal-200 bg-teal-50 px-3 py-3 text-sm font-medium text-teal-900 underline-offset-2 hover:bg-teal-100 hover:underline"
         >
-          Open source
+          {card.url}
         </a>
+      ) : (
+        <p className="mt-4 text-sm text-slate-500">No website link available.</p>
       )}
     </section>
   );
@@ -930,12 +903,11 @@ function ConnectionList({
   return (
     <div className="mt-4">
       <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-        Links from this center
+        Related connections
       </h3>
       <p className="mt-1 text-xs text-slate-500">
-        Text-only list of the relationships currently drawn around the selected
-        center. Click one to open its source panel — useful if the graph feels
-        crowded.
+        Relationships around the selected center. Click one to highlight it on
+        the graph and open its source.
       </p>
       <ul className="mt-2 max-h-40 space-y-1 overflow-auto">
         {edges.map((e) => (
