@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import {
   GraphEdge,
   GraphNode,
-  isHypothesisEdge,
   legendCategoryForType,
   needsDisambiguation,
   neighborhood,
