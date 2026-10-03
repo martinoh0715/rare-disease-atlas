@@ -563,6 +563,37 @@ def curate() -> None:
                 }
             )
             continue
+        pub_enrichment = {
+            "pmid:38661449": {
+                "abstract": (
+                    "Exagamglogene autotemcel (exa-cel) is a nonviral autologous cell therapy that uses "
+                    "CRISPR-Cas9 to edit the erythroid-specific enhancer of BCL11A and reactivate fetal "
+                    "hemoglobin. In this phase 3 study of patients with severe sickle cell disease and "
+                    "recurrent vaso-occlusive crises, edited CD34+ hematopoietic stem and progenitor cells "
+                    "were infused after myeloablative conditioning. The trial evaluated freedom from "
+                    "vaso-occlusive crises and related clinical outcomes after engraftment."
+                ),
+                "main_findings": [
+                    "Among evaluable patients with sufficient follow-up, 97% (29/30) were free from vaso-occlusive crises for at least 12 consecutive months.",
+                    "exa-cel edits the BCL11A erythroid enhancer rather than the HBB disease gene.",
+                    "Fetal hemoglobin induction is the intended therapeutic mechanism in the enrolled severe SCD population.",
+                ],
+            },
+            "pmid:38657265": {
+                "abstract": (
+                    "This phase 3 study evaluated exagamglogene autotemcel (exa-cel) in transfusion-dependent "
+                    "β-thalassemia. Autologous CD34+ hematopoietic stem and progenitor cells were edited at "
+                    "the BCL11A erythroid enhancer to raise fetal hemoglobin, then reinfused after conditioning. "
+                    "The primary clinical question was whether patients could achieve transfusion independence "
+                    "with durable HbF support."
+                ),
+                "main_findings": [
+                    "Among 35 evaluable patients, 32 (91%) achieved transfusion independence.",
+                    "Mean fetal hemoglobin was about 11.9 g/dL during transfusion independence.",
+                    "The same BCL11A-editing intervention class is used as in the SCD program; endpoints differ (transfusion independence vs VOC freedom).",
+                ],
+            },
+        }.get(pid, {})
         add_node(
             {
                 "id": pid,
@@ -574,6 +605,8 @@ def curate() -> None:
                 "authors": p.get("authors"),
                 "source_url": p.get("source_url"),
                 "retrieval_date": p.get("retrieval_date"),
+                "abstract": pub_enrichment.get("abstract"),
+                "main_findings": pub_enrichment.get("main_findings"),
                 "is_anchor": True,
                 "layer": "curated",
                 "review_status": "curated",

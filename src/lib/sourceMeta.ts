@@ -3,9 +3,15 @@ import type { GraphEdge, GraphNode } from "@/lib/graph";
 export type SourceCard = {
   title: string;
   organization: string;
-  summary: string;
-  caveat: string | null;
+  linkLabel: string;
   url: string | null;
+};
+
+export type EdgeSummary = {
+  takeaway: string;
+  abstract: string | null;
+  findings: string[];
+  caveat: string | null;
 };
 
 function orgFromUrl(url?: string | null): string | null {
@@ -31,50 +37,62 @@ function orgFromUrl(url?: string | null): string | null {
   }
 }
 
-function truncate(text: string, max = 160): string {
-  const t = text.replace(/\s+/g, " ").trim();
+function clean(text: string): string {
+  return text.replace(/\s+/g, " ").trim();
+}
+
+function truncate(text: string, max: number): string {
+  const t = clean(text);
   if (t.length <= max) return t;
   return `${t.slice(0, max - 1)}…`;
 }
 
-/** One short takeaway + optional caveat for the Summary panel. */
-export function importantSummaryForEdge(
+function evidenceNode(
   edge: GraphEdge,
-  plainFallback?: string
-): { summary: string; caveat: string | null } {
-  const summary = truncate(
-    edge.plain_language ||
-      plainFallback ||
-      edge.evidence?.supporting_passage ||
-      "No short summary is available for this link yet."
-  );
-  const lim = edge.evidence?.limitations || edge.limitations || null;
-  const caveat = lim ? truncate(String(lim), 120) : null;
-  return { summary, caveat };
+  nodeMap: Map<string, GraphNode>
+): GraphNode | null {
+  const sourceNode = nodeMap.get(edge.source);
+  const targetNode = nodeMap.get(edge.target);
+  const rank = (n?: GraphNode | null) => {
+    if (!n) return -1;
+    switch (n.type) {
+      case "publication":
+        return 5;
+      case "clinical_study":
+        return 4;
+      case "research_asset":
+        return 3;
+      case "organization":
+        return 2;
+      case "intervention":
+        return 1;
+      default:
+        return 0;
+    }
+  };
+  return rank(sourceNode) >= rank(targetNode)
+    ? sourceNode || targetNode || null
+    : targetNode || sourceNode || null;
 }
 
 export function sourceCardForEdge(
   edge: GraphEdge,
-  nodeMap: Map<string, GraphNode>,
-  plainFallback?: string
+  nodeMap: Map<string, GraphNode>
 ): SourceCard {
   const ev = edge.evidence;
   const url = ev?.source_url || null;
   const sourceNode = nodeMap.get(edge.source);
   const targetNode = nodeMap.get(edge.target);
+  const primary = evidenceNode(edge, nodeMap);
 
-  // Prefer the evidence-bearing entity — never a terse "A ↔ B" connection name.
   let title =
     (sourceNode?.type === "publication" && sourceNode.label) ||
     (targetNode?.type === "publication" && targetNode.label) ||
-    (sourceNode?.type === "clinical_study" && sourceNode.label) ||
-    (targetNode?.type === "clinical_study" && targetNode.label) ||
-    (sourceNode?.type === "intervention" && sourceNode.label) ||
-    (targetNode?.type === "intervention" && targetNode.label) ||
-    (sourceNode?.type === "organization" && sourceNode.label) ||
-    (targetNode?.type === "organization" && targetNode.label) ||
-    (sourceNode?.type === "research_asset" && sourceNode.label) ||
-    (targetNode?.type === "research_asset" && targetNode.label) ||
+    (sourceNode?.type === "clinical_study" &&
+      ((sourceNode.official_title as string | undefined) || sourceNode.label)) ||
+    (targetNode?.type === "clinical_study" &&
+      ((targetNode.official_title as string | undefined) || targetNode.label)) ||
+    primary?.label ||
     null;
 
   if (!title && url?.includes("pubmed")) {
@@ -94,7 +112,59 @@ export function sourceCardForEdge(
     (targetNode?.type === "organization" && targetNode.label) ||
     "Source organization not identified";
 
-  const { summary, caveat } = importantSummaryForEdge(edge, plainFallback);
+  const isArticleLike =
+    primary?.type === "publication" ||
+    primary?.type === "clinical_study" ||
+    Boolean(url && (url.includes("pubmed") || url.includes("nejm") || url.includes("clinicaltrials")));
 
-  return { title, organization, summary, caveat, url };
+  return {
+    title: String(title),
+    organization,
+    linkLabel: isArticleLike ? String(title) : "Open source page",
+    url,
+  };
+}
+
+export function importantSummaryForEdge(
+  edge: GraphEdge,
+  nodeMap: Map<string, GraphNode>,
+  plainFallback?: string
+): EdgeSummary {
+  const primary = evidenceNode(edge, nodeMap);
+  const takeaway = truncate(
+    edge.plain_language ||
+      plainFallback ||
+      edge.evidence?.supporting_passage ||
+      "No short summary is available for this link yet.",
+    280
+  );
+
+  const abstractRaw =
+    (typeof primary?.abstract === "string" && primary.abstract) ||
+    (typeof primary?.plain_language === "string" &&
+      primary.type === "publication" &&
+      primary.plain_language) ||
+    null;
+
+  const abstract = abstractRaw ? truncate(abstractRaw, 900) : null;
+
+  const findingsFromNode = Array.isArray(primary?.main_findings)
+    ? (primary!.main_findings as string[]).map((f) => clean(String(f)))
+    : [];
+
+  const passage = edge.evidence?.supporting_passage
+    ? clean(edge.evidence.supporting_passage)
+    : null;
+
+  const findings =
+    findingsFromNode.length > 0
+      ? findingsFromNode
+      : passage && passage !== takeaway
+        ? [truncate(passage, 260)]
+        : [];
+
+  const lim = edge.evidence?.limitations || edge.limitations || null;
+  const caveat = lim ? truncate(String(lim), 220) : null;
+
+  return { takeaway, abstract, findings, caveat };
 }

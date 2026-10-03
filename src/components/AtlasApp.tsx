@@ -41,6 +41,10 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
   const [selectedPartnerId, setSelectedPartnerId] = useState("org:caf");
   const [proposal, setProposal] = useState<ProposalDraft | null>(null);
   const [unsupportedQuery, setUnsupportedQuery] = useState("");
+  const [focusHistory, setFocusHistory] = useState<string[]>([]);
+  const [enabledCategories, setEnabledCategories] = useState<string[]>(() =>
+    demo.category_legend.map((c) => c.id)
+  );
 
   const nodeMap = useMemo(
     () => new Map(curated.nodes.map((n) => [n.id, n])),
@@ -54,6 +58,10 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
   const stages = (journey.stages || demo.stages) as DemoStage[];
   const stage = stages.find((s) => s.id === stageId) || stages[0];
   const productName = demo.product_name || "Rare Disease Atlas";
+  const enabledCategorySet = useMemo(
+    () => new Set(enabledCategories),
+    [enabledCategories]
+  );
 
   const focusNode = nodeMap.get(focusId) || null;
   const selectedEdge = selectedEdgeId ? edgeMap.get(selectedEdgeId) || null : null;
@@ -63,16 +71,22 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
       return {
         nodes: [] as GraphNode[],
         edges: [] as GraphEdge[],
+        allNodes: [] as GraphNode[],
         truncated: false,
         emptyReason: null as string | null,
       };
     }
 
+    let presentNodes: GraphNode[];
+    let presentEdges: GraphEdge[];
+    let truncated = false;
+    let emptyReason: string | null = null;
+
     // Stage views show the full curated multi-hop path for that step.
     if (!expanded && stage) {
       const path = pathNeighborhood(curated, stage.node_ids, stage.edge_ids);
-      const presentNodes = path.nodes.filter((n) => nodeMap.has(n.id));
-      const presentEdges = path.edges.filter(
+      presentNodes = path.nodes.filter((n) => nodeMap.has(n.id));
+      presentEdges = path.edges.filter(
         (e) => nodeMap.has(e.source) && nodeMap.has(e.target)
       );
       const hasResources = presentNodes.some((n) =>
@@ -81,35 +95,47 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
         )
       );
       if (stage.id === "explore" && !hasResources) {
-        return {
-          nodes: presentNodes,
-          edges: presentEdges,
-          truncated: false,
-          emptyReason:
-            "No supported study, publication, organization, or asset path is available for this disease context in the curated layer.",
-        };
+        emptyReason =
+          "No supported study, publication, organization, or asset path is available for this disease context in the curated layer.";
+      } else if (presentEdges.length === 0) {
+        presentNodes = presentNodes.length ? presentNodes : [focusNode];
+        emptyReason =
+          "This step has no sourced connections to display yet. Try another step or a different disease context.";
       }
-      if (presentEdges.length === 0) {
-        return {
-          nodes: presentNodes.length ? presentNodes : [focusNode],
-          edges: [],
-          truncated: false,
-          emptyReason:
-            "This step has no sourced connections to display yet. Try another step or a different disease context.",
-        };
-      }
-      return {
-        nodes: presentNodes,
-        edges: presentEdges,
-        truncated: false,
-        emptyReason: null,
-      };
+    } else {
+      // Expanded mode: ego neighborhood around the selected center.
+      const ego = neighborhood(curated, focusId, { maxEdges: 16 });
+      presentNodes = ego.nodes;
+      presentEdges = ego.edges;
+      truncated = ego.truncated;
     }
 
-    // Expanded mode: ego neighborhood around the selected center.
-    const ego = neighborhood(curated, focusId, { maxEdges: 16 });
-    return { ...ego, emptyReason: null as string | null };
-  }, [curated, expanded, focusId, focusNode, nodeMap, stage]);
+    const allNodes = presentNodes;
+    const visibleNodes = presentNodes.filter(
+      (n) =>
+        n.id === focusId || enabledCategorySet.has(legendCategoryForType(n.type))
+    );
+    const visibleIds = new Set(visibleNodes.map((n) => n.id));
+    const visibleEdges = presentEdges.filter(
+      (e) => visibleIds.has(e.source) && visibleIds.has(e.target)
+    );
+
+    return {
+      nodes: visibleNodes,
+      edges: visibleEdges,
+      allNodes,
+      truncated,
+      emptyReason,
+    };
+  }, [
+    curated,
+    enabledCategorySet,
+    expanded,
+    focusId,
+    focusNode,
+    nodeMap,
+    stage,
+  ]);
 
   const assetAssessments = demo.asset_assessments;
   const visibleAssets = assetAssessments.filter((a) =>
@@ -142,10 +168,46 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
     setMode("landing");
   }
 
+  function selectEdgeForNode(nodeId: string, preferStage = true) {
+    const stageEdgeIds = new Set(stage?.edge_ids || []);
+    const e =
+      (preferStage &&
+        curated.edges.find(
+          (edge) =>
+            (edge.source === nodeId || edge.target === nodeId) &&
+            stageEdgeIds.has(edge.id)
+        )) ||
+      curated.edges.find(
+        (edge) => edge.source === nodeId || edge.target === nodeId
+      );
+    setSelectedEdgeId(e?.id || null);
+  }
+
+  function goToNode(nodeId: string, options?: { trackHistory?: boolean }) {
+    if (options?.trackHistory !== false && focusId && focusId !== nodeId) {
+      setFocusHistory((prev) => [...prev, focusId]);
+    }
+    setFocusId(nodeId);
+    selectEdgeForNode(nodeId);
+  }
+
+  function goBack() {
+    setFocusHistory((prev) => {
+      if (prev.length === 0) return prev;
+      const next = [...prev];
+      const previousId = next.pop()!;
+      setFocusId(previousId);
+      selectEdgeForNode(previousId);
+      return next;
+    });
+  }
+
   function enterWorkspace(nodeId: string) {
+    setFocusHistory([]);
     setFocusId(nodeId);
     setMode("workspace");
     setExpanded(false);
+    setEnabledCategories(demo.category_legend.map((c) => c.id));
     // Pick a sensible starting stage.
     const startStage =
       stages.find((s) => s.node_ids.includes(nodeId))?.id || "understand";
@@ -174,6 +236,9 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
       s.node_ids.find((nid) => nodeMap.get(nid)?.type === "disease") ||
       s.node_ids.find((nid) => nodeMap.has(nid)) ||
       focusId;
+    if (anchor !== focusId) {
+      setFocusHistory((prev) => [...prev, focusId]);
+    }
     setFocusId(anchor);
 
     const preferred =
@@ -193,6 +258,12 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
       s.edge_ids.find((eid) => edgeMap.has(eid)) ||
       null;
     setSelectedEdgeId(preferred);
+  }
+
+  function toggleCategory(id: string) {
+    setEnabledCategories((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
   }
 
   function toggleAsset(id: string) {
@@ -319,10 +390,27 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
       </header>
 
       <div className="mx-auto max-w-[1800px] space-y-4 px-4 py-4">
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={goBack}
+            disabled={focusHistory.length === 0}
+            aria-label="Back to previous node"
+          >
+            ← Back
+          </Button>
+          <span className="text-xs text-slate-500">
+            {focusHistory.length > 0
+              ? `Previous: ${nodeMap.get(focusHistory[focusHistory.length - 1])?.label || "node"}`
+              : "No previous node yet"}
+          </span>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
           <section className="rounded-xl border border-slate-200 bg-white p-4">
             <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
-              <div>
+              <div className="min-w-0 flex-1 pr-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
                   Focused graph
                 </p>
@@ -347,59 +435,83 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               </Button>
             </div>
 
-            <div className="relative">
-              <NetworkCanvas
-                focusId={focusId}
-                nodes={local.nodes}
-                edges={local.edges}
-                selectedEdgeId={selectedEdgeId}
-                legend={demo.category_legend}
-                onSelectNode={(id) => {
-                  setFocusId(id);
-                  const stageEdgeIds = new Set(stage?.edge_ids || []);
-                  const e =
-                    curated.edges.find(
-                      (edge) =>
-                        (edge.source === id || edge.target === id) &&
-                        stageEdgeIds.has(edge.id)
-                    ) ||
-                    curated.edges.find(
-                      (edge) => edge.source === id || edge.target === id
-                    );
-                  setSelectedEdgeId(e?.id || null);
-                }}
-                onSelectEdge={setSelectedEdgeId}
-              />
-              <div className="pointer-events-none absolute bottom-10 left-3 z-10 max-w-xs rounded-lg border border-slate-200/80 bg-white/95 p-3 shadow-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                  Legend
-                </p>
-                <ul className="mt-2 space-y-1.5">
+            <div className="mb-3 flex justify-end">
+              <div className="w-full max-w-[280px] rounded-md border border-slate-300 bg-white shadow-sm">
+                <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-3 py-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">
+                    Legend
+                  </p>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      className="rounded px-1.5 py-0.5 text-[10px] font-medium text-teal-800 hover:bg-teal-50"
+                      onClick={() =>
+                        setEnabledCategories(demo.category_legend.map((c) => c.id))
+                      }
+                    >
+                      Check all
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded px-1.5 py-0.5 text-[10px] font-medium text-slate-600 hover:bg-slate-100"
+                      onClick={() => setEnabledCategories([])}
+                    >
+                      Uncheck all
+                    </button>
+                  </div>
+                </div>
+                <ul className="max-h-52 space-y-0.5 overflow-auto px-2 py-2">
                   {demo.category_legend.map((c) => {
-                    const count = local.nodes.filter(
+                    const count = local.allNodes.filter(
                       (n) => legendCategoryForType(n.type) === c.id
                     ).length;
                     if (count === 0) return null;
+                    const checked = enabledCategorySet.has(c.id);
                     return (
-                      <li
-                        key={c.id}
-                        className="flex items-center gap-2 text-xs text-slate-700"
-                      >
-                        <span
-                          className="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
-                          style={{ background: c.color }}
-                        />
-                        <span className="flex-1">{c.label}</span>
-                        <span className="text-slate-400">{count}</span>
+                      <li key={c.id}>
+                        <label
+                          className={`flex cursor-pointer items-center gap-2 rounded px-1.5 py-1 text-xs ${
+                            checked
+                              ? "bg-white text-slate-800"
+                              : "bg-slate-50 text-slate-400"
+                          } hover:bg-slate-100`}
+                        >
+                          <input
+                            type="checkbox"
+                            className="h-3.5 w-3.5 accent-teal-700"
+                            checked={checked}
+                            onChange={() => toggleCategory(c.id)}
+                          />
+                          <span
+                            className="inline-block h-2.5 w-2.5 shrink-0 rounded-sm"
+                            style={{
+                              background: checked ? c.color : "#cbd5e1",
+                            }}
+                          />
+                          <span className="flex-1">{c.label}</span>
+                          <span className="tabular-nums text-slate-400">
+                            {count}
+                          </span>
+                        </label>
                       </li>
                     );
                   })}
                 </ul>
-                <p className="mt-2 text-[11px] leading-snug text-slate-500">
-                  Dashed lines are proposed bridges, not established facts.
+                <p className="border-t border-slate-200 px-3 py-1.5 text-[10px] leading-snug text-slate-500">
+                  Toggle categories to show or hide nodes. Dashed = proposed.
                 </p>
               </div>
             </div>
+
+            <NetworkCanvas
+              focusId={focusId}
+              nodes={local.nodes}
+              edges={local.edges}
+              selectedEdgeId={selectedEdgeId}
+              legend={demo.category_legend}
+              onSelectNode={(id) => goToNode(id)}
+              onSelectEdge={setSelectedEdgeId}
+            />
 
             {local.emptyReason && (
               <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
@@ -415,17 +527,10 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
           </section>
 
           <aside className="space-y-4 lg:sticky lg:top-4 lg:self-start">
-            <SourcePanel
-              edge={selectedEdge}
-              nodeMap={nodeMap}
-              plainFallback={
-                selectedEdge
-                  ? demo.edge_plain_language[selectedEdge.id]
-                  : undefined
-              }
-            />
+            <SourcePanel edge={selectedEdge} nodeMap={nodeMap} />
             <SummaryPanel
               edge={selectedEdge}
+              nodeMap={nodeMap}
               plainFallback={
                 selectedEdge
                   ? demo.edge_plain_language[selectedEdge.id]
@@ -702,11 +807,9 @@ function Unsupported({
 function SourcePanel({
   edge,
   nodeMap,
-  plainFallback,
 }: {
   edge: GraphEdge | null;
   nodeMap: Map<string, GraphNode>;
-  plainFallback?: string;
 }) {
   if (!edge) {
     return (
@@ -718,25 +821,24 @@ function SourcePanel({
       </section>
     );
   }
-  const card = sourceCardForEdge(edge, nodeMap, plainFallback);
+  const card = sourceCardForEdge(edge, nodeMap);
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4">
       <h2 className="font-display text-lg">Source</h2>
-      <p className="mt-3 text-base font-semibold leading-snug text-slate-950">
-        {card.title}
-      </p>
       <p className="mt-1 text-sm text-slate-500">{card.organization}</p>
       {card.url ? (
         <a
           href={card.url}
           target="_blank"
           rel="noreferrer"
-          className="mt-4 block break-all rounded-lg border border-teal-200 bg-teal-50 px-3 py-3 text-sm font-medium text-teal-900 underline-offset-2 hover:bg-teal-100 hover:underline"
+          className="mt-3 block rounded-lg border border-teal-200 bg-teal-50 px-3 py-3 text-sm font-semibold leading-snug text-teal-950 underline-offset-2 hover:bg-teal-100 hover:underline"
         >
-          {card.url}
+          {card.linkLabel}
         </a>
       ) : (
-        <p className="mt-4 text-sm text-slate-500">No website link available.</p>
+        <p className="mt-3 text-base font-semibold leading-snug text-slate-950">
+          {card.title}
+        </p>
       )}
     </section>
   );
@@ -744,9 +846,11 @@ function SourcePanel({
 
 function SummaryPanel({
   edge,
+  nodeMap,
   plainFallback,
 }: {
   edge: GraphEdge | null;
+  nodeMap: Map<string, GraphNode>;
   plainFallback?: string;
 }) {
   if (!edge) {
@@ -754,18 +858,44 @@ function SummaryPanel({
       <section className="rounded-xl border border-slate-200 bg-white p-4">
         <h2 className="font-display text-lg">Summary</h2>
         <p className="mt-2 text-sm text-slate-600">
-          Select a connection to see a short takeaway.
+          Select a connection to see the article summary and main findings.
         </p>
       </section>
     );
   }
-  const { summary, caveat } = importantSummaryForEdge(edge, plainFallback);
+  const { takeaway, abstract, findings, caveat } = importantSummaryForEdge(
+    edge,
+    nodeMap,
+    plainFallback
+  );
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4">
       <h2 className="font-display text-lg">Summary</h2>
-      <p className="mt-3 text-sm leading-relaxed text-slate-800">{summary}</p>
+      <p className="mt-3 text-sm leading-relaxed text-slate-800">{takeaway}</p>
+      {abstract ? (
+        <div className="mt-4">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Abstract
+          </h3>
+          <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
+            {abstract}
+          </p>
+        </div>
+      ) : null}
+      {findings.length > 0 ? (
+        <div className="mt-4">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Main findings
+          </h3>
+          <ul className="mt-1.5 list-disc space-y-1 pl-4 text-sm leading-relaxed text-slate-700">
+            {findings.map((f) => (
+              <li key={f}>{f}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
       {caveat ? (
-        <p className="mt-2 text-xs leading-relaxed text-slate-500">
+        <p className="mt-3 text-xs leading-relaxed text-slate-500">
           Caveat: {caveat}
         </p>
       ) : null}

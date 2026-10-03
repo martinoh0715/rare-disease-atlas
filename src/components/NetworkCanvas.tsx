@@ -199,12 +199,14 @@ export function NetworkCanvas({
           const ly = focused ? p.y + r + 20 : p.y + (dy / dist) * labelOffset;
           const anchor =
             focused || Math.abs(dx) < 40 ? "middle" : dx > 0 ? "start" : "end";
-          const hoverLines = wrapLabel(n.label, 32);
-          const hoverWidth = Math.min(
-            360,
-            Math.max(110, ...hoverLines.map((l) => l.length * 10)) + 28
+          const hoverWidth = Math.min(400, Math.max(180, Math.min(n.label.length * 8.5 + 40, 400)));
+          const approxLines = Math.max(1, Math.ceil(n.label.length / Math.max(18, hoverWidth / 9)));
+          const hoverHeight = Math.min(96, 28 + approxLines * 22);
+          const hoverX = Math.min(
+            WIDTH - hoverWidth - 8,
+            Math.max(8, p.x - hoverWidth / 2)
           );
-          const hoverHeight = 16 + hoverLines.length * 22;
+          const hoverY = Math.max(8, p.y - r - hoverHeight - 14);
 
           return (
             <g
@@ -250,30 +252,35 @@ export function NetworkCanvas({
                 </text>
               )}
               {hovered && (
-                <g pointerEvents="none">
-                  <rect
-                    x={p.x - hoverWidth / 2}
-                    y={p.y - r - 14 - hoverHeight}
-                    width={hoverWidth}
-                    height={hoverHeight}
-                    rx={8}
-                    fill="#0f172a"
-                    opacity={0.94}
-                  />
-                  <text
-                    x={p.x}
-                    y={p.y - r - 22 - (hoverLines.length - 1) * 11}
-                    textAnchor="middle"
-                    className="fill-white"
-                    style={{ fontSize: 18, fontWeight: 700 }}
+                <foreignObject
+                  x={hoverX}
+                  y={hoverY}
+                  width={hoverWidth}
+                  height={hoverHeight}
+                  pointerEvents="none"
+                >
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      boxSizing: "border-box",
+                      padding: "10px 14px",
+                      borderRadius: "8px",
+                      background: "rgba(15, 23, 42, 0.95)",
+                      color: "#fff",
+                      fontSize: "16px",
+                      fontWeight: 700,
+                      lineHeight: 1.25,
+                      textAlign: "center",
+                      overflow: "hidden",
+                    }}
                   >
-                    {hoverLines.map((line, i) => (
-                      <tspan key={i} x={p.x} dy={i === 0 ? 0 : 22}>
-                        {line}
-                      </tspan>
-                    ))}
-                  </text>
-                </g>
+                    {n.label}
+                  </div>
+                </foreignObject>
               )}
             </g>
           );
