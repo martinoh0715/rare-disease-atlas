@@ -41,7 +41,9 @@ export function Explorer({ curated, discovery, journey }: Props) {
   const matches = useMemo(() => searchNodes(graph.nodes, query), [graph, query]);
   const selected = nodeMap.get(selectedId) ?? null;
   const selectedEdge = selectedEdgeId ? edgeMap.get(selectedEdgeId) ?? null : null;
-  const local = selected ? neighborhood(graph, selected.id) : { nodes: [], edges: [] };
+  const local = selected
+    ? neighborhood(graph, selected.id, { maxEdges: showDiscovery ? 14 : 18 })
+    : { nodes: [], edges: [], truncated: false };
 
   const journeyNodes = journey.node_path
     .map((id) => curated.nodes.find((n) => n.id === id))
@@ -169,6 +171,15 @@ export function Explorer({ curated, discovery, journey }: Props) {
             onSelectEdge={setSelectedEdgeId}
             selectedEdgeId={selectedEdgeId}
           />
+
+          {local.truncated && (
+            <p className="mt-2 text-xs text-stone-500">
+              Neighborhood truncated for readability
+              {showDiscovery
+                ? " (discovery layer can be dense; open review exports for full audit)."
+                : "."}
+            </p>
+          )}
 
           <div className="mt-4 flex flex-wrap gap-3 text-xs">
             <Legend swatch="#0f766e" label="Established / sourced" />

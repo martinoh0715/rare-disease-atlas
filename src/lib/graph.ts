@@ -119,12 +119,28 @@ export function searchNodes(nodes: GraphNode[], query: string): GraphNode[] {
 
 export function neighborhood(
   graph: GraphData,
-  nodeId: string
-): { nodes: GraphNode[]; edges: GraphEdge[] } {
+  nodeId: string,
+  options?: { maxEdges?: number }
+): { nodes: GraphNode[]; edges: GraphEdge[]; truncated: boolean } {
+  const maxEdges = options?.maxEdges ?? 18;
   const nodeMap = new Map(graph.nodes.map((n) => [n.id, n]));
-  const edges = graph.edges.filter(
+  const all = graph.edges.filter(
     (e) => e.source === nodeId || e.target === nodeId
   );
+  // Prefer curated/established relationships, then keep a readable sample.
+  const ranked = [...all].sort((a, b) => {
+    const score = (e: GraphEdge) => {
+      let s = 0;
+      if (e.review_status === "curated") s += 4;
+      if (e.relationship_status === "established") s += 3;
+      if (e.relationship_status === "hypothesis") s += 2;
+      if (e.evidence?.source_url) s += 1;
+      return s;
+    };
+    return score(b) - score(a);
+  });
+  const truncated = ranked.length > maxEdges;
+  const edges = ranked.slice(0, maxEdges);
   const ids = new Set<string>([nodeId]);
   edges.forEach((e) => {
     ids.add(e.source);
@@ -133,6 +149,7 @@ export function neighborhood(
   return {
     nodes: [...ids].map((id) => nodeMap.get(id)!).filter(Boolean),
     edges,
+    truncated,
   };
 }
 
