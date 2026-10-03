@@ -923,7 +923,7 @@ function SummaryPanel({
         <p className="text-sm leading-relaxed text-slate-800">{takeaway}</p>
         {abstract ? (
           <div className="mt-4">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <h3 className="text-sm font-bold text-slate-900">
               Abstract
             </h3>
             <p className="mt-1.5 text-sm leading-relaxed text-slate-700">

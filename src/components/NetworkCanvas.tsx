@@ -226,7 +226,7 @@ export function NetworkCanvas({
           const hovered = n.id === hoveredId;
           const r = focused ? 30 : hovered ? 22 : 18;
           const color = typeColor(n.type, legend);
-          const lines = wrapLabel(n.label, focused ? 26 : 20);
+          const lines = wrapLabel(n.label, focused ? 28 : 22);
           const dx = p.x - CX;
           const dy = p.y - CY;
           const dist = Math.hypot(dx, dy) || 1;
