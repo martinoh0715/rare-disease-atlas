@@ -41,12 +41,6 @@ function clean(text: string): string {
   return text.replace(/\s+/g, " ").trim();
 }
 
-function truncate(text: string, max: number): string {
-  const t = clean(text);
-  if (t.length <= max) return t;
-  return `${t.slice(0, max - 1)}…`;
-}
-
 function evidenceNode(
   edge: GraphEdge,
   nodeMap: Map<string, GraphNode>
@@ -131,22 +125,28 @@ export function importantSummaryForEdge(
   plainFallback?: string
 ): EdgeSummary {
   const primary = evidenceNode(edge, nodeMap);
-  const takeaway = truncate(
+  const takeaway = clean(
     edge.plain_language ||
       plainFallback ||
       edge.evidence?.supporting_passage ||
-      "No short summary is available for this link yet.",
-    280
+      "No short summary is available for this link yet."
   );
 
   const abstractRaw =
     (typeof primary?.abstract === "string" && primary.abstract) ||
     (typeof primary?.plain_language === "string" &&
-      primary.type === "publication" &&
+      ["publication", "clinical_study", "intervention", "research_asset"].includes(
+        primary.type
+      ) &&
       primary.plain_language) ||
     null;
 
-  const abstract = abstractRaw ? truncate(abstractRaw, 900) : null;
+  // Prefer the full curated abstract; fall back to a longer evidence passage.
+  const abstract = abstractRaw
+    ? clean(abstractRaw)
+    : edge.evidence?.supporting_passage
+      ? clean(edge.evidence.supporting_passage)
+      : null;
 
   const findingsFromNode = Array.isArray(primary?.main_findings)
     ? (primary!.main_findings as string[]).map((f) => clean(String(f)))
@@ -159,12 +159,12 @@ export function importantSummaryForEdge(
   const findings =
     findingsFromNode.length > 0
       ? findingsFromNode
-      : passage && passage !== takeaway
-        ? [truncate(passage, 260)]
+      : passage && passage !== takeaway && passage !== abstract
+        ? [passage]
         : [];
 
   const lim = edge.evidence?.limitations || edge.limitations || null;
-  const caveat = lim ? truncate(String(lim), 220) : null;
+  const caveat = lim ? clean(String(lim)) : null;
 
   return { takeaway, abstract, findings, caveat };
 }

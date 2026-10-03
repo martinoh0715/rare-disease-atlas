@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { NetworkCanvas } from "@/components/NetworkCanvas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -44,6 +44,11 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
   const [focusHistory, setFocusHistory] = useState<string[]>([]);
   const [enabledCategories, setEnabledCategories] = useState<string[]>(() =>
     demo.category_legend.map((c) => c.id)
+  );
+  const [legendOpen, setLegendOpen] = useState(true);
+  const graphSectionRef = useRef<HTMLElement | null>(null);
+  const [graphSectionHeight, setGraphSectionHeight] = useState<number | null>(
+    null
   );
 
   const nodeMap = useMemo(
@@ -136,6 +141,19 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
     nodeMap,
     stage,
   ]);
+
+  useEffect(() => {
+    if (mode !== "workspace") return;
+    const el = graphSectionRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const update = () => {
+      setGraphSectionHeight(Math.round(el.getBoundingClientRect().height));
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [mode, stageId, focusId, expanded, local.nodes.length, legendOpen]);
 
   const assetAssessments = demo.asset_assessments;
   const visibleAssets = assetAssessments.filter((a) =>
@@ -407,8 +425,11 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
           </span>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px]">
-          <section className="rounded-xl border border-slate-200 bg-white p-4">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-stretch">
+          <section
+            ref={graphSectionRef}
+            className="rounded-xl border border-slate-200 bg-white p-4"
+          >
             <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0 flex-1 pr-2">
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
@@ -437,69 +458,86 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
 
             <div className="relative overflow-hidden rounded-xl">
               <div className="pointer-events-auto absolute right-3 top-3 z-20 w-[250px] rounded-md border border-slate-300 bg-white/95 shadow-md backdrop-blur-sm">
-                <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/95 px-3 py-2">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">
-                    Legend
-                  </p>
-                  <div className="flex gap-1">
-                    <button
-                      type="button"
-                      className="rounded px-1.5 py-0.5 text-[10px] font-medium text-teal-800 hover:bg-teal-50"
-                      onClick={() =>
-                        setEnabledCategories(demo.category_legend.map((c) => c.id))
-                      }
-                    >
-                      Check all
-                    </button>
-                    <button
-                      type="button"
-                      className="rounded px-1.5 py-0.5 text-[10px] font-medium text-slate-600 hover:bg-slate-100"
-                      onClick={() => setEnabledCategories([])}
-                    >
-                      Uncheck all
-                    </button>
-                  </div>
+                <div className="flex items-center justify-between gap-2 border-b border-slate-200 bg-slate-50/95 px-3 py-2">
+                  <button
+                    type="button"
+                    className="flex min-w-0 flex-1 items-center justify-between text-left"
+                    onClick={() => setLegendOpen((v) => !v)}
+                    aria-expanded={legendOpen}
+                    aria-controls="graph-legend-body"
+                  >
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">
+                      Legend
+                    </span>
+                    <span className="text-xs text-slate-500">
+                      {legendOpen ? "▲" : "▼"}
+                    </span>
+                  </button>
                 </div>
-                <ul className="max-h-48 space-y-0.5 overflow-auto px-2 py-2">
-                  {demo.category_legend.map((c) => {
-                    const count = local.allNodes.filter(
-                      (n) => legendCategoryForType(n.type) === c.id
-                    ).length;
-                    if (count === 0) return null;
-                    const checked = enabledCategorySet.has(c.id);
-                    return (
-                      <li key={c.id}>
-                        <label
-                          className={`flex cursor-pointer items-center gap-2 rounded px-1.5 py-1 text-xs ${
-                            checked
-                              ? "bg-white text-slate-800"
-                              : "bg-slate-50 text-slate-400"
-                          } hover:bg-slate-100`}
-                        >
-                          <input
-                            type="checkbox"
-                            className="h-3.5 w-3.5 accent-teal-700"
-                            checked={checked}
-                            onChange={() => toggleCategory(c.id)}
-                          />
-                          <span
-                            className="inline-block h-2.5 w-2.5 shrink-0 rounded-sm"
-                            style={{
-                              background: checked ? c.color : "#cbd5e1",
-                            }}
-                          />
-                          <span className="flex-1">{c.label}</span>
-                          <span className="tabular-nums text-slate-400">
-                            {count}
-                          </span>
-                        </label>
-                      </li>
-                    );
-                  })}
-                </ul>
-                <p className="border-t border-slate-200 px-3 py-1.5 text-[10px] leading-snug text-slate-500">
-                  Toggle categories to show or hide nodes. Dashed = proposed.
-                </p>
+                {legendOpen ? (
+                  <div id="graph-legend-body">
+                    <div className="flex justify-end gap-1 border-b border-slate-100 px-2 py-1.5">
+                      <button
+                        type="button"
+                        className="rounded px-1.5 py-0.5 text-[10px] font-medium text-teal-800 hover:bg-teal-50"
+                        onClick={() =>
+                          setEnabledCategories(
+                            demo.category_legend.map((c) => c.id)
+                          )
+                        }
+                      >
+                        Check all
+                      </button>
+                      <button
+                        type="button"
+                        className="rounded px-1.5 py-0.5 text-[10px] font-medium text-slate-600 hover:bg-slate-100"
+                        onClick={() => setEnabledCategories([])}
+                      >
+                        Uncheck all
+                      </button>
+                    </div>
+                    <ul className="max-h-48 space-y-0.5 overflow-auto px-2 py-2">
+                      {demo.category_legend.map((c) => {
+                        const count = local.allNodes.filter(
+                          (n) => legendCategoryForType(n.type) === c.id
+                        ).length;
+                        if (count === 0) return null;
+                        const checked = enabledCategorySet.has(c.id);
+                        return (
+                          <li key={c.id}>
+                            <label
+                              className={`flex cursor-pointer items-center gap-2 rounded px-1.5 py-1 text-xs ${
+                                checked
+                                  ? "bg-white text-slate-800"
+                                  : "bg-slate-50 text-slate-400"
+                              } hover:bg-slate-100`}
+                            >
+                              <input
+                                type="checkbox"
+                                className="h-3.5 w-3.5 accent-teal-700"
+                                checked={checked}
+                                onChange={() => toggleCategory(c.id)}
+                              />
+                              <span
+                                className="inline-block h-2.5 w-2.5 shrink-0 rounded-sm"
+                                style={{
+                                  background: checked ? c.color : "#cbd5e1",
+                                }}
+                              />
+                              <span className="flex-1">{c.label}</span>
+                              <span className="tabular-nums text-slate-400">
+                                {count}
+                              </span>
+                            </label>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                    <p className="border-t border-slate-200 px-3 py-1.5 text-[10px] leading-snug text-slate-500">
+                      Toggle categories to show or hide nodes. Dashed = proposed.
+                    </p>
+                  </div>
+                ) : null}
               </div>
 
               <NetworkCanvas
@@ -508,6 +546,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                 edges={local.edges}
                 selectedEdgeId={selectedEdgeId}
                 legend={demo.category_legend}
+                legendCollapsed={!legendOpen}
                 onSelectNode={(id) => goToNode(id)}
                 onSelectEdge={setSelectedEdgeId}
               />
@@ -526,7 +565,14 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
             )}
           </section>
 
-          <aside className="space-y-4 lg:sticky lg:top-4 lg:self-start">
+          <aside
+            className="flex min-h-0 flex-col gap-4 lg:sticky lg:top-4"
+            style={
+              graphSectionHeight
+                ? { height: graphSectionHeight, maxHeight: graphSectionHeight }
+                : undefined
+            }
+          >
             <SourcePanel edge={selectedEdge} nodeMap={nodeMap} />
             <SummaryPanel
               edge={selectedEdge}
@@ -813,7 +859,7 @@ function SourcePanel({
 }) {
   if (!edge) {
     return (
-      <section className="rounded-xl border border-slate-200 bg-white p-4">
+      <section className="shrink-0 rounded-xl border border-slate-200 bg-white p-4">
         <h2 className="font-display text-lg">Source</h2>
         <p className="mt-2 text-sm text-slate-600">
           Select a connection to see its source.
@@ -823,7 +869,7 @@ function SourcePanel({
   }
   const card = sourceCardForEdge(edge, nodeMap);
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4">
+    <section className="shrink-0 rounded-xl border border-slate-200 bg-white p-4">
       <h2 className="font-display text-lg">Source</h2>
       <p className="mt-1 text-sm text-slate-500">{card.organization}</p>
       {card.url ? (
@@ -855,7 +901,7 @@ function SummaryPanel({
 }) {
   if (!edge) {
     return (
-      <section className="rounded-xl border border-slate-200 bg-white p-4">
+      <section className="flex min-h-0 flex-1 flex-col rounded-xl border border-slate-200 bg-white p-4">
         <h2 className="font-display text-lg">Summary</h2>
         <p className="mt-2 text-sm text-slate-600">
           Select a connection to see the article summary and main findings.
@@ -869,36 +915,81 @@ function SummaryPanel({
     plainFallback
   );
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4">
-      <h2 className="font-display text-lg">Summary</h2>
-      <p className="mt-3 text-sm leading-relaxed text-slate-800">{takeaway}</p>
-      {abstract ? (
-        <div className="mt-4">
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Abstract
-          </h3>
-          <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
-            {abstract}
+    <section className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white">
+      <div className="border-b border-slate-100 px-4 py-3">
+        <h2 className="font-display text-lg">Summary</h2>
+      </div>
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-3">
+        <p className="text-sm leading-relaxed text-slate-800">{takeaway}</p>
+        {abstract ? (
+          <div className="mt-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Abstract
+            </h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
+              {abstract}
+            </p>
+          </div>
+        ) : null}
+        {findings.length > 0 ? (
+          <div className="mt-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Main findings
+            </h3>
+            <ul className="mt-1.5 list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-slate-700">
+              {findings.map((f) => (
+                <li key={f}>{f}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+        {edge.evidence?.supporting_passage ? (
+          <div className="mt-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Supporting detail
+            </h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
+              {edge.evidence.supporting_passage}
+            </p>
+          </div>
+        ) : null}
+        {edge.evidence?.genotype_context || edge.evidence?.population_context ? (
+          <div className="mt-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Context
+            </h3>
+            <dl className="mt-1.5 space-y-1 text-sm text-slate-700">
+              {edge.evidence.genotype_context ? (
+                <div>
+                  <dt className="inline font-medium text-slate-500">
+                    Genotype:{" "}
+                  </dt>
+                  <dd className="inline">{edge.evidence.genotype_context}</dd>
+                </div>
+              ) : null}
+              {edge.evidence.population_context ? (
+                <div>
+                  <dt className="inline font-medium text-slate-500">
+                    Population:{" "}
+                  </dt>
+                  <dd className="inline">{edge.evidence.population_context}</dd>
+                </div>
+              ) : null}
+              {edge.evidence.species ? (
+                <div>
+                  <dt className="inline font-medium text-slate-500">Species: </dt>
+                  <dd className="inline">{edge.evidence.species}</dd>
+                </div>
+              ) : null}
+            </dl>
+          </div>
+        ) : null}
+        {caveat ? (
+          <p className="mt-4 text-xs leading-relaxed text-slate-500">
+            Caveat: {caveat}
           </p>
-        </div>
-      ) : null}
-      {findings.length > 0 ? (
-        <div className="mt-4">
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Main findings
-          </h3>
-          <ul className="mt-1.5 list-disc space-y-1 pl-4 text-sm leading-relaxed text-slate-700">
-            {findings.map((f) => (
-              <li key={f}>{f}</li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
-      {caveat ? (
-        <p className="mt-3 text-xs leading-relaxed text-slate-500">
-          Caveat: {caveat}
-        </p>
-      ) : null}
+        ) : null}
+      </div>
     </section>
   );
 }

@@ -568,15 +568,20 @@ def curate() -> None:
                 "abstract": (
                     "Exagamglogene autotemcel (exa-cel) is a nonviral autologous cell therapy that uses "
                     "CRISPR-Cas9 to edit the erythroid-specific enhancer of BCL11A and reactivate fetal "
-                    "hemoglobin. In this phase 3 study of patients with severe sickle cell disease and "
-                    "recurrent vaso-occlusive crises, edited CD34+ hematopoietic stem and progenitor cells "
-                    "were infused after myeloablative conditioning. The trial evaluated freedom from "
-                    "vaso-occlusive crises and related clinical outcomes after engraftment."
+                    "hemoglobin synthesis. In this phase 3 study, patients with severe sickle cell disease "
+                    "and recurrent vaso-occlusive crises underwent mobilization and collection of autologous "
+                    "CD34+ hematopoietic stem and progenitor cells, which were edited ex vivo and reinfused "
+                    "after myeloablative conditioning. The study assessed whether durable fetal-hemoglobin "
+                    "induction after engraftment could prevent vaso-occlusive crises over sustained follow-up. "
+                    "Because the edit targets BCL11A regulation rather than the HBB sickle allele itself, "
+                    "genotype-specific interpretation (for example HbSS-only questions) still requires checking "
+                    "trial eligibility details separately from the broad severe-SCD enrollment framing."
                 ),
                 "main_findings": [
                     "Among evaluable patients with sufficient follow-up, 97% (29/30) were free from vaso-occlusive crises for at least 12 consecutive months.",
                     "exa-cel edits the BCL11A erythroid enhancer rather than the HBB disease gene.",
                     "Fetal hemoglobin induction is the intended therapeutic mechanism in the enrolled severe SCD population.",
+                    "Clinical outcomes reported here are trial-population results, not a claim that every sickle genotype responds identically.",
                 ],
             },
             "pmid:38657265": {
@@ -584,13 +589,17 @@ def curate() -> None:
                     "This phase 3 study evaluated exagamglogene autotemcel (exa-cel) in transfusion-dependent "
                     "β-thalassemia. Autologous CD34+ hematopoietic stem and progenitor cells were edited at "
                     "the BCL11A erythroid enhancer to raise fetal hemoglobin, then reinfused after conditioning. "
-                    "The primary clinical question was whether patients could achieve transfusion independence "
-                    "with durable HbF support."
+                    "Investigators asked whether patients could achieve transfusion independence with durable "
+                    "HbF support and what fetal-hemoglobin levels accompanied independence. The clinical category "
+                    "is transfusion dependence, which overlaps but is not identical to every genetic β-thalassemia "
+                    "subtype; therefore genotype strata on the source record remain important when mapping these "
+                    "results to a specific patient-group question."
                 ),
                 "main_findings": [
                     "Among 35 evaluable patients, 32 (91%) achieved transfusion independence.",
                     "Mean fetal hemoglobin was about 11.9 g/dL during transfusion independence.",
                     "The same BCL11A-editing intervention class is used as in the SCD program; endpoints differ (transfusion independence vs VOC freedom).",
+                    "Shared mechanism does not automatically transfer SCD trial design or models to β-thalassemia research uses.",
                 ],
             },
         }.get(pid, {})
