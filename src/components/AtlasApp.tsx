@@ -553,13 +553,13 @@ function Landing({
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,#dbeafe,transparent_40%),linear-gradient(180deg,#f8fafc,#eef2ff)]">
       <div className="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-4 py-16">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+        <h1 className="font-display text-5xl leading-tight text-slate-950 md:text-6xl">
           {demo.product_name || "Rare Disease Atlas"}
-        </p>
-        <h1 className="font-display mt-3 text-4xl leading-tight text-slate-950 md:text-5xl">
-          Follow one search to sourced research connections
         </h1>
-        <p className="mt-4 text-lg text-slate-700">{demo.product_one_liner}</p>
+        <p className="mt-4 text-xl text-slate-800">
+          Follow one search to sourced research connections
+        </p>
+        <p className="mt-3 text-base text-slate-600">{demo.product_one_liner}</p>
         <form
           className="mt-8"
           onSubmit={(e) => {
