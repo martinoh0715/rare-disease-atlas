@@ -376,18 +376,18 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900">
-      <header className="border-b border-slate-200 bg-[#0b1f3a] text-white">
-        <div className="mx-auto flex max-w-[1800px] flex-wrap items-center gap-3 px-4 py-3">
+    <div className="min-h-screen bg-soft text-ink">
+      <header className="border-b border-slate-800 bg-slate-900 text-white">
+        <div className="mx-auto flex max-w-[1800px] flex-wrap items-center gap-3 px-4 py-3 md:px-6">
           <button
             type="button"
-            className="font-display text-lg tracking-tight"
+            className="font-display text-[18px] font-semibold tracking-tight transition-colors duration-atlas hover:text-teal-200"
             onClick={() => setMode("landing")}
           >
             {productName}
           </button>
           <form
-            className="flex min-w-[280px] flex-1"
+            className="flex min-w-[240px] flex-1"
             onSubmit={(e) => {
               e.preventDefault();
               runSearch(query);
@@ -398,30 +398,34 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search a disease, gene, or variant"
               aria-label="Search atlas"
-              className="rounded-r-none border-slate-500 bg-white text-slate-900"
+              className="h-11 rounded-r-none border-slate-600 bg-white text-ink"
             />
-            <Button type="submit" className="rounded-l-none bg-teal-700 hover:bg-teal-600">
+            <Button
+              type="submit"
+              variant="secondary"
+              className="h-11 rounded-l-none px-5"
+            >
               Search
             </Button>
           </form>
         </div>
       </header>
 
-      <div className="mx-auto max-w-[1800px] space-y-4 px-4 py-4">
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-stretch">
+      <div className="mx-auto max-w-[1800px] space-y-4 px-4 py-4 md:space-y-5 md:px-6 md:py-5">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-stretch lg:gap-5">
           <section
             ref={graphSectionRef}
-            className="rounded-xl border border-slate-200 bg-white p-4"
+            className="atlas-panel p-4 md:p-5"
           >
-            <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
+            <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0 flex-1 pr-2">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                <p className="text-sm font-semibold text-slate-500">
                   Focused graph
                 </p>
-                <h1 className="font-display text-3xl font-bold text-slate-950">
+                <h1 className="font-display mt-1 text-[26px] font-bold leading-tight text-ink md:text-[28px]">
                   {focusNode?.label}
                 </h1>
-                <p className="mt-1 text-sm capitalize text-slate-600">
+                <p className="atlas-meta mt-1 capitalize">
                   {(focusNode?.type || "").replace(/_/g, " ")}
                 </p>
                 {focusNode?.does_not ? (
@@ -439,7 +443,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
               </Button>
             </div>
 
-            <div className="relative overflow-hidden rounded-xl">
+            <div className="relative overflow-hidden rounded-atlas border border-line bg-slate-50">
               <div className="pointer-events-auto absolute left-3 top-3 z-20 flex max-w-[280px] items-center gap-2">
                 <Button
                   size="sm"
@@ -447,11 +451,11 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                   onClick={goBack}
                   disabled={focusHistory.length === 0}
                   aria-label="Back to previous node"
-                  className="h-8 shrink-0 px-2 text-slate-700 hover:bg-white/70 disabled:opacity-40"
+                  className="h-9 shrink-0 px-2"
                 >
                   ← Back
                 </Button>
-                <span className="truncate text-xs text-slate-600">
+                <span className="truncate text-sm text-slate-600">
                   {focusHistory.length > 0
                     ? `Previous: ${
                         nodeMap.get(focusHistory[focusHistory.length - 1])
@@ -461,19 +465,19 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                 </span>
               </div>
 
-              <div className="pointer-events-auto absolute right-3 top-3 z-20 w-[250px] rounded-md border border-slate-300 bg-white/95 shadow-md backdrop-blur-sm">
-                <div className="flex items-center justify-between gap-2 border-b border-slate-200 bg-slate-50/95 px-3 py-2">
+              <div className="pointer-events-auto absolute right-3 top-3 z-20 w-[250px] rounded-atlas border border-line bg-white shadow-atlas">
+                <div className="flex items-center justify-between gap-2 border-b border-line bg-slate-50 px-3 py-2">
                   <button
                     type="button"
-                    className="flex min-w-0 flex-1 items-center justify-between text-left"
+                    className="flex min-w-0 flex-1 items-center justify-between rounded-sm text-left transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
                     onClick={() => setLegendOpen((v) => !v)}
                     aria-expanded={legendOpen}
                     aria-controls="graph-legend-body"
                   >
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-600">
+                    <span className="text-sm font-semibold text-slate-700">
                       Legend
                     </span>
-                    <span className="text-xs text-slate-500">
+                    <span className="text-sm text-slate-500" aria-hidden>
                       {legendOpen ? "▲" : "▼"}
                     </span>
                   </button>
@@ -483,7 +487,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                     <div className="flex justify-end gap-1 border-b border-slate-100 px-2 py-1.5">
                       <button
                         type="button"
-                        className="rounded px-1.5 py-0.5 text-[10px] font-medium text-teal-800 hover:bg-teal-50"
+                        className="rounded px-2 py-1 text-sm font-medium text-moss-800 transition-colors duration-atlas hover:bg-moss-50"
                         onClick={() =>
                           setEnabledCategories(
                             demo.category_legend.map((c) => c.id)
@@ -494,7 +498,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                       </button>
                       <button
                         type="button"
-                        className="rounded px-1.5 py-0.5 text-[10px] font-medium text-slate-600 hover:bg-slate-100"
+                        className="rounded px-2 py-1 text-sm font-medium text-slate-600 transition-colors duration-atlas hover:bg-slate-100"
                         onClick={() => setEnabledCategories([])}
                       >
                         Uncheck all
@@ -510,7 +514,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                         return (
                           <li key={c.id}>
                             <label
-                              className={`flex cursor-pointer items-center gap-2 rounded px-1.5 py-1 text-xs ${
+                              className={`flex min-h-9 cursor-pointer items-center gap-2 rounded px-1.5 py-1 text-sm transition-colors duration-atlas ${
                                 checked
                                   ? "bg-white text-slate-800"
                                   : "bg-slate-50 text-slate-400"
@@ -518,7 +522,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                             >
                               <input
                                 type="checkbox"
-                                className="h-3.5 w-3.5 accent-teal-700"
+                                className="h-4 w-4 accent-teal-700"
                                 checked={checked}
                                 onChange={() => toggleCategory(c.id)}
                               />
@@ -527,9 +531,10 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                                 style={{
                                   background: checked ? c.color : "#cbd5e1",
                                 }}
+                                aria-hidden
                               />
                               <span className="flex-1">{c.label}</span>
-                              <span className="tabular-nums text-slate-400">
+                              <span className="tabular-nums text-slate-500">
                                 {count}
                               </span>
                             </label>
@@ -537,7 +542,7 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                         );
                       })}
                     </ul>
-                    <p className="border-t border-slate-200 px-3 py-1.5 text-[10px] leading-snug text-slate-500">
+                    <p className="border-t border-line px-3 py-2 text-sm leading-snug text-slate-500">
                       Toggle categories to show or hide nodes. Dashed = proposed.
                     </p>
                   </div>
@@ -590,28 +595,28 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
           </aside>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <section className="rounded-xl border border-slate-200 bg-white p-4">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+        <div className="grid gap-4 md:grid-cols-2 md:gap-5">
+          <section className="atlas-panel p-4 md:p-5">
+            <h2 className="font-display text-[18px] font-semibold text-ink md:text-[20px]">
               Guided discovery
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600">
+            <p className="atlas-meta mt-2 leading-relaxed">
               A 3-step tour. Each step fits a curated path on the graph —
               biology first, then studies and partners, then a next-step brief.
             </p>
-            <ol className="mt-3 grid gap-2 sm:grid-cols-3">
+            <ol className="mt-4 grid gap-2 sm:grid-cols-3">
               {stages.map((s, idx) => (
                 <li key={s.id}>
                   <button
                     type="button"
                     onClick={() => chooseStage(s.id)}
-                    className={`h-full w-full rounded-lg border px-3 py-2 text-left text-sm transition ${
+                    className={`h-full min-h-11 w-full rounded-atlas border px-3 py-2.5 text-left text-sm transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss ${
                       stageId === s.id
-                        ? "border-slate-900 bg-slate-900 text-white"
-                        : "border-slate-200 hover:border-slate-400"
+                        ? "border-ink bg-ink text-white"
+                        : "border-line bg-white hover:border-slate-400 hover:bg-slate-50"
                     }`}
                   >
-                    <span className="block text-[11px] uppercase tracking-wide opacity-70">
+                    <span className="block text-sm opacity-70">
                       Step {idx + 1}
                     </span>
                     <span className="font-medium">{s.label}</span>
@@ -619,20 +624,22 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
                 </li>
               ))}
             </ol>
-            <p className="mt-3 text-sm text-slate-600">{stage?.summary}</p>
+            <p className="atlas-meta mt-3">{stage?.summary}</p>
           </section>
 
-          <section className="rounded-xl border border-slate-200 bg-white p-4">
-            <h2 className="font-display text-lg">Prepare next step</h2>
-            <p className="mt-2 text-sm text-slate-600">
+          <section className="atlas-panel p-4 md:p-5">
+            <h2 className="font-display text-[18px] font-semibold text-ink md:text-[20px]">
+              Prepare next step
+            </h2>
+            <p className="atlas-meta mt-2 leading-relaxed">
               Choose a partner organization and assets, then generate an
               editable sourced brief. Nothing is sent automatically.
             </p>
-            <label className="mt-3 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <label className="mt-4 block text-sm font-semibold text-slate-600">
               Potential partner
             </label>
             <select
-              className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"
+              className="mt-1 h-11 w-full rounded-atlas border border-line bg-white px-3 text-base text-ink transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
               value={selectedPartnerId}
               onChange={(e) => setSelectedPartnerId(e.target.value)}
             >
@@ -687,15 +694,15 @@ function Landing({
 }) {
   const ambiguous = needsDisambiguation(hits);
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,#dbeafe,transparent_40%),linear-gradient(180deg,#f8fafc,#eef2ff)]">
-      <div className="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-4 py-16">
-        <h1 className="font-display text-5xl leading-tight text-slate-950 md:text-6xl">
+    <div className="min-h-screen bg-soft">
+      <div className="mx-auto flex min-h-screen max-w-3xl flex-col justify-center px-4 py-14 md:px-6 md:py-16">
+        <h1 className="font-display text-[28px] font-bold leading-tight text-ink md:text-[30px]">
           {demo.product_name || "Rare Disease Atlas"}
         </h1>
-        <p className="mt-4 text-xl text-slate-800">
+        <p className="mt-3 text-lg text-slate-800 md:text-xl">
           Follow one search to sourced research connections
         </p>
-        <p className="mt-3 text-base text-slate-600">{demo.product_one_liner}</p>
+        <p className="atlas-meta mt-2 text-base">{demo.product_one_liner}</p>
         <form
           className="mt-8"
           onSubmit={(e) => {
@@ -706,15 +713,15 @@ function Landing({
           <label className="sr-only" htmlFor="atlas-search">
             Search a disease, gene, or variant
           </label>
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <Input
               id="atlas-search"
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
               placeholder="Search a disease, a gene, or a variant — e.g. sickle cell anemia or HBB"
-              className="h-14 text-base shadow-sm"
+              className="h-12 text-base"
             />
-            <Button type="submit" className="h-14 px-6">
+            <Button type="submit" size="lg" className="sm:h-12 sm:px-6">
               Search
             </Button>
           </div>
@@ -725,7 +732,7 @@ function Landing({
               key={ex.query}
               type="button"
               onClick={() => onPickExample(ex.query)}
-              className="rounded-full border border-slate-300 bg-white px-3 py-1 text-sm text-slate-700 hover:border-slate-500"
+              className="min-h-9 rounded-atlas border border-line bg-white px-3 py-1.5 text-sm text-slate-700 transition-colors duration-atlas hover:border-slate-400 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
             >
               {ex.label}
             </button>
@@ -733,8 +740,8 @@ function Landing({
         </div>
 
         {hits.length > 0 && (
-          <div className="mt-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-            <h2 className="text-sm font-semibold text-slate-900">
+          <div className="atlas-panel mt-6 p-4 md:p-5">
+            <h2 className="text-[18px] font-semibold text-ink">
               {ambiguous
                 ? "Multiple conditions match — choose the intended one"
                 : "Matching entities"}
@@ -745,15 +752,15 @@ function Landing({
                   <button
                     type="button"
                     onClick={() => onSelectHit(h.entry.id)}
-                    className="w-full rounded-lg border border-slate-200 px-3 py-3 text-left hover:border-slate-900"
+                    className="w-full rounded-atlas border border-line px-3 py-3 text-left transition-colors duration-atlas hover:border-slate-400 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
                   >
-                    <span className="block font-medium text-slate-900">
+                    <span className="block text-base font-medium text-ink">
                       {h.entry.label}
                     </span>
-                    <span className="mt-1 block text-sm text-slate-600">
+                    <span className="atlas-meta mt-1 block">
                       {h.entry.disambiguation_note}
                     </span>
-                    <span className="mt-1 block text-xs text-slate-400">
+                    <span className="mt-1 block text-sm text-slate-500">
                       {h.matchReason}
                     </span>
                   </button>
@@ -763,7 +770,7 @@ function Landing({
           </div>
         )}
 
-        <p className="mt-8 text-xs text-slate-500">
+        <p className="atlas-meta mt-8">
           These conditions already have treatments. This atlas focuses on
           sourced research connections and reusable assets — not treatment
           advice.
@@ -789,46 +796,44 @@ function Unsupported({
       <button
         type="button"
         onClick={onBack}
-        className="text-sm font-medium text-teal-800 hover:underline"
+        className="text-base font-medium text-moss-800 underline-offset-2 transition-colors duration-atlas hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
       >
         ← Back to search
       </button>
-      <h1 className="font-display mt-4 text-3xl text-slate-950">
+      <h1 className="font-display mt-4 text-[28px] font-bold text-ink md:text-[30px]">
         No supported lead for “{query}”
       </h1>
-      <p className="mt-3 text-slate-700">
+      <p className="mt-3 text-base text-slate-700">
         No curated connection was found within this prototype&apos;s coverage.
         That means it is not in our reviewed dataset — not that it does not
         exist.
       </p>
-      <div className="mt-6 space-y-4 rounded-xl border border-slate-200 bg-white p-5">
+      <div className="atlas-panel mt-6 space-y-5 p-5">
         <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          <h2 className="text-base font-bold text-ink">
             Sources / scope searched
           </h2>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-base text-slate-700">
             {demo.unsupported_search.sources_searched.map((s) => (
               <li key={s}>{s}</li>
             ))}
           </ul>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="atlas-meta mt-2">
             {demo.unsupported_search.coverage_note}
           </p>
         </div>
         <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-            Missing evidence
-          </h2>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+          <h2 className="text-base font-bold text-ink">Missing evidence</h2>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-base text-slate-700">
             <li>A curated entity match for this query in the demonstration layer</li>
             <li>A reviewed edge connecting it into the HbSS / β-thalassemia journey</li>
           </ul>
         </div>
         <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+          <h2 className="text-base font-bold text-ink">
             Next research question
           </h2>
-          <p className="mt-2 text-sm text-slate-800">
+          <p className="mt-2 text-base text-slate-800">
             What primary public source would establish whether “{query}” belongs
             in the HBB hemoglobinopathy atlas, and which disease scope should it
             be mapped to without merging synonyms?
@@ -836,13 +841,13 @@ function Unsupported({
         </div>
       </div>
       <div className="mt-6">
-        <p className="text-sm text-slate-600">Try a supported example:</p>
+        <p className="atlas-meta">Try a supported example:</p>
         <div className="mt-2 flex flex-wrap gap-2">
           {demo.example_searches.map((ex) => (
             <button
               key={ex.query}
               type="button"
-              className="rounded-full border border-slate-300 bg-white px-3 py-1 text-sm"
+              className="min-h-9 rounded-atlas border border-line bg-white px-3 py-1.5 text-sm transition-colors duration-atlas hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
               onClick={() => onTry(ex.query)}
             >
               {ex.label}
@@ -863,9 +868,11 @@ function SourcePanel({
 }) {
   if (!edge) {
     return (
-      <section className="shrink-0 rounded-xl border border-slate-200 bg-white p-4">
-        <h2 className="font-display text-lg">Source</h2>
-        <p className="mt-2 text-sm text-slate-600">
+      <section className="atlas-panel shrink-0 p-4 md:p-5">
+        <h2 className="font-display text-[18px] font-semibold text-ink md:text-[20px]">
+          Source
+        </h2>
+        <p className="atlas-meta mt-2">
           Select a connection to see its source.
         </p>
       </section>
@@ -873,20 +880,22 @@ function SourcePanel({
   }
   const card = sourceCardForEdge(edge, nodeMap);
   return (
-    <section className="shrink-0 rounded-xl border border-slate-200 bg-white p-4">
-      <h2 className="font-display text-lg">Source</h2>
-      <p className="mt-1 text-sm text-slate-500">{card.organization}</p>
+    <section className="atlas-panel shrink-0 p-4 md:p-5">
+      <h2 className="font-display text-[18px] font-semibold text-ink md:text-[20px]">
+        Source
+      </h2>
+      <p className="atlas-meta mt-1">{card.organization}</p>
       {card.url ? (
         <a
           href={card.url}
           target="_blank"
           rel="noreferrer"
-          className="mt-3 block rounded-lg border border-teal-200 bg-teal-50 px-3 py-3 text-sm font-semibold leading-snug text-teal-950 underline-offset-2 hover:bg-teal-100 hover:underline"
+          className="mt-3 block break-words rounded-atlas border border-moss-100 bg-moss-50 px-3 py-3 text-base font-semibold leading-snug text-moss-900 underline-offset-2 transition-colors duration-atlas hover:bg-moss-100 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
         >
           {card.linkLabel}
         </a>
       ) : (
-        <p className="mt-3 text-base font-semibold leading-snug text-slate-950">
+        <p className="mt-3 text-base font-semibold leading-snug text-ink">
           {card.title}
         </p>
       )}
@@ -905,9 +914,11 @@ function SummaryPanel({
 }) {
   if (!edge) {
     return (
-      <section className="flex min-h-0 flex-1 flex-col rounded-xl border border-slate-200 bg-white p-4">
-        <h2 className="font-display text-lg">Summary</h2>
-        <p className="mt-2 text-sm text-slate-600">
+      <section className="atlas-panel flex min-h-0 flex-1 flex-col p-4 md:p-5">
+        <h2 className="font-display text-[18px] font-semibold text-ink md:text-[20px]">
+          Summary
+        </h2>
+        <p className="atlas-meta mt-2">
           Select a connection to see the article summary and main findings.
         </p>
       </section>
@@ -919,28 +930,26 @@ function SummaryPanel({
     plainFallback
   );
   return (
-    <section className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white">
-      <div className="border-b border-slate-100 px-4 py-3">
-        <h2 className="font-display text-lg">Summary</h2>
+    <section className="atlas-panel flex min-h-0 flex-1 flex-col overflow-hidden">
+      <div className="border-b border-line px-4 py-3 md:px-5">
+        <h2 className="font-display text-[18px] font-semibold text-ink md:text-[20px]">
+          Summary
+        </h2>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-3">
-        <p className="text-sm leading-relaxed text-slate-800">{takeaway}</p>
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-3 md:px-5 md:py-4">
+        <p className="text-base leading-relaxed text-slate-800">{takeaway}</p>
         {abstract ? (
-          <div className="mt-4">
-            <h3 className="text-sm font-bold text-slate-900">
-              Abstract
-            </h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
+          <div className="mt-5">
+            <h3 className="text-base font-bold text-ink">Abstract</h3>
+            <p className="mt-2 text-base leading-relaxed text-slate-700">
               {abstract}
             </p>
           </div>
         ) : null}
         {findings.length > 0 ? (
-          <div className="mt-4">
-            <h3 className="text-sm font-bold text-slate-900">
-              Main findings
-            </h3>
-            <ul className="mt-1.5 list-disc space-y-1.5 pl-4 text-sm leading-relaxed text-slate-700">
+          <div className="mt-5">
+            <h3 className="text-base font-bold text-ink">Main findings</h3>
+            <ul className="mt-2 list-disc space-y-2 pl-5 text-base leading-relaxed text-slate-700">
               {findings.map((f) => (
                 <li key={f}>{f}</li>
               ))}
@@ -948,24 +957,20 @@ function SummaryPanel({
           </div>
         ) : null}
         {edge.evidence?.supporting_passage ? (
-          <div className="mt-4">
-            <h3 className="text-sm font-bold text-slate-900">
-              Supporting detail
-            </h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
+          <div className="mt-5">
+            <h3 className="text-base font-bold text-ink">Supporting detail</h3>
+            <p className="mt-2 break-words text-base leading-relaxed text-slate-700">
               {edge.evidence.supporting_passage}
             </p>
           </div>
         ) : null}
         {edge.evidence?.genotype_context || edge.evidence?.population_context ? (
-          <div className="mt-4">
-            <h3 className="text-sm font-bold text-slate-900">
-              Context
-            </h3>
-            <dl className="mt-1.5 space-y-1 text-sm text-slate-700">
+          <div className="mt-5">
+            <h3 className="text-base font-bold text-ink">Context</h3>
+            <dl className="mt-2 space-y-1.5 text-base text-slate-700">
               {edge.evidence.genotype_context ? (
                 <div>
-                  <dt className="inline font-medium text-slate-500">
+                  <dt className="inline font-semibold text-slate-600">
                     Genotype:{" "}
                   </dt>
                   <dd className="inline">{edge.evidence.genotype_context}</dd>
@@ -973,7 +978,7 @@ function SummaryPanel({
               ) : null}
               {edge.evidence.population_context ? (
                 <div>
-                  <dt className="inline font-medium text-slate-500">
+                  <dt className="inline font-semibold text-slate-600">
                     Population:{" "}
                   </dt>
                   <dd className="inline">{edge.evidence.population_context}</dd>
@@ -981,7 +986,9 @@ function SummaryPanel({
               ) : null}
               {edge.evidence.species ? (
                 <div>
-                  <dt className="inline font-medium text-slate-500">Species: </dt>
+                  <dt className="inline font-semibold text-slate-600">
+                    Species:{" "}
+                  </dt>
                   <dd className="inline">{edge.evidence.species}</dd>
                 </div>
               ) : null}
@@ -989,9 +996,7 @@ function SummaryPanel({
           </div>
         ) : null}
         {caveat ? (
-          <p className="mt-4 text-xs leading-relaxed text-slate-500">
-            Caveat: {caveat}
-          </p>
+          <p className="atlas-meta mt-5 leading-relaxed">Caveat: {caveat}</p>
         ) : null}
       </div>
     </section>
@@ -1010,9 +1015,11 @@ function AssetPanel({
   registryGap: AtlasData["demo"]["registry_gap"];
 }) {
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4">
-      <h2 className="font-display text-xl text-slate-950">Research assets</h2>
-      <p className="mt-1 text-sm text-slate-600">
+    <section className="atlas-panel p-4 md:p-5">
+      <h2 className="font-display text-[20px] font-semibold text-ink">
+        Research assets
+      </h2>
+      <p className="atlas-meta mt-1">
         Verified public assets for this journey. Select items to include in a
         proposal brief.
       </p>
@@ -1022,27 +1029,37 @@ function AssetPanel({
           return (
             <article
               key={a.asset_id}
-              className={`rounded-lg border p-4 ${
-                selected ? "border-slate-900" : "border-slate-200"
+              className={`rounded-atlas border p-4 transition-colors duration-atlas ${
+                selected
+                  ? "border-ink bg-slate-50"
+                  : "border-line bg-white"
               }`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-slate-500">
+                  <p className="text-sm font-semibold text-slate-500">
                     {a.asset_kind.replace(/_/g, " ")}
                   </p>
-                  <h3 className="font-medium text-slate-900">{a.title}</h3>
+                  <h3 className="mt-0.5 text-base font-semibold text-ink">
+                    {a.title}
+                  </h3>
                 </div>
                 <button
                   type="button"
                   onClick={() => onToggle(a.asset_id)}
-                  className="rounded-md border border-slate-300 px-2 py-1 text-xs"
+                  className={`min-h-9 rounded-atlas border px-3 py-1.5 text-sm font-medium transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss ${
+                    selected
+                      ? "border-ink bg-ink text-white"
+                      : "border-line bg-white text-ink hover:bg-slate-50"
+                  }`}
                 >
                   {selected ? "Selected" : "Select"}
                 </button>
               </div>
-              <p className="mt-2 text-sm text-slate-700">{a.description}</p>
-              <dl className="mt-3 grid gap-2 text-sm text-slate-700 md:grid-cols-2">
+              <p className="mt-2 text-base leading-relaxed text-slate-700">
+                {a.description}
+              </p>
+              <dl className="mt-3 grid gap-2 text-sm text-slate-700 md:grid-cols-2 md:text-base">
                 <Detail label="Owner / maintainer" value={a.owner} />
                 <Detail label="Designed for disease" value={a.designed_for.disease} />
                 <Detail label="Genotype scope" value={a.designed_for.genotype} />
@@ -1050,8 +1067,8 @@ function AssetPanel({
                 <Detail label="Species" value={a.designed_for.species} />
                 <Detail label="Access" value={a.access} />
               </dl>
-              <p className="mt-2 text-sm text-slate-700">
-                <span className="font-medium">Why relevant: </span>
+              <p className="mt-2 text-base text-slate-700">
+                <span className="font-semibold">Why relevant: </span>
                 {a.relevance_to_journey}
               </p>
               <div className="mt-3 grid gap-3 md:grid-cols-3">
@@ -1062,7 +1079,7 @@ function AssetPanel({
                   items={a.comparison.needs_expert_review}
                 />
               </div>
-              <p className="mt-3 rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-950">
+              <p className="mt-3 rounded-atlas border border-amber-200 bg-amber-50 px-3 py-2 text-base text-amber-950">
                 <span className="font-semibold">{a.comparison.adaptation_status}: </span>
                 {a.comparison.validation_question}
               </p>
@@ -1070,7 +1087,7 @@ function AssetPanel({
                 href={a.source_url}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-2 inline-block text-sm text-teal-800 hover:underline"
+                className="mt-2 inline-block break-all text-base text-moss-800 underline-offset-2 hover:underline"
               >
                 {a.source_url}
               </a>
@@ -1078,11 +1095,11 @@ function AssetPanel({
           );
         })}
       </div>
-      <div className="mt-4 rounded-lg border border-dashed border-slate-300 bg-slate-50 p-4">
-        <h3 className="font-medium text-slate-900">Patient registry gap</h3>
-        <p className="mt-1 text-sm text-slate-700">{registryGap.explanation}</p>
-        <p className="mt-2 text-sm text-slate-700">
-          <span className="font-medium">Next question: </span>
+      <div className="mt-4 rounded-atlas border border-dashed border-line bg-slate-50 p-4">
+        <h3 className="text-base font-semibold text-ink">Patient registry gap</h3>
+        <p className="mt-1 text-base text-slate-700">{registryGap.explanation}</p>
+        <p className="mt-2 text-base text-slate-700">
+          <span className="font-semibold">Next question: </span>
           {registryGap.next_question}
         </p>
       </div>
@@ -1092,11 +1109,9 @@ function AssetPanel({
 
 function CompareCol({ title, items }: { title: string; items: string[] }) {
   return (
-    <div className="rounded-md bg-slate-50 p-3">
-      <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-        {title}
-      </h4>
-      <ul className="mt-2 space-y-1 text-sm text-slate-700">
+    <div className="rounded-atlas bg-slate-50 p-3">
+      <h4 className="text-sm font-bold text-ink">{title}</h4>
+      <ul className="mt-2 space-y-1 text-sm text-slate-700 md:text-base">
         {items.map((item) => (
           <li key={item}>• {item}</li>
         ))}

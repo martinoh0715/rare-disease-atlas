@@ -9,33 +9,32 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ["var(--font-display)", "Fraunces", "Georgia", "serif"],
-        body: ["var(--font-body)", "Source Serif 4", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "Source Sans 3", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["var(--font-sans)", "Source Sans 3", "ui-sans-serif", "system-ui", "sans-serif"],
+        body: ["var(--font-sans)", "Source Sans 3", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {
-        ink: "#1c1917",
+        ink: "#0f172a",
+        soft: "#f8fafc",
+        line: "#e2e8f0",
         moss: {
           DEFAULT: "#0f766e",
           50: "#f0fdfa",
+          100: "#ccfbf1",
           700: "#0f766e",
           800: "#115e59",
           900: "#134e4a",
           950: "#042f2e",
         },
       },
-      keyframes: {
-        rise: {
-          from: { opacity: "0", transform: "translateY(10px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
-        },
-        pulseSoft: {
-          "0%, 100%": { opacity: "0.55" },
-          "50%": { opacity: "1" },
-        },
+      borderRadius: {
+        atlas: "8px",
       },
-      animation: {
-        rise: "rise 700ms ease-out both",
-        pulseSoft: "pulseSoft 3.2s ease-in-out infinite",
+      transitionDuration: {
+        atlas: "150ms",
+      },
+      boxShadow: {
+        atlas: "0 1px 2px rgba(15, 23, 42, 0.06)",
       },
     },
   },

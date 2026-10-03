@@ -4,20 +4,20 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-800 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-atlas text-sm font-medium transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-45",
   {
     variants: {
       variant: {
-        default: "bg-stone-900 text-stone-50 hover:bg-stone-800",
-        secondary: "bg-teal-800 text-teal-50 hover:bg-teal-700",
+        default: "bg-ink text-white hover:bg-slate-800",
+        secondary: "bg-moss text-white hover:bg-moss-800",
         outline:
-          "border border-stone-300 bg-white/70 text-stone-900 hover:bg-stone-100",
-        ghost: "hover:bg-stone-200/70 text-stone-800",
+          "border border-line bg-white text-ink hover:border-slate-400 hover:bg-slate-50",
+        ghost: "text-slate-700 hover:bg-slate-100 hover:text-ink",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-8 rounded-md px-3 text-xs",
-        lg: "h-11 rounded-md px-6",
+        default: "h-10 min-h-10 px-4 py-2",
+        sm: "h-9 min-h-9 rounded-atlas px-3 text-sm",
+        lg: "h-12 min-h-12 rounded-atlas px-6 text-base",
       },
     },
     defaultVariants: {

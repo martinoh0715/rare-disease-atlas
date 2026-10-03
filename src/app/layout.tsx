@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
-import { Fraunces, Source_Serif_4 } from "next/font/google";
+import { Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 
-const display = Fraunces({
+const sans = Source_Sans_3({
   subsets: ["latin"],
-  variable: "--font-display",
-});
-
-const body = Source_Serif_4({
-  subsets: ["latin"],
-  variable: "--font-body",
+  variable: "--font-sans",
 });
 
 export const metadata: Metadata = {
@@ -25,9 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${display.variable} ${body.variable} antialiased`}>
-        {children}
-      </body>
+      <body className={`${sans.variable} antialiased`}>{children}</body>
     </html>
   );
 }

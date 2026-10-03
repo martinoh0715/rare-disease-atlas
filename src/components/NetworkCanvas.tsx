@@ -180,11 +180,11 @@ export function NetworkCanvas({
   );
 
   return (
-    <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+    <div className="relative overflow-hidden bg-slate-50">
       <svg
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
         className="h-auto w-full"
-        style={{ minHeight: 520 }}
+        style={{ minHeight: 560 }}
         role="img"
         aria-label="Interactive evidence graph"
       >
@@ -202,7 +202,7 @@ export function NetworkCanvas({
                 d={d}
                 fill="none"
                 stroke="transparent"
-                strokeWidth={16}
+                strokeWidth={20}
                 className="cursor-pointer"
                 onClick={(ev) => {
                   ev.stopPropagation();
@@ -212,10 +212,10 @@ export function NetworkCanvas({
               <path
                 d={d}
                 fill="none"
-                stroke={selected ? (hypo ? "#be185d" : "#0f766e") : "#94a3b8"}
-                strokeWidth={selected ? 3.5 : 1.6}
-                strokeDasharray={hypo ? "7 6" : undefined}
-                opacity={selected ? 1 : 0.35}
+                stroke={selected ? (hypo ? "#9d174d" : "#0f766e") : "#64748b"}
+                strokeWidth={selected ? 4 : 2}
+                strokeDasharray={hypo ? "8 6" : undefined}
+                opacity={selected ? 1 : 0.55}
                 className="cursor-pointer"
                 onClick={(ev) => {
                   ev.stopPropagation();
@@ -264,17 +264,24 @@ export function NetworkCanvas({
                 onSelectNode(n.id);
               }}
             >
-              {focused && (
+                {focused && (
                 <circle
                   cx={p.x}
                   cy={p.y}
-                  r={r + 8}
+                  r={r + 9}
                   fill="none"
                   stroke="#0f172a"
-                  strokeWidth={3}
+                  strokeWidth={3.5}
                 />
               )}
-              <circle cx={p.x} cy={p.y} r={r} fill={color} />
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={r}
+                fill={color}
+                stroke={focused ? "#0f172a" : "rgba(15,23,42,0.12)"}
+                strokeWidth={focused ? 1.5 : 1}
+              />
               {!hovered && (
                 <text
                   x={lx}
@@ -328,7 +335,7 @@ export function NetworkCanvas({
           );
         })}
       </svg>
-      <p className="border-t border-slate-200 bg-white px-3 py-2 text-xs leading-relaxed text-slate-500">
+      <p className="border-t border-line bg-white px-3 py-2.5 text-sm leading-relaxed text-slate-600">
         Click a node or connection. Only the selected connection is highlighted.
         Solid lines are sourced, established relationships. Dashed lines are
         proposed bridges or next-step ideas — hypotheses to investigate, not
