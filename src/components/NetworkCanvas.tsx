@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import {
   GraphEdge,
   GraphNode,
+  hypothesisEdgeLabel,
+  isAiGeneratedEdge,
   isHypothesisEdge,
   typeColor,
 } from "@/lib/graph";
@@ -183,10 +185,23 @@ export function NetworkCanvas({
           const b = positions.get(e.target);
           if (!a || !b) return null;
           const hypo = isHypothesisEdge(e);
+          const ai = isAiGeneratedEdge(e);
           const selected = e.id === selectedEdgeId;
-          const { d } = edgePath(a, b, index, edges.length);
+          const { d, mid } = edgePath(a, b, index, edges.length);
+          const label = hypothesisEdgeLabel(e);
+          const stroke = selected
+            ? ai
+              ? "#a21caf"
+              : hypo
+                ? "#9d174d"
+                : "#0f766e"
+            : ai
+              ? "#c026d3"
+              : hypo
+                ? "#9d174d"
+                : "#64748b";
           return (
-            <g key={e.id} data-edge>
+            <g key={e.id} data-edge data-origin={e.origin || "curated"}>
               <path
                 d={d}
                 fill="none"
@@ -201,16 +216,29 @@ export function NetworkCanvas({
               <path
                 d={d}
                 fill="none"
-                stroke={selected ? (hypo ? "#9d174d" : "#0f766e") : "#64748b"}
-                strokeWidth={selected ? 4 : 2}
+                stroke={stroke}
+                strokeWidth={selected ? 4 : hypo ? 2.5 : 2}
                 strokeDasharray={hypo ? "8 6" : undefined}
-                opacity={selected ? 1 : 0.55}
+                opacity={selected ? 1 : hypo ? 0.75 : 0.55}
                 className="cursor-pointer"
                 onClick={(ev) => {
                   ev.stopPropagation();
                   onSelectEdge(e.id);
                 }}
               />
+              {label && (selected || ai) ? (
+                <text
+                  x={mid.x}
+                  y={mid.y - 8}
+                  textAnchor="middle"
+                  className="fill-fuchsia-900"
+                  style={{ fontSize: 12, fontWeight: 650 }}
+                >
+                  {ai
+                    ? "AI-generated hypothesis — not reviewed"
+                    : "Curated hypothesis"}
+                </text>
+              ) : null}
             </g>
           );
         })}
@@ -327,8 +355,9 @@ export function NetworkCanvas({
       <p className="border-t border-line bg-white px-3 py-2.5 text-sm leading-relaxed text-slate-600">
         Click a node or connection. Only the selected connection is highlighted.
         Solid lines are sourced, established relationships. Dashed lines are
-        proposed bridges or next-step ideas — hypotheses to investigate, not
-        proven facts.
+        hypotheses (curated or AI-generated) — not proven facts. AI edges are
+        labeled “AI-generated hypothesis — not reviewed” and stay separate from
+        curated data until you dismiss or hide them.
       </p>
     </div>
   );

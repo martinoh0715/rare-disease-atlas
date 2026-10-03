@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  AiHypothesisDetail,
+  HypothesisExplorePanel,
+} from "@/components/HypothesisExplorePanel";
 import { NetworkCanvas } from "@/components/NetworkCanvas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +19,11 @@ import {
   searchAcrossDatasets,
   type SearchHit,
 } from "@/lib/graph";
+import type {
+  HypothesisExploreResult,
+  ValidatedHypothesis,
+} from "@/lib/hypothesis/types";
+import { hypothesisToEdge } from "@/lib/hypothesis/validate";
 import type {
   AssetAssessment,
   AtlasCatalog,
@@ -104,6 +113,17 @@ export function AtlasApp({
   const [enabledCategories, setEnabledCategories] = useState<string[]>(() =>
     defaultDataset.demo.category_legend.map((c) => c.id)
   );
+  const [aiResearchQuestion, setAiResearchQuestion] = useState("");
+  const [showAiHypotheses, setShowAiHypotheses] = useState(false);
+  const [aiResult, setAiResult] = useState<HypothesisExploreResult | null>(
+    null
+  );
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+  const [dismissedAiIds, setDismissedAiIds] = useState<Set<string>>(
+    () => new Set()
+  );
+  const aiAbortRef = useRef<AbortController | null>(null);
   const graphSectionRef = useRef<HTMLElement | null>(null);
   const [graphSectionHeight, setGraphSectionHeight] = useState<number | null>(
     null
@@ -175,6 +195,15 @@ export function AtlasApp({
       if (partnerIds.has(prev)) return prev;
       return demo.default_partner_id || partners[0]?.id || "";
     });
+    // AI hypotheses are dataset-scoped; never carry them across collections.
+    aiAbortRef.current?.abort();
+    aiAbortRef.current = null;
+    setAiResult(null);
+    setAiError(null);
+    setAiLoading(false);
+    setShowAiHypotheses(false);
+    setDismissedAiIds(new Set());
+    setAiResearchQuestion("");
   }, [datasetId, demo.default_asset_ids, demo.default_partner_id, demo.asset_assessments, partners]);
 
   const stages = (journey.stages || demo.stages) as DemoStage[];
@@ -194,7 +223,49 @@ export function AtlasApp({
   );
 
   const focusNode = nodeMap.get(focusId) || null;
-  const selectedEdge = selectedEdgeId ? edgeMap.get(selectedEdgeId) || null : null;
+
+  const visibleAiHypotheses = useMemo(() => {
+    return (aiResult?.hypotheses || []).filter(
+      (h) => !dismissedAiIds.has(h.hypothesis_id)
+    );
+  }, [aiResult, dismissedAiIds]);
+
+  const aiEdges = useMemo(() => {
+    if (!showAiHypotheses) return [] as GraphEdge[];
+    return visibleAiHypotheses.map(
+      (h) => hypothesisToEdge(h) as unknown as GraphEdge
+    );
+  }, [showAiHypotheses, visibleAiHypotheses]);
+
+  const aiEdgeMap = useMemo(
+    () => new Map(aiEdges.map((e) => [e.id, e])),
+    [aiEdges]
+  );
+
+  const selectedAiHypothesis: ValidatedHypothesis | null = useMemo(() => {
+    if (!selectedEdgeId) return null;
+    return (
+      visibleAiHypotheses.find((h) => h.hypothesis_id === selectedEdgeId) ||
+      null
+    );
+  }, [selectedEdgeId, visibleAiHypotheses]);
+
+  const selectedEdge = selectedEdgeId
+    ? edgeMap.get(selectedEdgeId) ||
+      aiEdgeMap.get(selectedEdgeId) ||
+      null
+    : null;
+
+  const evidenceUrlById = useMemo(() => {
+    const map = new Map<string, string | null>();
+    for (const e of curated.edges) {
+      map.set(`ev:${e.id}`, e.evidence?.source_url || null);
+    }
+    for (const n of curated.nodes) {
+      map.set(`ev:node:${n.id}`, (n.source_url as string | undefined) || null);
+    }
+    return map;
+  }, [curated]);
 
   const local = useMemo(() => {
     if (!focusNode) {
@@ -241,14 +312,40 @@ export function AtlasApp({
     }
 
     const allNodes = presentNodes;
-    const visibleNodes = presentNodes.filter(
+    let visibleNodes = presentNodes.filter(
       (n) =>
         n.id === focusId || enabledCategorySet.has(legendCategoryForType(n.type))
     );
     const visibleIds = new Set(visibleNodes.map((n) => n.id));
-    const visibleEdges = presentEdges.filter(
+    let visibleEdges = presentEdges.filter(
       (e) => visibleIds.has(e.source) && visibleIds.has(e.target)
     );
+
+    // AI hypotheses stay out of the curated graph until the user enables display.
+    if (showAiHypotheses && aiEdges.length) {
+      const extraNodes: GraphNode[] = [];
+      for (const e of aiEdges) {
+        for (const id of [e.source, e.target]) {
+          if (visibleIds.has(id)) continue;
+          const n = nodeMap.get(id);
+          if (!n) continue;
+          if (
+            n.id === focusId ||
+            enabledCategorySet.has(legendCategoryForType(n.type))
+          ) {
+            extraNodes.push(n);
+            visibleIds.add(n.id);
+          }
+        }
+      }
+      if (extraNodes.length) {
+        visibleNodes = [...visibleNodes, ...extraNodes];
+      }
+      const displayableAi = aiEdges.filter(
+        (e) => visibleIds.has(e.source) && visibleIds.has(e.target)
+      );
+      visibleEdges = [...visibleEdges, ...displayableAi];
+    }
 
     return {
       nodes: visibleNodes,
@@ -258,12 +355,14 @@ export function AtlasApp({
       emptyReason,
     };
   }, [
+    aiEdges,
     curated,
     enabledCategorySet,
     expanded,
     focusId,
     focusNode,
     nodeMap,
+    showAiHypotheses,
     stage,
   ]);
 
@@ -448,6 +547,74 @@ export function AtlasApp({
     );
   }
 
+  async function runHypothesisExplore(refresh = false) {
+    if (!focusId) {
+      setAiError("Select a disease, gene, mechanism, or research asset first.");
+      return;
+    }
+    aiAbortRef.current?.abort();
+    const controller = new AbortController();
+    aiAbortRef.current = controller;
+    setAiLoading(true);
+    setAiError(null);
+    try {
+      const res = await fetch("/api/hypotheses/explore", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          datasetId,
+          selectedNodeId: focusId,
+          researchQuestion: aiResearchQuestion,
+          refresh,
+        }),
+        signal: controller.signal,
+      });
+      const data = (await res.json()) as HypothesisExploreResult;
+      if (controller.signal.aborted) return;
+      setAiResult(data);
+      if (data.status === "unavailable" || data.status === "error") {
+        setAiError(data.message || "Hypothesis generation unavailable.");
+      } else if (data.status === "insufficient_evidence") {
+        setAiError(null);
+      } else if (data.status === "ok" && data.hypotheses.length > 0) {
+        // Keep toggle off until the user chooses to display.
+        setAiError(null);
+      }
+    } catch (err) {
+      if ((err as Error).name === "AbortError") {
+        setAiError(null);
+        setAiResult((prev) =>
+          prev
+            ? prev
+            : {
+                status: "cancelled",
+                selected_node_id: focusId,
+                research_question: aiResearchQuestion,
+                evidence_ids: [],
+                hypotheses: [],
+                held: [],
+                message: "Request cancelled.",
+              }
+        );
+      } else {
+        setAiError(
+          err instanceof Error ? err.message : "Hypothesis request failed."
+        );
+      }
+    } finally {
+      if (aiAbortRef.current === controller) {
+        setAiLoading(false);
+        aiAbortRef.current = null;
+      }
+    }
+  }
+
+  function cancelHypothesisExplore() {
+    aiAbortRef.current?.abort();
+    aiAbortRef.current = null;
+    setAiLoading(false);
+  }
+
   function buildProposal() {
     const defaultDiseaseId =
       demo.default_focus_id ||
@@ -489,10 +656,36 @@ export function AtlasApp({
     );
     const differences = assets.flatMap((a) => a.comparison.what_differs);
 
+    // If an AI hypothesis is selected/visible, retain unreviewed caveats in export.
+    const aiForExport =
+      selectedAiHypothesis ||
+      (showAiHypotheses ? visibleAiHypotheses[0] : null) ||
+      null;
+    if (aiForExport) {
+      evidenceBullets.push(
+        `AI-generated hypothesis — not reviewed (${aiForExport.hypothesis_id}): ${aiForExport.plain_language_summary}`
+      );
+      for (const p of aiForExport.established_premises) {
+        evidenceBullets.push(
+          `Premise: ${p.claim} [evidence ids: ${p.evidence_ids.join(", ")}]`
+        );
+      }
+      uncertainties.push(
+        "Included AI hypothesis remains unreviewed and is not an established relationship."
+      );
+      differences.push(...aiForExport.relevant_differences);
+      differences.push(...aiForExport.counterevidence.map((c) => `Counterevidence: ${c}`));
+      partnerQuestions.push(aiForExport.validation_question);
+    }
+
     const draft: ProposalDraft = {
       diseaseLabel: disease.label,
-      researchQuestion: demo.proposal_defaults.research_question,
-      connectionSummary: journey.plain_language,
+      researchQuestion: aiForExport
+        ? aiResearchQuestion || demo.proposal_defaults.research_question
+        : demo.proposal_defaults.research_question,
+      connectionSummary: aiForExport
+        ? `${journey.plain_language}\n\nAI hypothesis (not reviewed): ${aiForExport.title}`
+        : journey.plain_language,
       proposedResource:
         assets.map((a) => a.title).join("; ") || "No asset selected",
       partnerLabel: partnerLabel
@@ -502,7 +695,9 @@ export function AtlasApp({
       differences: [...new Set(differences)],
       uncertainties,
       partnerQuestions: [...new Set(partnerQuestions)],
-      nextStep: demo.proposal_defaults.proposed_next_step,
+      nextStep: aiForExport
+        ? aiForExport.proposed_next_step
+        : demo.proposal_defaults.proposed_next_step,
     };
     setProposal(draft);
     setProposalOpen(true);
@@ -642,7 +837,46 @@ export function AtlasApp({
               </Button>
             </div>
 
-            <div className="relative overflow-hidden rounded-atlas border border-line bg-slate-50">
+            <HypothesisExplorePanel
+              selectedLabel={focusNode?.label || null}
+              researchQuestion={aiResearchQuestion}
+              onResearchQuestionChange={setAiResearchQuestion}
+              loading={aiLoading}
+              error={aiError}
+              statusMessage={
+                aiResult?.status === "insufficient_evidence"
+                  ? aiResult.message ||
+                    aiResult.evidence_limitations_explanation ||
+                    "Insufficient evidence for a specific proposal."
+                  : aiResult?.status === "ok"
+                    ? aiResult.message ||
+                      (visibleAiHypotheses.length
+                        ? `${visibleAiHypotheses.length} candidate connection${
+                            visibleAiHypotheses.length === 1 ? "" : "s"
+                          } ready. Turn on “Show AI hypotheses” to draw dotted edges.`
+                        : "No displayable hypotheses after validation.")
+                    : aiResult?.status === "cancelled"
+                      ? "Request cancelled."
+                      : null
+              }
+              result={aiResult}
+              showAiHypotheses={showAiHypotheses}
+              onToggleShow={setShowAiHypotheses}
+              onExplore={() => runHypothesisExplore(false)}
+              onCancel={cancelHypothesisExplore}
+              onRefresh={() => runHypothesisExplore(true)}
+              onDismiss={(id) => {
+                setDismissedAiIds((prev) => new Set(prev).add(id));
+                if (selectedEdgeId === id) setSelectedEdgeId(null);
+              }}
+              onSelectHypothesis={(id) => {
+                setShowAiHypotheses(true);
+                setSelectedEdgeId(id);
+              }}
+              dismissedIds={dismissedAiIds}
+            />
+
+            <div className="relative mt-4 overflow-hidden rounded-atlas border border-line bg-slate-50">
               <div className="pointer-events-auto absolute left-3 top-3 z-20 flex max-w-[280px] items-center gap-2">
                 <Button
                   size="sm"
@@ -736,16 +970,33 @@ export function AtlasApp({
                 : undefined
             }
           >
-            <SourcePanel edge={selectedEdge} nodeMap={nodeMap} />
-            <SummaryPanel
-              edge={selectedEdge}
-              nodeMap={nodeMap}
-              plainFallback={
-                selectedEdge
-                  ? demo.edge_plain_language[selectedEdge.id]
-                  : undefined
-              }
-            />
+            {selectedAiHypothesis ? (
+              <AiHypothesisDetail
+                hyp={selectedAiHypothesis}
+                sourceLabel={
+                  nodeMap.get(selectedAiHypothesis.source_node_id)?.label ||
+                  selectedAiHypothesis.source_node_id
+                }
+                targetLabel={
+                  nodeMap.get(selectedAiHypothesis.target_node_id)?.label ||
+                  selectedAiHypothesis.target_node_id
+                }
+                evidenceUrlById={evidenceUrlById}
+              />
+            ) : (
+              <>
+                <SourcePanel edge={selectedEdge} nodeMap={nodeMap} />
+                <SummaryPanel
+                  edge={selectedEdge}
+                  nodeMap={nodeMap}
+                  plainFallback={
+                    selectedEdge
+                      ? demo.edge_plain_language[selectedEdge.id]
+                      : undefined
+                  }
+                />
+              </>
+            )}
           </aside>
         </div>
 
@@ -1496,5 +1747,6 @@ ${p.nextStep}
 
 ---
 Note: Proposed activities are distinct from demonstrated findings. This atlas does not send messages or assert partner availability.
+Any AI-generated hypothesis included above remains unreviewed, is labeled as a hypothesis, and must not be treated as an established fact or treatment recommendation.
 `;
 }

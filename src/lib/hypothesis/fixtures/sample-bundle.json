@@ -1,0 +1,74 @@
+{
+  "_label": "FIXTURE ONLY — automated tests; never present as live user results",
+  "dataset_id": "hbb",
+  "selected_node_id": "mechanism:hbf_reactivation",
+  "research_question": "How might HbF biology inform a cross-community research question?",
+  "evidence_version": "fixture-v1",
+  "nodes": [
+    {
+      "id": "mechanism:hbf_reactivation",
+      "type": "mechanism",
+      "label": "Fetal hemoglobin (HbF) reactivation"
+    },
+    {
+      "id": "disease:scd_hbst",
+      "type": "disease",
+      "label": "Sickle cell anemia (HbSS)"
+    },
+    {
+      "id": "disease:beta_thal_genetic",
+      "type": "disease",
+      "label": "Beta-thalassemia (genetic)"
+    },
+    {
+      "id": "asset:jax_townes",
+      "type": "research_asset",
+      "label": "Townes sickle-cell mouse (JAX)"
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "ev:edge:fixture:hbf:scd",
+      "edge_id": "edge:fixture:hbf:scd",
+      "source_url": "https://pubmed.ncbi.nlm.nih.gov/38661449/",
+      "supporting_passage": "BCL11A enhancer editing raises fetal hemoglobin in sickle cell disease clinical studies; this describes SCD-specific protocol context.",
+      "relationship_status": "established",
+      "claim_summary": "HbF reactivation linked to SCD gene therapy context",
+      "endpoint_labels": ["Fetal hemoglobin (HbF) reactivation", "Sickle cell anemia (HbSS)"],
+      "limitations": "Does not establish interchangeability with beta-thalassemia models.",
+      "contradictory_evidence": null
+    },
+    {
+      "evidence_id": "ev:edge:fixture:hbf:thal",
+      "edge_id": "edge:fixture:hbf:thal",
+      "source_url": "https://pubmed.ncbi.nlm.nih.gov/38657265/",
+      "supporting_passage": "Transfusion-dependent beta-thalassemia gene therapy publications also discuss fetal hemoglobin induction via related editing strategies.",
+      "relationship_status": "established",
+      "claim_summary": "HbF biology also appears in TDT literature",
+      "endpoint_labels": ["Fetal hemoglobin (HbF) reactivation", "Beta-thalassemia (genetic)"],
+      "limitations": "Shared mechanism language is not evidence of interchangeable eligibility or models.",
+      "contradictory_evidence": "Model systems and genotype inclusion criteria differ across SCD and TDT programs."
+    },
+    {
+      "evidence_id": "ev:edge:fixture:townes",
+      "edge_id": "edge:fixture:townes",
+      "source_url": "https://www.jax.org/strain/013071",
+      "supporting_passage": "The Townes mouse models sickle-cell pathophysiology; public strain pages do not establish suitability for beta-thalassemia questions without validation.",
+      "relationship_status": "hypothesis",
+      "claim_summary": "Townes asset is SCD-oriented",
+      "endpoint_labels": ["Townes sickle-cell mouse (JAX)", "Sickle cell anemia (HbSS)"],
+      "limitations": "No automatic cross-disease asset claim.",
+      "contradictory_evidence": null
+    }
+  ],
+  "established_edges": [
+    {
+      "id": "edge:fixture:hbf:scd",
+      "source": "mechanism:hbf_reactivation",
+      "target": "disease:scd_hbst",
+      "type": "mechanism_relevant_to_disease",
+      "relationship_status": "established"
+    }
+  ],
+  "insufficient": false
+}

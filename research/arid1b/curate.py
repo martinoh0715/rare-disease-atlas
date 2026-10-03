@@ -76,7 +76,7 @@ def curate() -> None:
     def add_edge(e: dict[str, Any]) -> None:
         e.setdefault("layer", "curated")
         e.setdefault("review_status", "curated")
-        e.setdefault("relationship_status", "established")
+        # Missing relationship_status means unreviewed — never invent "established".
         edges.append(e)
 
     def log(

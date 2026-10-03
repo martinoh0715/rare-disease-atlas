@@ -64,7 +64,7 @@ class GraphBuilder:
     def add_edge(self, e: dict[str, Any]) -> None:
         e.setdefault("layer", "curated")
         e.setdefault("review_status", "curated")
-        e.setdefault("relationship_status", "established")
+        # Missing relationship_status means unreviewed — never invent "established".
         self.edges.append(e)
 
     def log(

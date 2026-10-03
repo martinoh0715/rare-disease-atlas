@@ -55,14 +55,27 @@ export type GraphEdge = {
   source: string;
   target: string;
   type: string;
+  /** established | hypothesis | unreviewed (missing ⇒ unreviewed) */
   relationship_status?: string;
+  /** curated | not_reviewed | … */
   review_status?: string;
+  /** curated | ai_generated */
+  origin?: string;
   layer?: string;
   plain_language?: string;
   evidence?: Evidence;
   limitations?: string;
   [key: string]: unknown;
 };
+
+export type RelationshipStatus = "established" | "hypothesis" | "unreviewed";
+
+/** Missing relationship_status means unreviewed, never established. */
+export function relationshipStatusOf(edge: GraphEdge): RelationshipStatus {
+  if (edge.relationship_status === "established") return "established";
+  if (edge.relationship_status === "hypothesis") return "hypothesis";
+  return "unreviewed";
+}
 
 export type GraphData = {
   generated_at: string;
@@ -88,13 +101,25 @@ export type Journey = {
   };
 };
 
+/** True only when explicitly marked as a hypothesis relationship. */
 export function isHypothesisEdge(edge: GraphEdge): boolean {
-  return (
-    edge.relationship_status === "hypothesis" ||
-    edge.type === "proposed_cross_disease_connection" ||
-    edge.type === "suggests_next_research_step" ||
-    edge.type === "potential_collaborator_for"
-  );
+  return relationshipStatusOf(edge) === "hypothesis";
+}
+
+export function isAiGeneratedEdge(edge: GraphEdge): boolean {
+  return edge.origin === "ai_generated";
+}
+
+export function isCuratedHypothesisEdge(edge: GraphEdge): boolean {
+  return isHypothesisEdge(edge) && !isAiGeneratedEdge(edge);
+}
+
+export function hypothesisEdgeLabel(edge: GraphEdge): string | null {
+  if (!isHypothesisEdge(edge)) return null;
+  if (isAiGeneratedEdge(edge)) {
+    return "AI-generated hypothesis — not reviewed";
+  }
+  return "Curated hypothesis — not established";
 }
 
 export function legendCategoryForType(type: string): string {
@@ -257,8 +282,10 @@ export function neighborhood(
       let s = 0;
       if (options?.includeIds?.has(e.id)) s += 8;
       if (e.review_status === "curated") s += 4;
-      if (e.relationship_status === "established") s += 3;
-      if (e.relationship_status === "hypothesis") s += 2;
+      const rs = relationshipStatusOf(e);
+      if (rs === "established") s += 3;
+      else if (rs === "hypothesis") s += 2;
+      else s += 1; // unreviewed: never treated as established
       if (e.evidence?.source_url) s += 1;
       return s;
     };

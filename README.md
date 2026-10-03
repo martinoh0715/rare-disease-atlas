@@ -17,6 +17,30 @@ npm run sync-data
 npm run dev         # http://127.0.0.1:43123
 ```
 
+## AI hypothesis exploration (optional)
+
+The workspace includes an **Explore potential connections** action that can call a
+server-side OpenAI model to propose up to three evidence-grounded research
+hypotheses. Proposals are stored separately from curated graph JSON, drawn as
+dotted edges only when **Show AI hypotheses** is enabled, and labeled
+**AI-generated hypothesis — not reviewed**.
+
+Secure local setup:
+
+1. Copy `.env.example` to `.env.local` (gitignored).
+2. Set `OPENAI_API_KEY` in `.env.local` only — never commit it, never put it in
+   `NEXT_PUBLIC_*` variables, and never paste it into chat.
+3. Optionally set `OPENAI_MODEL` (default `gpt-4o-2024-08-06`).
+4. Restart `npm run dev`.
+
+If the key is missing, the UI shows an honest unavailable state and does **not**
+fabricate hypotheses. Cached generations live under `.cache/ai-hypotheses/`
+(gitignored); use **Refresh** to regenerate.
+
+```bash
+npm run test:hypotheses   # fixture-labeled validation tests
+```
+
 Validate all curated slices:
 
 ```bash
