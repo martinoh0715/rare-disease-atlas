@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -H 127.0.0.1 -p 43123",
+    "dev": "next dev -H 0.0.0.0 -p 43123",
     "build": "next build",
-    "start": "next start -H 127.0.0.1 -p 43123",
+    "start": "next start -H 0.0.0.0 -p 43123",
     "lint": "next lint",
     "collect": "python3 research/hbb/collect.py",
     "graph": "python3 research/hbb/build_graph.py && python3 research/hbb/curate.py",
