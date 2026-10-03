@@ -136,19 +136,22 @@ export function AtlasApp({
     const validAssets = new Set(demo.asset_assessments.map((a) => a.asset_id));
     setSelectedAssetIds((prev) => {
       const next = prev.filter((id) => validAssets.has(id));
-      if (next.length) return next;
-      return demo.default_asset_ids || [];
+      const fallback = demo.default_asset_ids || [];
+      const resolved = next.length ? next : fallback;
+      if (
+        resolved.length === prev.length &&
+        resolved.every((id, i) => id === prev[i])
+      ) {
+        return prev;
+      }
+      return resolved;
     });
     const partnerIds = new Set(partners.map((p) => p.id));
     setSelectedPartnerId((prev) => {
       if (partnerIds.has(prev)) return prev;
-      return (
-        demo.default_partner_id ||
-        partners[0]?.id ||
-        ""
-      );
+      return demo.default_partner_id || partners[0]?.id || "";
     });
-  }, [demo, partners]);
+  }, [datasetId, demo.default_asset_ids, demo.default_partner_id, demo.asset_assessments, partners]);
 
   const stages = (journey.stages || demo.stages) as DemoStage[];
   const stage = stages.find((s) => s.id === stageId) || stages[0];
@@ -282,8 +285,13 @@ export function AtlasApp({
       setMode("unsupported");
       return;
     }
-    if (!needsDisambiguation(found) && found.length === 1) {
-      enterWorkspace(found[0].entry.id, found[0].datasetId || datasetId);
+    const top = found[0];
+    const clearWinner =
+      found.length === 1 ||
+      top.score >= 95 ||
+      (!needsDisambiguation(found) && top.score - (found[1]?.score || 0) >= 20);
+    if (clearWinner) {
+      enterWorkspace(top.entry.id, top.datasetId || datasetId);
       return;
     }
     setMode("landing");

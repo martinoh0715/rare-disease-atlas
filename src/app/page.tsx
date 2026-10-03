@@ -16,13 +16,19 @@ async function loadJson<T>(file: string): Promise<T> {
 
 async function loadDataset(entryPath: string, id: string): Promise<AtlasData> {
   const curated = await loadJson<GraphData>(`${entryPath}/curated-graph.json`);
-  const discovery = await loadJson<GraphData>(`${entryPath}/graph.json`);
   const journeys = await loadJson<{ journeys: Journey[] }>(
     `${entryPath}/journeys.json`
   );
   const demo = await loadJson<DemoExperience>(
     `${entryPath}/demo-experience.json`
   );
+  // Discovery layer stays on disk for review; do not ship the bulk graph to the client.
+  const discovery: GraphData = {
+    generated_at: curated.generated_at,
+    layer: "discovery",
+    nodes: [],
+    edges: [],
+  };
   return {
     id,
     curated,
