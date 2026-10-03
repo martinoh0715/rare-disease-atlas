@@ -440,14 +440,14 @@ export function AtlasApp({ curated, journey, demo }: AtlasData) {
             </div>
 
             <div className="relative overflow-hidden rounded-xl">
-              <div className="pointer-events-auto absolute left-3 top-3 z-20 flex max-w-[280px] items-center gap-2 rounded-md border border-slate-300 bg-white/95 px-2 py-1.5 shadow-md backdrop-blur-sm">
+              <div className="pointer-events-auto absolute left-3 top-3 z-20 flex max-w-[280px] items-center gap-2">
                 <Button
                   size="sm"
-                  variant="outline"
+                  variant="ghost"
                   onClick={goBack}
                   disabled={focusHistory.length === 0}
                   aria-label="Back to previous node"
-                  className="h-8 shrink-0 bg-white"
+                  className="h-8 shrink-0 px-2 text-slate-700 hover:bg-white/70 disabled:opacity-40"
                 >
                   ← Back
                 </Button>
