@@ -1,0 +1,65 @@
+{
+  "journeys": [
+    {
+      "id": "journey:patient_group_hbf_bridge",
+      "title": "From HbSS biology to a cross-community HbF research question",
+      "intended_user": "Patient-group leader",
+      "plain_language": "Start from sickle cell anemia (HbSS), follow the fetal-hemoglobin / BCL11A mechanism supported by the 2024 NEJM exa-cel sickle cell trial, note the parallel transfusion-dependent \u03b2-thalassemia trial (same intervention class, still not HBB editing), then inspect verified community organizations and the JAX Townes SCD mouse asset. Because SCD-model suitability for \u03b2-thalassemia is unproven, the next step is framed as a validation question\u2014not a treatment claim.",
+      "node_path": [
+        "disease:hbss",
+        "genotype:hbss",
+        "allele:HbS",
+        "gene:HBB",
+        "mechanism:hbf_reactivation",
+        "process:bcl11a_repression_of_hbg",
+        "gene:BCL11A",
+        "intervention:exa_cel",
+        "pmid:38661449",
+        "disease:scd_broad",
+        "pmid:38657265",
+        "disease:tdt",
+        "hypothesis:hbf_cross_disease_bridge",
+        "org:scdaa",
+        "org:caf",
+        "asset:jax_townes",
+        "question:validate_hbf_asset_transfer"
+      ],
+      "edge_path": [
+        "edge:genotype:hbss:causes:disease:hbss",
+        "edge:genotype:hbss:has_allele:HbS",
+        "edge:allele:HbS:allele_of:gene:HBB",
+        "edge:mechanism:hbf:relevant:disease:hbss",
+        "edge:process:bcl11a:supports:mechanism:hbf",
+        "edge:gene:BCL11A:participates:process:bcl11a_repression",
+        "edge:intervention:exa_cel:targets:gene:BCL11A",
+        "edge:pmid:38661449:investigates_intervention:exa_cel",
+        "edge:pmid:38661449:clinical_evidence_for:disease:scd_broad",
+        "edge:pmid:38657265:investigates_intervention:exa_cel",
+        "edge:mechanism:hbf:relevant:disease:tdt",
+        "edge:hypothesis:bridge:proposed_from:mechanism:hbf",
+        "edge:org:scdaa:supports_community:disease:scd_broad",
+        "edge:org:caf:supports_community:disease:beta_thal_genetic",
+        "edge:asset:jax_townes:model_for:disease:hbss",
+        "edge:asset:jax_townes:hypothesis_not_validated:disease:beta_thal_genetic",
+        "edge:hypothesis:bridge:leads_to:question"
+      ],
+      "answers": {
+        "relevant_communities": [
+          "Sickle cell disease / HbSS community (SCDAA)",
+          "\u03b2-thalassemia / TDT community (Cooley's Anemia Foundation)"
+        ],
+        "existing_assets": [
+          "Peer-reviewed exa-cel trials (PMID 38661449, 38657265)",
+          "JAX Townes sickle-cell mouse model (SCD-focused)",
+          "ClinicalTrials.gov registry records NCT03745287 and NCT03655678 when collected"
+        ],
+        "who_could_help": [
+          "SCDAA (SCD community priorities)",
+          "Cooley's Anemia Foundation (thalassemia community priorities)",
+          "Researchers authoring the anchor HbF/BCL11A clinical papers (via publications; no availability claimed)"
+        ],
+        "next_step": "Investigate which HbF-pathway assets transfer responsibly to \u03b2-thalassemia research questions, with explicit validation for models, genotypes, and outcomes."
+      }
+    }
+  ]
+}

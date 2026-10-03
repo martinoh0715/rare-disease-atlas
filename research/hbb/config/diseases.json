@@ -1,0 +1,64 @@
+{
+  "focus_gene": "HBB",
+  "diseases": [
+    {
+      "id": "disease:hbss",
+      "label": "Sickle cell anemia (HbSS)",
+      "mondo": "MONDO:0011382",
+      "orphanet": "Orphanet:232",
+      "omim": "OMIM:603903",
+      "genotype_scope": "HBB c.20A>T homozygous (HbS/HbS)",
+      "notes": "Narrow genotype focus for this project. Upstream ontologies often merge HbSS with broader SCD labels (e.g. MONDO:0011382); preserve local genotype scope rather than merging synonyms."
+    },
+    {
+      "id": "disease:scd_broad",
+      "label": "Sickle cell disease (broad)",
+      "mondo": "MONDO:0011382",
+      "notes": "Umbrella clinical category including HbSS, HbSC, HbS/β-thalassemia, and other genotypes. Shares MONDO with some HbSS mappings; do not collapse local nodes."
+    },
+    {
+      "id": "disease:sct",
+      "label": "Sickle cell trait",
+      "genotype_scope": "HBB c.20A>T heterozygous (HbAS)",
+      "notes": "Carrier state; keep separate from sickle cell disease."
+    },
+    {
+      "id": "disease:beta_thal_genetic",
+      "label": "Beta-thalassemia (genetic)",
+      "mondo": "MONDO:0019402",
+      "omim": "OMIM:613985",
+      "orphanet": "Orphanet:848",
+      "notes": "Genetic category caused by reduced/absent HBB expression; subtypes by allele severity. OMIM:613985 / MONDO:0013517 may appear as related entries—preserve mappings rather than merging every synonym."
+    },
+    {
+      "id": "disease:beta_thal_major",
+      "label": "Beta-thalassemia major",
+      "clinical_category": "often transfusion-dependent",
+      "notes": "Clinical severity label; not identical to a single genotype."
+    },
+    {
+      "id": "disease:beta_thal_intermedia",
+      "label": "Beta-thalassemia intermedia",
+      "clinical_category": "variable transfusion need"
+    },
+    {
+      "id": "disease:tdt",
+      "label": "Transfusion-dependent β-thalassemia",
+      "clinical_category": "transfusion dependence",
+      "notes": "Phenotype/clinical category used in trials; preserve separately from genetic subtype labels."
+    },
+    {
+      "id": "disease:hbs_beta_thal",
+      "label": "HbS/β-thalassemia",
+      "status": "optional_extension",
+      "notes": "Compound heterozygous genotype; optional later focus."
+    }
+  ],
+  "anchor_publications": ["PMID:38657265", "PMID:38661449"],
+  "bridge_hypothesis": {
+    "id": "hypothesis:hbf_bridge",
+    "label": "Fetal hemoglobin reactivation as a cross-disease bridge",
+    "mechanism": "BCL11A erythroid-enhancer editing increases HbF, which can ameliorate both SCD and β-thalassemia pathophysiology via distinct clinical endpoints.",
+    "caveat": "exa-cel edits BCL11A, not HBB. Cross-disease asset reuse (e.g., mouse models, registries) requires explicit validation."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-10-03T20:08:57+00:00",
+  "counts": {
+    "variants": 75,
+    "phenotype_annotations": 149,
+    "publications": 42,
+    "clinical_studies": 34,
+    "funded_projects": 37,
+    "organizations_and_assets": 3
+  },
+  "coverage_notes": [
+    "Phenotype annotations from OLS text search are discovery-grade, not curated HPO disease frequencies.",
+    "ClinicalTrials records capture status/eligibility context only.",
+    "Organization pages were checked for usable HTML content vs access-error stubs."
+  ],
+  "organization_page_usability": {
+    "org:scdaa": true,
+    "org:caf": true,
+    "asset:jax_townes": true
+  },
+  "anchor_publications_present": [
+    "pmid:38661449",
+    "pmid:38657265"
+  ]
+}

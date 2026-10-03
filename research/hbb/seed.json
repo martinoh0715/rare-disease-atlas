@@ -1,0 +1,18 @@
+{
+  "description": "Earlier manually assembled sketch. Keep separate from curated graph until each claim is checked against sources.",
+  "status": "unchecked_sketch",
+  "entities": [
+    {"id": "seed:HBB", "type": "gene", "label": "HBB"},
+    {"id": "seed:HbSS", "type": "disease", "label": "Sickle cell anemia (HbSS)"},
+    {"id": "seed:beta_thal", "type": "disease", "label": "Beta-thalassemia"},
+    {"id": "seed:BCL11A", "type": "gene", "label": "BCL11A"},
+    {"id": "seed:HbF", "type": "mechanism", "label": "Fetal hemoglobin reactivation"}
+  ],
+  "unchecked_claims": [
+    {
+      "claim": "HbF induction may connect SCD and beta-thalassemia research communities.",
+      "status": "hypothesis_needs_evidence_objects",
+      "note": "Implemented carefully in curate.py with explicit hypothesis edges; do not treat this seed file as evidence."
+    }
+  ]
+}

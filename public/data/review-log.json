@@ -1,0 +1,2426 @@
+{
+  "generated_at": "2026-10-03T20:11:35+00:00",
+  "policy": {
+    "raw_preserved": true,
+    "discovery_separate_from_curated": true,
+    "model_confidence_not_clinical_confidence": true
+  },
+  "decisions": [
+    {
+      "decision": "include_curated",
+      "record_id": "clinvar:15333",
+      "record_type": "variant",
+      "reason": "Authoritative ClinVar simple-variant anchor for HbS",
+      "canonical_allele": "HbS",
+      "label": "NM_000518.5(HBB):c.20A>T (p.Glu7Val)",
+      "allele_complexity": "simple_variant"
+    },
+    {
+      "decision": "include_curated",
+      "record_id": "clinvar:15126",
+      "record_type": "variant",
+      "reason": "Authoritative ClinVar simple-variant anchor for HbC",
+      "canonical_allele": "HbC",
+      "label": "NM_000518.4(HBB):c.19G>A (p.Glu7Lys)",
+      "allele_complexity": "simple_variant"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4974749",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "GRCh38/hg38 11p15.4(chr11:4793595-7562692)x1"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4910425",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.-43C>T"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4910421",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.442T>G (p.Ter148Glu)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4851147",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "GRCh37/hg19 11p15.4(chr11:5187270-5268465)x1"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4848400",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.316-12_316-7delinsCTCCTA"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4847669",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.327C>A (p.Asn109Lys)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4819685",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.206_216del (p.Leu69fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4818706",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.9_83del (p.Thr5_Leu29del)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4818705",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.55del (p.Lys18_Val19insTer)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4818704",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.36dup (p.Thr13fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4818703",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.327del (p.Asn109fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4818702",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.275del (p.Leu92fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4795169",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.127T>A (p.Phe43Ile)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4689563",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.-48A>T"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4687131",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.325A>C (p.Asn109His)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4539279",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.331del (p.Leu111fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4532970",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.84_90del (p.Leu29fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4532968",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.199_202del (p.Lys67fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4531951",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.346del (p.Ala116fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4280311",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.268_281del (p.Leu89_Ser90insTer)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4280310",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.219_220delinsAT (p.Ser73_Asp74delinsArgTyr)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4277917",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.290T>G (p.Leu97Arg)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4075915",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "GRCh37/hg19 11p15.4(chr11:5187270-5268464)x1"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4075885",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "GRCh37/hg19 11p15.4(chr11:5244009-5253899)x1"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4074264",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.43del (p.Leu15fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4074263",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.155_167del (p.Pro52fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4071470",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.82G>A (p.Ala28Thr)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3902791",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.347C>T (p.Ala116Val)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3781330",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.299_315dup (p.Leu106fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3781328",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.105_106insCTAC (p.Tyr36fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3777010",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.[70G>T;79G>A]"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3769508",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NC_000011.9:g.(?_5246693)_(5248302_?)del"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3769274",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.348_349delinsG (p.His117fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3769040",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NC_000011.10:g.5225255_5225875del"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3768611",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.-19G>C"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3766927",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.92G>T (p.Arg31Met)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3766686",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.20_21del (p.Glu7fs)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3766488",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.315+1_315+2insACGTTCTC"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3766487",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.294C>A (p.His98Gln)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3645258",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NC_000011.10:g.5226995_5227540delinsTGAAAACTCTACCTCA"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:446748",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.4(HBB):c.[205C>T;20A>T]"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:446747",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.4(HBB):c.[20A>T;271G>A]"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:446738",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.4(HBB):c.[20A>T;428C>T]"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:446737",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.4(HBB):c.[20A>T;249G>Y]"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:446736",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.4(HBB):c.[20A>T;364G>A]"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:446735",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.4(HBB):c.[20A>T;70G>A]"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:446731",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.4(HBB):c.[176C>G;20A>T]"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:446730",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.4(HBB):c.[20A>T;220G>A]"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:446729",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.4(HBB):c.[19G>A;286A>G]"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4818727",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.315+3_315+4insT"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4536042",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.240C>A (p.Asp80Glu)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4525835",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.9T>G (p.His3Gln)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4280318",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.315+312delinsAAAAAACTTAACTTAACTTAAAAA"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4279099",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5:c.290_316delinsAGGGCAATAATTT"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069120",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.213C>A (p.Ala71=)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069118",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.92+11dup"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069117",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.336C>A (p.Val112=)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069116",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.396G>T (p.Gln132His)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069115",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.343C>T (p.Leu115=)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069114",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.*3T>C"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069112",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.315+10T>C"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069111",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.416C>T (p.Ala139Val)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069110",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.228G>A (p.Leu76=)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069109",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.92+4G>T"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069108",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.254C>A (p.Thr85Asn)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069107",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.117C>A (p.Thr39=)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069106",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.330G>T (p.Val110=)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069105",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.301C>A (p.Pro101Thr)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:4069104",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.162T>C (p.Ala54=)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3911998",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.93-3T>C"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3910010",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.189T>C (p.Ala63=)"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3910009",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.316-151A>G"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "clinvar:3910008",
+      "record_type": "variant",
+      "reason": "Not identified as canonical HbS/HbC identity anchor; remains available in discovery layer for review.",
+      "label": "NM_000518.5(HBB):c.315+108A>G"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:b4a02e299fd9",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Retinopathy"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:b87a66ca8750",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hematuria"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:b7b53b6bc968",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Recurrent bacterial infections"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:d9123129f3cb",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Priapism"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:a7888d9805fe",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Renal insufficiency"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:da8d337d45ba",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hypertension"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:ade43a8b54af",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Stroke"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:b547b80ac15d",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Splenic infarction"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:18c79ed4efd0",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Cardiomegaly"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:063f08601937",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Splenomegaly"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:2a83d55eeab3",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Autosomal recessive inheritance"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:7ddbf13ad985",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Cholelithiasis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:d7ce92ea6ebe",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hepatomegaly"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:dda589299d35",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abdominal pain"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:7053abe5ddfb",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Jaundice"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:68195f06cd7a",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hypoxemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:b7785c94c6cc",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Increased red cell sickling tendency"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:75dc54b4d481",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hemolytic anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:7b3ba851e5d5",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Increased total leukocyte count"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:9d569b5e5f0e",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Target cells"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:525a07fad357",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Reduced beta/alpha synthesis ratio"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:da91e3346a56",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hypochromic microcytic anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:2cf54d083169",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Finger dactylitis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:2ba8f00ed0ae",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormality of the nervous system"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:70144dfdc5b4",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormality of the vasculature"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:1eee55d15466",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Splenic infarction"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:0a53f40ec7bc",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormality of the spleen"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:2ebcc73b30cb",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Ischemic stroke"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:9b5e62431b18",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Pulmonary arterial hypertension"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:0035c462a118",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hypoxemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:3f3695b657d6",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Persistence of hemoglobin F"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:36388977b728",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Reticulocytosis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:9ccea39fadaa",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Thrombocytosis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:637b8d7e9972",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Increased total leukocyte count"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:3579a3ef24eb",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hypochromic anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:9b049f5678f1",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hemolytic anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:b9bfc748318d",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hyphema"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:0159b7c02563",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Increased mean corpuscular volume"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:6a21bbb8f56d",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Chronic hemolytic anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:abea384948e2",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Microcytic anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:fffdf429b05b",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Iron deficiency anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:ef70d5f1dbec",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Pain"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:0a30691db9cd",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Chest pain"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:61b0c3b32cd3",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Skin ulcer"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:adae193d797c",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Retinopathy"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:5e30d1844e53",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Osteomyelitis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:2d1a634a6c81",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Recurrent infections"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:45dedf3b6ce2",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Elevated circulating creatinine concentration"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:281d5be4c18f",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Unconjugated hyperbilirubinemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:70c565bafec9",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Increased circulating lactate dehydrogenase concentration"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:dd072c366d53",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Chronic kidney disease"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:1da27badd8d9",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Priapism"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:ef1aa3e844fa",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Retinal arterial occlusion"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:537f59211b1a",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Intrahepatic cholestasis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:fd2a0db46506",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Pigment gallstones"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:90ed97914fc0",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Cholelithiasis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:cda9aa3187bc",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Jaundice"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:a1e311f52677",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Osteoporosis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:a1f364daa5fa",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Avascular necrosis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:bf71941716c8",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormality of temperature regulation"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:b7ce7cd8b13f",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormality of iron homeostasis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:037bb3fbd41c",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Irritability"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:1d0510775dc2",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hypertrophic cardiomyopathy"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:03b074f8d676",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Splenomegaly"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:42d19c800bc6",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Respiratory insufficiency"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:884fcff4428a",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Muscle weakness"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:7e0b2c0a7dd3",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Cholelithiasis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:f74019105f84",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hepatomegaly"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:cd6a1c5a246f",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hepatitis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:467a9c8dd4f6",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormal skull morphology"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:93322048ea72",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hypogonadotropic hypogonadism"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:aae8827c8b3f",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Venous thrombosis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:69d251fc4b30",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Thrombocytopenia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:adfaa301c8d7",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormal hemoglobin"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:cc239b5c9917",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Microcytic anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:9e59b1a83d28",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:234ef540a952",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Reduced bone mineral density"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:ce71d33d1033",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormality of the skeletal system"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:20b142811dfd",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Pallor"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:c614200ddc28",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Skin ulcer"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:34fadff0ee3d",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Chronic hemolytic anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:f85c8a803e18",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hemolytic anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:2c26a6ff9dbe",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Recurrent infections"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:23bd7596ca87",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Pain"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:cb92098fb025",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Increased total leukocyte count"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:99d7387b7610",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormality of the nervous system"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:4ade8f6761a8",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Cholelithiasis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:8c716383a9ba",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Intrahepatic cholestasis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:8c1a9cf53725",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Persistence of hemoglobin F"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:723acc725923",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Splenic infarction"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:d0ddee633f58",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Jaundice"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:79763ae5401f",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormality of the spleen"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:ee68663a71a8",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Iron deficiency anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:16c7d5fdae15",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Ischemic stroke"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:0befe7968444",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Elevated circulating creatinine concentration"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:392fd034a08d",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hyphema"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:6c1b0075a0a7",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Increased circulating lactate dehydrogenase concentration"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:8208bcee7737",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Priapism"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:4a8252c37133",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Skin ulcer"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:739dff651247",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hypochromic anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:fc41ec76747d",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Retinopathy"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:53fa12b41f9b",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Osteoporosis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:fae14f783771",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Thrombocytosis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:aecfaaf7e9e7",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Reticulocytosis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:ec55275861c0",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Osteomyelitis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:92ae99dcca55",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Avascular necrosis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:70be8b6726e8",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Pigment gallstones"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:6a63fb8634b0",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Chronic kidney disease"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:5ed80fd00aec",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Chest pain"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:742636eaafaa",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Pulmonary arterial hypertension"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:ae70b33e0d8c",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormality of the vasculature"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:62063a45d602",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Unconjugated hyperbilirubinemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:2a4f68746ecf",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hypoxemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:f9622913d29f",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Retinal arterial occlusion"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:f39acda2c48b",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Finger dactylitis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:58f7e5f6b193",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Microcytic anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:a635e37617a4",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Increased mean corpuscular volume"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:95bc537f4fff",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Stroke"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:c2a8e7828749",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Cardiomegaly"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:ce333e0dd699",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Renal insufficiency"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:6d43c42fe3be",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hematuria"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:bc7a2aaf7697",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hepatomegaly"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:d33a737f5d67",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Recurrent bacterial infections"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:6362d2382865",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hypertension"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:abfc0459ba99",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Increased red cell sickling tendency"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:efb05898bf33",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Splenomegaly"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:d99a5c46c939",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abdominal pain"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:7c3d94ce6b48",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Target cells"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:a98fe8d616e0",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Muscle weakness"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:e93c30e561ff",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Respiratory insufficiency"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:05c2b2f4ef21",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Reduced bone mineral density"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:50cb2d96a8c7",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Cholelithiasis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:20f7ed425181",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Splenomegaly"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:3beea53903e6",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormality of temperature regulation"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:e9475135f287",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormality of iron homeostasis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:ba565e853de2",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormality of the skeletal system"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:d66cc7538e02",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Pallor"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:3b199b3b46d1",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hypogonadotropic hypogonadism"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:392d20cf934b",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Irritability"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:22ad5baafdc1",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormal skull morphology"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:6404aa078093",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hepatomegaly"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:6df5be6ccb6b",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:a627fe42c9be",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Microcytic anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:15c34b859e0c",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Abnormal hemoglobin"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:13e2f4f71278",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hypertrophic cardiomyopathy"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:12f9fd7af350",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Thrombocytopenia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:3729bf876f16",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Venous thrombosis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:064cec7bfbaf",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Hepatitis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "phenotype_annot:69b2ff3a794b",
+      "record_type": "phenotype_annotation",
+      "reason": "OLS/HPO text-search hit without curated frequency/onset; kept in discovery for review. Missing frequency is not absence.",
+      "label": "Skin ulcer"
+    },
+    {
+      "decision": "include_curated",
+      "record_id": "pmid:38657265",
+      "record_type": "publication",
+      "reason": "Anchor primary research publication specified in project brief."
+    },
+    {
+      "decision": "include_curated",
+      "record_id": "pmid:38661449",
+      "record_type": "publication",
+      "reason": "Anchor primary research publication specified in project brief."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:39019069",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "A roadmap for affordable genetic medicines."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:38425279",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Editorial: First Regulatory Approvals for CRISPR-Cas9 Therapeutic Gene Editing for Sickle Cell Disease and Transfusion-Dependent \u03b2-Thalassemia."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:38680015",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Hematopoietic Stem Cell Transplantation in Sickle Cell Disease: A Multidimentional Review."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:40857358",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Improvements in health-related quality of life in patients with severe sickle cell disease after exagamglogene autotemcel."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:39286637",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Newer Modalities and Updates in the Management of Sickle Cell Disease: A Systematic Review."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:38228954",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Exagamglogene Autotemcel: First Approval."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:39359808",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "CRISPR/Cas9 in the treatment of sickle cell disease (SCD) and its comparison with traditional treatment approaches: a review."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:40862696",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Improvements in health-related quality of life in patients with transfusion-dependent \u03b2-thalassemia after exagamglogene autotemcel."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:42274009",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Exa-cel in Children with Transfusion-Dependent \u03b2-Thalassemia or Sickle Cell Disease."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:39391326",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Gene Therapies for Sickle Cell Disease."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:42252696",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Correction of Ineffective Erythropoiesis and Normalization of Iron Homeostasis After Exagamglogene Autotemcel in Transfusion-Dependent \u03b2-Thalassemia."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:39222044",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "An evaluation of exagamglogene autotemcel for the treatment of sickle cell disease and transfusion-dependent beta-thalassaemia."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:41730016",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Cost-effectiveness of exagamglogene autotemcel gene-edited therapy in patients with sickle cell disease with recurrent vaso-occlusive crises in the United States."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:33455878",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "CRISPR/Cas9 gene editing for curing sickle cell disease."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:20098328",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Beta-thalassemia."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:34766559",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Molecular genetics of \u03b2-thalassemia: A narrative review."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:20301599",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Beta-Thalassemia."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:35922667",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "CRISPR-Cas9-mediated gene editing of the BCL11A enhancer for pediatric \u03b2(0)/\u03b2(0) transfusion-dependent \u03b2-thalassemia."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:29479942",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Recent perspectives of pediatric \u03b2-thalassemia."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:39518961",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Genetic Polymorphisms Associated with Fetal Hemoglobin (HbF) Levels and F-Cell Numbers: A Systematic Review of Genome-Wide Association Studies."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:30285874",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Impact of ZBTB7A hypomethylation and expression patterns on treatment response to hydroxyurea."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:30287096",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Wake-up Sleepy Gene: Reactivating Fetal Globin for \u03b2-Hemoglobinopathies."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:34292080",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Exploring epigenetic and microRNA approaches for \u03b3-globin gene regulation."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:33509438",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Epigenetic regulation of hemoglobin switching in non-human primates."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:35514346",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Single Cell RNA-Seq Analysis of Human Red Cells."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:36043956",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "The prevalence of sickling abnormality in Oman: A review of relevant publications."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:32284612",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Therapeutic base editing of human hematopoietic stem cells."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:21490337",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Fetal hemoglobin in sickle cell anemia."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:27637966",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Sickle cell disease."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:36074711",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "The hemoglobinopathies, molecular disease mechanisms and diagnostics."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:35950587",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Thalassemia in India."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:35950577",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Thalassemia in Malaysia."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:27820943",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "CRISPR/Cas9 \u03b2-globin gene targeting in human haematopoietic stem cells."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:35950586",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Thalassemia in Sri Lanka."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:35950578",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Thalassemia in Viet Nam."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:28143837",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Haematological and electrophoretic characterisation of \u03b2-thalassaemia in Yunnan province of Southwestern China."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:29159826",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Pharmacological and molecular approaches for the treatment of \u03b2-hemoglobin disorders."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:35950588",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Clinical Severity of \u03b2-Thalassemia Pediatric Patients in Myanmar."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:27736664",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "CRISPR/Cas9 system and its applications in human hematopoietic cells."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "pmid:32107282",
+      "record_type": "publication",
+      "reason": "Non-anchor retrieval; available in discovery layer pending claim-level review.",
+      "label": "Identification of a new \u03b2-thalassaemia variant Term CD+32(HBB: c.32A>C) in two Chinese families."
+    },
+    {
+      "decision": "include_curated",
+      "record_id": "org:scdaa",
+      "record_type": "organization",
+      "reason": "Downloaded page contains usable content; relevance verified at catalog/org level."
+    },
+    {
+      "decision": "include_curated",
+      "record_id": "org:caf",
+      "record_type": "organization",
+      "reason": "Downloaded page contains usable content; relevance verified at catalog/org level."
+    },
+    {
+      "decision": "include_curated",
+      "record_id": "asset:jax_townes",
+      "record_type": "research_asset",
+      "reason": "Downloaded page contains usable content; relevance verified at catalog/org level."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT03401112",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "A Study of IMR-687 in Adult Participants With Sickle Cell Anemia (Homozygous HbSS or Sickle-\u03b20 Thalassemia)",
+      "overall_status": "COMPLETED"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT02844673",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Mobile-Directly Observed Therapy on Adherence to Hydroxyurea",
+      "overall_status": "COMPLETED"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT07852442",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Comparison of Thrombin Generation, Platelet Activation and Aggregation Profiles in Patients With Sickle Cell Disease Depending on Their SS or SC Genotype (DrepAgreg)",
+      "overall_status": "NOT_YET_RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT01242878",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "MACS Study - Microparticles and Coagulation in Sickle Cell Disease",
+      "overall_status": "UNKNOWN"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT02824471",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Sickle Cell Disease Biofluid Chip Technology (SCD BioChip)",
+      "overall_status": "RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT01989078",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Losartan for Sickle Cell Kidney Disease",
+      "overall_status": "COMPLETED"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT00005783",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "A Phase I/II Trial of Recombinant-Methionyl Human Stem Cell Factor (SCF) in Adult Patients With Sickling Disorders",
+      "overall_status": "COMPLETED"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT02874170",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Study of the Function and Muscle Metabolism in Drepanocytose Affected Patient During a Moderate Intensity Exercise",
+      "overall_status": "UNKNOWN"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT07719972",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Universal Newborn Screening For Sickle Cell Disease In Mozambique",
+      "overall_status": "NOT_YET_RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT00300235",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Priapism in Boys and Men With Sickle Cell Disease - Demographics, Characteristics and Prevalence",
+      "overall_status": "COMPLETED"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT07540767",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Development of a Provider-Focused Intervention to Improve Health Outcomes in Pediatric Sickle Cell Disease",
+      "overall_status": "NOT_YET_RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT06939933",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Effect of Aquatic Exercises on Muscle Strength and Quality of Life in Children With Sickle Cell Anemia",
+      "overall_status": "COMPLETED"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT06490627",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Unraveling the Impact of Thalidomide at Diverse Doses in Transfusion Dependent Beta Thalassemia",
+      "overall_status": "RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT05745532",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Safety and Efficacy Evaluation of \u03b2-globin Restored Autologous Hematopoietic Stem Cells in \u03b2-thalassemia Major Patients",
+      "overall_status": "RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT01033747",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Safety and Efficacy of Deferasirox in Patients With Transfusion Dependent Iron Overload - a Non-comparative Extension Study",
+      "overall_status": "COMPLETED"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT06664541",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Decision-Making and Quality of Life Surrounding Hematologic Disease and Gene Therapy",
+      "overall_status": "ENROLLING_BY_INVITATION"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT06657391",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Evaluation of Recombinant Humanized Anti-CD25 Monoclonal Antibody for Preventing Graft-versus-host Disease After Haploidentical/matched Unrelated Donor Hematopoietic Stem Cell Transplantation in Patients with Transfusion-dependent Thalassemia",
+      "overall_status": "RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT06875219",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "To Evaluate Long- Term Safety and Efficacy of Luspatercept",
+      "overall_status": "ACTIVE_NOT_RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT05776173",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Safety and Efficacy of Gene Modified Autologous Hematopoietic Stem Cells to Treat Transfusion-dependent \u03b2-thalassemia",
+      "overall_status": "RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT07215975",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "A Real-World Study to Evaluate Luspatercept in Adults With Transfusion-Dependent Beta-Thalassemia in the Middle East",
+      "overall_status": "RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT03687567",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "A Retrospective Study on the Effect of HBA or HBB Genetic Defects on Early Embryonic Development",
+      "overall_status": "COMPLETED"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT05462548",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "The Safety and Efficiency of Luspatercept in Chinese Adults With Transfusion Dependent \u03b2-thalassemia: a Real-world Study",
+      "overall_status": "UNKNOWN"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT04143724",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Study of Safety & PK of Luspatercept (ACE-536) in Pediatric Participants With Beta (\u03b2)-Thalassemia",
+      "overall_status": "RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT05951205",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Evaluation of Efficacy and Safety of a Single Dose of Exa-cel in Participants With Severe Sickle Cell Disease, \u03b2S/ \u03b2C Genotype",
+      "overall_status": "WITHDRAWN"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT07640815",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Expanded Access Protocol for Gene Therapy Utilizing shmiR Lentivirus Vector to Induce Fetal Hemoglobin in Sickle Cell Disease",
+      "overall_status": "TEMPORARILY_NOT_AVAILABLE"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT07577817",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "A Study to Investigate the Safety, Tolerability, Pharmacokinetics, and Pharmacodynamics of CTX001 in Healthy Adults.",
+      "overall_status": "RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT05356195",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Evaluation of Safety and Efficacy of CTX001 in Pediatric Participants With Transfusion-Dependent \u03b2-Thalassemia (TDT)",
+      "overall_status": "ACTIVE_NOT_RECRUITING"
+    },
+    {
+      "decision": "include_curated",
+      "record_id": "nct:NCT03655678",
+      "record_type": "clinical_study",
+      "reason": "Anchor trial registry record matching exa-cel publications."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT03653247",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "A Study to Assess the Safety, Tolerability, and Efficacy of BIVV003 for Autologous Hematopoietic Stem Cell Transplantation in Patients With Severe Sickle Cell Disease",
+      "overall_status": "COMPLETED"
+    },
+    {
+      "decision": "include_curated",
+      "record_id": "nct:NCT03745287",
+      "record_type": "clinical_study",
+      "reason": "Anchor trial registry record matching exa-cel publications."
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT04443907",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Study of Safety and Efficacy of Genome-edited Hematopoietic Stem and Progenitor Cells in Sickle Cell Disease (SCD)",
+      "overall_status": "TERMINATED"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT03282656",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Gene Transfer for Sickle Cell Disease",
+      "overall_status": "ACTIVE_NOT_RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT05353647",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "A Gene Transfer Study Inducing Fetal Hemoglobin in Sickle Cell Disease (GRASP, BMT CTN 2001)",
+      "overall_status": "ACTIVE_NOT_RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "nct:NCT05477563",
+      "record_type": "clinical_study",
+      "reason": "Non-anchor study retained in discovery; condition search \u2260 efficacy claim.",
+      "label": "Evaluation of Efficacy and Safety of a Single Dose of CTX001 in Participants With Transfusion-Dependent \u03b2-Thalassemia and Severe Sickle Cell Disease",
+      "overall_status": "RECRUITING"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11448820",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Chromatin remodelers in erythropoiesis and hemoglobin regulation"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:10916761",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Deciphering unintended large gene modifications in gene editing for sickle cell disease"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:10605620",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Development of novel fetal hemoglobin inducers using targeted protein degradation"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11066471",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Development of novel fetal hemoglobin inducers using targeted protein degradation"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:10843746",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Development of novel fetal hemoglobin inducers using targeted protein degradation"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:10087778",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Addressing safety issues by quantify large deletions and chromosomal rearrangements in HBB gene editing"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:10609477",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "HBB gene-editing for treating sickle cell disease"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:9947538",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "HBB gene-editing for treating sickle cell disease"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:10146476",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "HBB gene-editing for treating sickle cell disease"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:10392986",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "HBB gene-editing for treating sickle cell disease"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:10019321",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Post-Transcriptional Regulatory Mechanisms of Fetal Hemoglobin Repression"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:9829795",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Post-Transcriptional Regulatory Mechanisms of Fetal Hemoglobin Repression"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11422868",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "In utero gene editing via LNP delivery for hemoglobinopathies"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11282166",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Development and validation of a cell separation platform technology"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11434144",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Association of Retinal Perfusion with Cerebral Microvascular Injury in Pediatric Sickle Cell Disease"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11422862",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Targeting hematopoietic stem cells by lipid nanoparticles to treat hematological disorders"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11366107",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Designer Red Blood Cells to Improve Transfusion Therapy"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11451335",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Therapeutic gene editing nanoparticles for sickle cell disease"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11366453",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Biomimetic CRISPR Nanoformulations for Targeted Gene Editing in Thallasemia and Sickle Cell Disease"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11031845",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Oxidative stress mechanisms regulating gamma-globin gene transcription in sickle cell disease"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11310386",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Role of CYB5R3 in erythropoiesis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11311734",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Gamma-globin induction for beta-hemoglobinopathies"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11440602",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Admixture Mapping of Genetic Modifiers in Sickle Cell Disease"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11341383",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Understanding cellular variation in fetal hemoglobin distribution"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11279923",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Fatty Acid Metabolism in Normal and Pathological Erythropoiesis"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11545411",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Placental Stromal Niche Regulation of Fetal Erythropoiesis and Red Blood Cell Quality in Preeclampsia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11422866",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Targeting hematopoietic stem cells by lipid nanoparticles to treat hemoglobinopathies"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11440177",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Mechanism of the RNA helicase UPF1 regulatory loop in RNA decay target selection"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11315534",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Elucidating the real-time search dynamics of a transcription factor at its sole targe"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11351524",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Control of hemoglobin expression by the chromatin remodeler CHD7"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11298428",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Modulating Iron Trafficking to Ameliorate Ineffective Erythropoiesis in MDS"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11172751",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Generalizing genome editing for rare disease-causing variants"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11117343",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "DNA damage responses to genome editing in hematopoietic stem cells"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11415142",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Efficacy of Hypoxic Red Blood Cells Processed with the Hemanext ONE\u00ae System in Patients with Sickle Cell Anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11253215",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Efficacy of Hypoxic Red Blood Cells Processed with the Hemanext ONE\u00ae System in Patients with Sickle Cell Anemia"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11240713",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Investigating the mechanisms of polycomb group protein mediated fetal hemoglobin silencing"
+    },
+    {
+      "decision": "exclude_from_curated_default",
+      "record_id": "grant:11418880",
+      "record_type": "grant",
+      "reason": "Funding records retained in discovery pending manual PI/collaborator relevance review.",
+      "label": "Investigating the mechanisms of polycomb group protein mediated fetal hemoglobin silencing"
+    }
+  ],
+  "summary": {
+    "include_curated": 9,
+    "exclude_from_curated_default": 331,
+    "exclude_as_present": 0,
+    "exclude_or_flag": 0,
+    "missing_anchor": 0
+  }
+}

@@ -1,0 +1,233 @@
+{
+  "generated_at": "2026-10-03T20:08:57+00:00",
+  "collector": "research/hbb/collect.py",
+  "sources": [
+    {
+      "path": "raw/clinicaltrials/search_exa_hbf.json",
+      "bytes": 274361,
+      "sha256": "7e893024a6ff04c367d5be0e7dfb334f617f676e707cd56719b42af98d02ae95",
+      "mtime_utc": "2026-10-03T19:56:19+00:00"
+    },
+    {
+      "path": "raw/clinicaltrials/search_scd.json",
+      "bytes": 256452,
+      "sha256": "3dec9aee6582c741970bd92424efcc9d37811d521bda76ac115370dd0588a2d4",
+      "mtime_utc": "2026-10-03T19:56:18+00:00"
+    },
+    {
+      "path": "raw/clinicaltrials/search_tdt.json",
+      "bytes": 185394,
+      "sha256": "dd0726e951ce4c4cf37ba7810bed55612577a4b598e97344b84a5419a731b4e3",
+      "mtime_utc": "2026-10-03T19:56:18+00:00"
+    },
+    {
+      "path": "raw/clinvar/esearch_hbb_hbc.json",
+      "bytes": 405,
+      "sha256": "dfda317d3b9801a09458285784a17e257fc11e173884eed277189e8572f54ae6",
+      "mtime_utc": "2026-10-03T20:00:23+00:00"
+    },
+    {
+      "path": "raw/clinvar/esearch_hbb_hbs.json",
+      "bytes": 468,
+      "sha256": "9d67920d7efc54bdd44a59bebf7bfbf9c31da03a3e38ab3fe8830ec8f0396d3a",
+      "mtime_utc": "2026-10-03T20:00:23+00:00"
+    },
+    {
+      "path": "raw/clinvar/esearch_hbb_hbs_hbc.json",
+      "bytes": 947,
+      "sha256": "6cff589ae6b0f2b4b9707397cf2b94e9e3887e88887347e2700bc3daabdccb4b",
+      "mtime_utc": "2026-10-03T19:56:12+00:00"
+    },
+    {
+      "path": "raw/clinvar/esearch_hbb_pathogenic.json",
+      "bytes": 829,
+      "sha256": "739795f756bd2712ad95900dcf143eef5ea586983abb2055bc2c4eb013cc5ee5",
+      "mtime_utc": "2026-10-03T19:56:11+00:00"
+    },
+    {
+      "path": "raw/clinvar/esearch_hbb_thalassemia.json",
+      "bytes": 774,
+      "sha256": "1bae82a7cdb08ed13355d554aea69139f3d6dde946ec77cdd6b322d2fed54bad",
+      "mtime_utc": "2026-10-03T19:56:13+00:00"
+    },
+    {
+      "path": "raw/clinvar/esummary_canonical_hbs_hbc.json",
+      "bytes": 22048,
+      "sha256": "90db3e18614c83cfe45e8031581229080b934ce4256584f6b603cd8b267be0ac",
+      "mtime_utc": "2026-10-03T20:00:22+00:00"
+    },
+    {
+      "path": "raw/clinvar/esummary_hbb_hbc.json",
+      "bytes": 15264,
+      "sha256": "227cb9afcc59b097b05bd93508489e436a3863036c3634d0656bed5dad88ac26",
+      "mtime_utc": "2026-10-03T20:00:24+00:00"
+    },
+    {
+      "path": "raw/clinvar/esummary_hbb_hbs.json",
+      "bytes": 52225,
+      "sha256": "8f34bef121a3750e9b1fdfd27d72b0dfa20be810cab62761ddf583ba6aa9e4b3",
+      "mtime_utc": "2026-10-03T20:00:23+00:00"
+    },
+    {
+      "path": "raw/clinvar/esummary_hbb_hbs_hbc.json",
+      "bytes": 153658,
+      "sha256": "cdce5375c9f672ba407671ee980ed3b9390770c1aa945e36d143de873ad98afa",
+      "mtime_utc": "2026-10-03T19:56:13+00:00"
+    },
+    {
+      "path": "raw/clinvar/esummary_hbb_pathogenic.json",
+      "bytes": 106116,
+      "sha256": "3ab512a7bc6e82b482f1d7f96e3471bdb87ccdd6938b697f566264ed253e86df",
+      "mtime_utc": "2026-10-03T19:56:12+00:00"
+    },
+    {
+      "path": "raw/clinvar/esummary_hbb_thalassemia.json",
+      "bytes": 91606,
+      "sha256": "b1964bb62faf700720963bb7236f3afbe7d36b3945470afe8fbee59ba123882d",
+      "mtime_utc": "2026-10-03T19:56:14+00:00"
+    },
+    {
+      "path": "raw/hpo/jax_OMIM_603903.json",
+      "bytes": 4168,
+      "sha256": "d9891b74e1fbc40a69b92224bc2935eab0eeab21f0f6413b2b5adae2035b5048",
+      "mtime_utc": "2026-10-03T19:58:00+00:00"
+    },
+    {
+      "path": "raw/hpo/jax_OMIM_613985.json",
+      "bytes": 680,
+      "sha256": "1675569dcca05b8be476b73ff23d64935f6c8ec9b68da9ceaac0f95e42a9866d",
+      "mtime_utc": "2026-10-03T19:58:00+00:00"
+    },
+    {
+      "path": "raw/hpo/jax_ORPHA_232.json",
+      "bytes": 6974,
+      "sha256": "067691338c24fe3195be7069af16c850045e5872c81d0d84f90be84aeb9799dc",
+      "mtime_utc": "2026-10-03T19:58:01+00:00"
+    },
+    {
+      "path": "raw/hpo/jax_ORPHA_848.json",
+      "bytes": 4014,
+      "sha256": "2f0aab8fcd24c061cb6ae982d604088573e968e008e4abc98d9dc47b48d3efaf",
+      "mtime_utc": "2026-10-03T19:58:01+00:00"
+    },
+    {
+      "path": "raw/hpo/monarch_MONDO_0011382.json",
+      "bytes": 409776,
+      "sha256": "158902e12d20d4fd14880ed34d585ad2d7fce36d10c6732b1d3de173223f4a32",
+      "mtime_utc": "2026-10-03T19:58:02+00:00"
+    },
+    {
+      "path": "raw/hpo/monarch_MONDO_0019402.json",
+      "bytes": 600733,
+      "sha256": "5239c001a66bf867d62c5cb680f67015208acdce1afd6fa35ba8b54f8ace67b8",
+      "mtime_utc": "2026-10-03T19:58:03+00:00"
+    },
+    {
+      "path": "raw/hpo/ols_MONDO_0005835.json",
+      "bytes": 1810,
+      "sha256": "bc887c285e08c5a27b4486c66792162e5bd56be60f70f7e3ef6758d00c53855b",
+      "mtime_utc": "2026-10-03T19:56:21+00:00"
+    },
+    {
+      "path": "raw/hpo/ols_MONDO_0016680.json",
+      "bytes": 4601,
+      "sha256": "f44f48a0bab93d8c923171a08619d423494de0841829c7cfb2d7c436917062a1",
+      "mtime_utc": "2026-10-03T19:56:22+00:00"
+    },
+    {
+      "path": "raw/hpo/ols_Orphanet_232.json",
+      "bytes": 1810,
+      "sha256": "bc887c285e08c5a27b4486c66792162e5bd56be60f70f7e3ef6758d00c53855b",
+      "mtime_utc": "2026-10-03T19:56:23+00:00"
+    },
+    {
+      "path": "raw/hpo/ols_Orphanet_848.json",
+      "bytes": 4601,
+      "sha256": "f44f48a0bab93d8c923171a08619d423494de0841829c7cfb2d7c436917062a1",
+      "mtime_utc": "2026-10-03T19:56:24+00:00"
+    },
+    {
+      "path": "raw/models/asset_jax_townes.html",
+      "bytes": 53406,
+      "sha256": "ae4e81f878f13d2abe47a6015d40d12e0251af48b213144d15b42dc1cdf04c11",
+      "mtime_utc": "2026-10-03T19:57:27+00:00"
+    },
+    {
+      "path": "raw/nih_reporter/search_scd_hbb.json",
+      "bytes": 145184,
+      "sha256": "516476a513530cf7104f5b1ce19a2736bfb41c6fc11dd583e591b678ca6b6096",
+      "mtime_utc": "2026-10-03T19:56:19+00:00"
+    },
+    {
+      "path": "raw/nih_reporter/search_scd_hbf.json",
+      "bytes": 188306,
+      "sha256": "794dd4489ffafa7d0aae08d8582970a9e4313c59242ed48f9f86dd42901fe3fb",
+      "mtime_utc": "2026-10-03T19:57:59+00:00"
+    },
+    {
+      "path": "raw/nih_reporter/search_thal_gt.json",
+      "bytes": 190589,
+      "sha256": "103975a13ede80b70498edda0ad8a34eeffb8405f18d9fb60394bbb65a850a0f",
+      "mtime_utc": "2026-10-03T19:57:59+00:00"
+    },
+    {
+      "path": "raw/nih_reporter/search_thal_hbf.json",
+      "bytes": 259,
+      "sha256": "d3b35b2bd7fe1237b7411901c1605e77cbb3189dc47b9fa3d373d0f9bbd2504a",
+      "mtime_utc": "2026-10-03T19:56:20+00:00"
+    },
+    {
+      "path": "raw/organizations/org_caf_fallback.html",
+      "bytes": 93301,
+      "sha256": "b50b66075d54b40820234b9843e96d4968f53e4ab71468135263385b2fb1f8ce",
+      "mtime_utc": "2026-10-03T20:08:57+00:00"
+    },
+    {
+      "path": "raw/organizations/org_scdaa.html",
+      "bytes": 87270,
+      "sha256": "b79d9e6bc4a6859bff54fc85117e419503d2b9bc17a3fe265e4a6cc7f02412d3",
+      "mtime_utc": "2026-10-03T19:56:25+00:00"
+    },
+    {
+      "path": "raw/pubmed/esearch_exa_cel.json",
+      "bytes": 1147,
+      "sha256": "8c3463bf7870e2c9d9b4c5e55c2385831ddc422f75892bd6a48a4783a9cd50a7",
+      "mtime_utc": "2026-10-03T19:56:14+00:00"
+    },
+    {
+      "path": "raw/pubmed/esearch_hbb_mechanism.json",
+      "bytes": 1784,
+      "sha256": "cc06e66464aee4fdf443f8330f97dc6c4472ff2aaca09fca62c8b099c82a2ab2",
+      "mtime_utc": "2026-10-03T19:56:16+00:00"
+    },
+    {
+      "path": "raw/pubmed/esearch_hbf_bridge.json",
+      "bytes": 1945,
+      "sha256": "950dd030935ccbc7d358c9d9551de7a58150d3a9d5be0b411393896dd6409c10",
+      "mtime_utc": "2026-10-03T19:56:15+00:00"
+    },
+    {
+      "path": "raw/pubmed/esummary_0.json",
+      "bytes": 45005,
+      "sha256": "9ec3200fa2e9654472d401f883f72003951e3f3c27663e6aaf29bece07a512fa",
+      "mtime_utc": "2026-10-03T19:56:16+00:00"
+    },
+    {
+      "path": "raw/pubmed/esummary_20.json",
+      "bytes": 37231,
+      "sha256": "89ee33528247e59858967bbe0a8aa90ea47c38c4f71050af32d93a5c7703f286",
+      "mtime_utc": "2026-10-03T19:56:17+00:00"
+    },
+    {
+      "path": "raw/pubmed/esummary_40.json",
+      "bytes": 3703,
+      "sha256": "ca22f26310fec1c251187c8150294d8aac5684c68fef5f4f0a06e0581036ee56",
+      "mtime_utc": "2026-10-03T19:56:17+00:00"
+    }
+  ],
+  "policy": {
+    "api_keys_required": false,
+    "overwrite_existing_raw": false,
+    "private_patient_data": false
+  }
+}
