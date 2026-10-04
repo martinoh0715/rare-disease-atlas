@@ -159,12 +159,15 @@ export function ResearchOpportunityPanel({
             className="mt-1 bg-white"
             value={researchObjective}
             onChange={(e) => onResearchObjectiveChange(e.target.value)}
-            placeholder="e.g. Assess whether study methods could be adapted"
+            placeholder="Leave blank, type your own, or click an example below"
             maxLength={500}
             disabled={loading}
           />
         </label>
-        <div className="mt-2 flex flex-wrap gap-2">
+        <p className="mt-2 text-xs font-medium uppercase tracking-wide text-slate-500">
+          Examples (applied only if you click — not submitted automatically)
+        </p>
+        <div className="mt-1 flex flex-wrap gap-2">
           {RESEARCH_OBJECTIVE_EXAMPLES.map((ex) => (
             <button
               key={ex}

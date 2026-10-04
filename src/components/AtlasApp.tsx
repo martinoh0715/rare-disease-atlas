@@ -26,7 +26,6 @@ import {
   needsDisambiguation,
   neighborhood,
   pathNeighborhood,
-  relationshipLabel,
   searchAcrossDatasets,
   type SearchHit,
 } from "@/lib/graph";
@@ -36,39 +35,13 @@ import type {
   AtlasData,
   DatasetCatalogEntry,
   DemoStage,
-  ProposalDraft,
 } from "@/lib/types";
 import { importantSummaryForEdge, sourceCardForEdge } from "@/lib/sourceMeta";
 
 type Mode = "landing" | "workspace" | "unsupported";
 
-function partnerOptions(demo: AtlasData["demo"], nodes: GraphNode[]) {
-  const partnerKinds = new Set([
-    "patient_organization",
-    "patient_registry",
-    "research_center",
-    "research_consortium",
-  ]);
-  const fromAssets = demo.asset_assessments
-    .filter((a) => partnerKinds.has(a.asset_kind))
-    .map((a) => ({ id: a.asset_id, label: a.title }));
-  const fromNodes = nodes
-    .filter((n) => n.type === "organization" || n.type === "research_asset")
-    .map((n) => ({ id: n.id, label: n.label }));
-  const merged = new Map<string, string>();
-  [...fromAssets, ...fromNodes].forEach((p) => merged.set(p.id, p.label));
-  if (demo.default_partner_id && !merged.has(demo.default_partner_id)) {
-    const n = nodes.find((x) => x.id === demo.default_partner_id);
-    const a = demo.asset_assessments.find(
-      (x) => x.asset_id === demo.default_partner_id
-    );
-    merged.set(
-      demo.default_partner_id,
-      a?.title || n?.label || demo.default_partner_id
-    );
-  }
-  return [...merged.entries()].map(([id, label]) => ({ id, label }));
-}
+/** Independent exploration views — not a required sequence. */
+const EXPLORATION_VIEW_IDS = new Set(["understand", "explore"]);
 
 function journeyStatusLabel(status?: string) {
   if (status === "partial") return "Partial path";
@@ -104,18 +77,12 @@ export function AtlasApp({
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
   const [stageId, setStageId] = useState<string>("understand");
   const [expanded, setExpanded] = useState(false);
-  const [proposalOpen, setProposalOpen] = useState(false);
   const [selectedAssetIds, setSelectedAssetIds] = useState<string[]>(
     defaultDataset.demo.default_asset_ids || []
   );
-  const [selectedPartnerId, setSelectedPartnerId] = useState(
-    defaultDataset.demo.default_partner_id ||
-      partnerOptions(defaultDataset.demo, defaultDataset.curated.nodes)[0]?.id ||
-      ""
-  );
-  const [proposal, setProposal] = useState<ProposalDraft | null>(null);
   const [unsupportedQuery, setUnsupportedQuery] = useState("");
   const [focusHistory, setFocusHistory] = useState<string[]>([]);
+  const [viewNote, setViewNote] = useState<string | null>(null);
   const [enabledCategories, setEnabledCategories] = useState<string[]>(() =>
     defaultDataset.demo.category_legend.map((c) => c.id)
   );
@@ -127,6 +94,7 @@ export function AtlasApp({
   const [evalAssetId, setEvalAssetId] = useState<string>(
     defaultDataset.demo.default_asset_ids?.[0] || ""
   );
+  /** Empty by default — never auto-filled from proposal_defaults or graph nodes. */
   const [researchObjective, setResearchObjective] = useState("");
   const [evalResult, setEvalResult] = useState<EvaluationResult | null>(null);
   const [evalLoading, setEvalLoading] = useState(false);
@@ -183,11 +151,6 @@ export function AtlasApp({
     () => new Map(curated.edges.map((e) => [e.id, e])),
     [curated]
   );
-  const partners = useMemo(
-    () => partnerOptions(demo, curated.nodes),
-    [demo, curated.nodes]
-  );
-
   useEffect(() => {
     const validAssets = new Set(demo.asset_assessments.map((a) => a.asset_id));
     setSelectedAssetIds((prev) => {
@@ -202,11 +165,6 @@ export function AtlasApp({
       }
       return resolved;
     });
-    const partnerIds = new Set(partners.map((p) => p.id));
-    setSelectedPartnerId((prev) => {
-      if (partnerIds.has(prev)) return prev;
-      return demo.default_partner_id || partners[0]?.id || "";
-    });
     // Evaluations are dataset-scoped; never carry them across collections.
     evalAbortRef.current?.abort();
     evalAbortRef.current = null;
@@ -218,16 +176,30 @@ export function AtlasApp({
     setBriefOpen(false);
     setBriefMeta(null);
     setBriefMarkdown("");
+    setViewNote(null);
     const nextDisease =
       demo.default_focus_id ||
       curated.nodes.find((n) => n.type === "disease")?.id ||
       "";
     setEvalDiseaseId(nextDisease);
     setEvalAssetId(demo.default_asset_ids?.[0] || "");
-  }, [datasetId, demo.default_asset_ids, demo.default_partner_id, demo.asset_assessments, partners, curated.nodes]);
+  }, [datasetId, demo.default_asset_ids, demo.asset_assessments, curated.nodes]);
 
-  const stages = (journey.stages || demo.stages) as DemoStage[];
+  const stages = useMemo(
+    () =>
+      ((journey.stages || demo.stages) as DemoStage[]).filter((s) =>
+        EXPLORATION_VIEW_IDS.has(s.id)
+      ),
+    [journey.stages, demo.stages]
+  );
   const stage = stages.find((s) => s.id === stageId) || stages[0];
+
+  // Legacy "prepare" stage is removed from navigation — coerce if needed.
+  useEffect(() => {
+    if (!stages.some((s) => s.id === stageId) && stages[0]) {
+      setStageId(stages[0].id);
+    }
+  }, [stageId, stages]);
   const productName =
     demo.product_name || catalog.product_name || "Rare Disease Atlas";
   const datasetLabel = demo.dataset_label || active.id;
@@ -428,7 +400,7 @@ export function AtlasApp({
     let truncated = false;
     let emptyReason: string | null = null;
 
-    // Stage views show the full curated multi-hop path for that step.
+    // View paths show the curated multi-hop neighborhood for that exploration view.
     if (!expanded && stage) {
       const path = pathNeighborhood(curated, stage.node_ids, stage.edge_ids);
       presentNodes = path.nodes.filter((n) => nodeMap.has(n.id));
@@ -446,7 +418,7 @@ export function AtlasApp({
       } else if (presentEdges.length === 0) {
         presentNodes = presentNodes.length ? presentNodes : [focusNode];
         emptyReason =
-          "This step has no sourced connections to display yet. Try another step or a different disease context.";
+          "This view has no sourced connections to display yet. Try the other exploration view or a different disease context.";
       }
     } else {
       // Expanded mode: ego neighborhood around the selected center.
@@ -497,14 +469,15 @@ export function AtlasApp({
   }, [mode, stageId, focusId, expanded, local.nodes.length]);
 
   const assetAssessments = demo.asset_assessments;
-  const visibleAssets = assetAssessments.filter((a) =>
-    stageId === "understand"
-      ? false
-      : stage?.node_ids.includes(a.asset_id) ||
-        selectedAssetIds.includes(a.asset_id) ||
-        stageId === "explore" ||
-        stageId === "prepare"
-  );
+  const visibleAssets =
+    stageId === "explore"
+      ? assetAssessments.filter(
+          (a) =>
+            !stage?.node_ids?.length ||
+            stage.node_ids.includes(a.asset_id) ||
+            selectedAssetIds.includes(a.asset_id)
+        )
+      : [];
 
   function searchAll(q: string): SearchHit[] {
     return searchAcrossDatasets(
@@ -587,13 +560,6 @@ export function AtlasApp({
     if (switching) {
       setDatasetId(nextDatasetId);
       setSelectedAssetIds(nextDemo.default_asset_ids || []);
-      setSelectedPartnerId(
-        nextDemo.default_partner_id ||
-          partnerOptions(nextDemo, next.curated.nodes)[0]?.id ||
-          ""
-      );
-      setProposal(null);
-      setProposalOpen(false);
       setSelectedEdgeId(null);
     }
 
@@ -601,11 +567,17 @@ export function AtlasApp({
     setFocusId(nodeId);
     setMode("workspace");
     setExpanded(false);
+    setViewNote(null);
     setEnabledCategories(nextDemo.category_legend.map((c) => c.id));
+    const explorationStages = nextStages.filter((s) =>
+      EXPLORATION_VIEW_IDS.has(s.id)
+    );
     const startStage =
-      nextStages.find((s) => s.node_ids.includes(nodeId))?.id || "understand";
+      explorationStages.find((s) => s.node_ids.includes(nodeId))?.id ||
+      "understand";
     setStageId(startStage);
-    const stageEdges = nextStages.find((s) => s.id === startStage)?.edge_ids || [];
+    const stageEdges =
+      explorationStages.find((s) => s.id === startStage)?.edge_ids || [];
     const firstEdge =
       stageEdges.find((id) => {
         const e = nextEdges.find((edge) => edge.id === id);
@@ -616,37 +588,62 @@ export function AtlasApp({
     setSelectedEdgeId(firstEdge);
   }
 
-  function chooseStage(id: string) {
-    setStageId(id);
-    setExpanded(false);
+  function chooseView(id: string) {
+    if (id === stageId) return;
     const s = stages.find((x) => x.id === id);
     if (!s) return;
+    setStageId(id);
+    setExpanded(false);
 
-    // Fit the stage's resource/biology path immediately.
-    const anchor =
-      (s.anchor_node_id && nodeMap.has(s.anchor_node_id) && s.anchor_node_id) ||
-      s.node_ids.find((nid) => nodeMap.get(nid)?.type === "disease") ||
-      s.node_ids.find((nid) => nodeMap.has(nid)) ||
-      focusId;
-    if (anchor !== focusId) {
-      setFocusHistory((prev) => [...prev, focusId]);
+    // Preserve evaluation disease/asset selections. Only adjust graph focus
+    // when the current focus is not part of the destination view path.
+    const focusInView = s.node_ids.includes(focusId);
+    const priorLabel = nodeMap.get(focusId)?.label || "current selection";
+    let nextFocus = focusId;
+    let note: string | null = null;
+
+    if (!focusInView) {
+      if (evalDiseaseId && s.node_ids.includes(evalDiseaseId)) {
+        nextFocus = evalDiseaseId;
+        note = `“${priorLabel}” is not on the curated path for this view. Showing the selected disease instead. Your evaluation disease and asset selections are unchanged.`;
+      } else if (evalAssetId && s.node_ids.includes(evalAssetId)) {
+        nextFocus = evalAssetId;
+        note = `“${priorLabel}” is not on the curated path for this view. Showing the selected research asset instead. Your evaluation disease and asset selections are unchanged.`;
+      } else if (s.anchor_node_id && nodeMap.has(s.anchor_node_id)) {
+        nextFocus = s.anchor_node_id;
+        note = `“${priorLabel}” is not on the curated path for this view. Showing the view’s default focus. Your evaluation disease and asset selections are unchanged.`;
+      }
+      if (nextFocus !== focusId) {
+        setFocusHistory((prev) => [...prev, focusId]);
+        setFocusId(nextFocus);
+      }
+    } else {
+      note = null;
     }
-    setFocusId(anchor);
+    setViewNote(note);
+
+    const currentEdge = selectedEdgeId ? edgeMap.get(selectedEdgeId) : null;
+    const edgeStillInView =
+      currentEdge &&
+      s.edge_ids.includes(selectedEdgeId!) &&
+      s.node_ids.includes(currentEdge.source) &&
+      s.node_ids.includes(currentEdge.target);
+
+    if (edgeStillInView) return;
 
     const preferred =
-      (s.preferred_edge_id && edgeMap.has(s.preferred_edge_id) && s.preferred_edge_id) ||
+      (s.preferred_edge_id &&
+        edgeMap.has(s.preferred_edge_id) &&
+        (edgeMap.get(s.preferred_edge_id)!.source === nextFocus ||
+          edgeMap.get(s.preferred_edge_id)!.target === nextFocus) &&
+        s.preferred_edge_id) ||
       s.edge_ids.find((eid) => {
         const e = edgeMap.get(eid);
-        if (!e) return false;
-        // Prefer study/publication/asset edges on Explore.
-        const tip = nodeMap.get(e.source) || nodeMap.get(e.target);
-        return (
-          tip &&
-          ["clinical_study", "publication", "research_asset", "organization"].includes(
-            tip.type
-          )
-        );
+        return e && (e.source === nextFocus || e.target === nextFocus);
       }) ||
+      (s.preferred_edge_id && edgeMap.has(s.preferred_edge_id)
+        ? s.preferred_edge_id
+        : null) ||
       s.edge_ids.find((eid) => edgeMap.has(eid)) ||
       null;
     setSelectedEdgeId(preferred);
@@ -790,66 +787,6 @@ export function AtlasApp({
     setBriefOpen(true);
   }
 
-  function buildProposal() {
-    const defaultDiseaseId =
-      demo.default_focus_id ||
-      stage?.anchor_node_id ||
-      curated.nodes.find((n) => n.type === "disease")?.id;
-    const disease =
-      (defaultDiseaseId && nodeMap.get(defaultDiseaseId)) ||
-      nodeMap.get(focusId) ||
-      ({ label: "Selected disease" } as GraphNode);
-    const partnerNode = nodeMap.get(selectedPartnerId);
-    const partnerAsset = assetAssessments.find(
-      (a) => a.asset_id === selectedPartnerId
-    );
-    const partnerLabel =
-      partnerNode?.label ||
-      partnerAsset?.title ||
-      null;
-    const assets = assetAssessments.filter((a) =>
-      selectedAssetIds.includes(a.asset_id)
-    );
-    const pathEdges = (journey.edge_path || [])
-      .map((id) => edgeMap.get(id))
-      .filter(Boolean) as GraphEdge[];
-
-    const evidenceBullets = pathEdges.slice(0, 8).map((e) => {
-      const src = e.evidence?.source_url || "source pending";
-      const passage = e.evidence?.supporting_passage || e.plain_language || e.type;
-      return `${relationshipLabel(e.type)}: ${passage} (${src})`;
-    });
-
-    const questionNode =
-      curated.nodes.find((n) => n.type === "research_question") || null;
-    const uncertainties = [
-      ...(questionNode?.uncertainties || []),
-      demo.registry_gap.explanation,
-    ];
-    const partnerQuestions = assets.map(
-      (a) => a.comparison.validation_question
-    );
-    const differences = assets.flatMap((a) => a.comparison.what_differs);
-
-    const draft: ProposalDraft = {
-      diseaseLabel: disease.label,
-      researchQuestion: demo.proposal_defaults.research_question,
-      connectionSummary: journey.plain_language,
-      proposedResource:
-        assets.map((a) => a.title).join("; ") || "No asset selected",
-      partnerLabel: partnerLabel
-        ? `${partnerLabel} (public page; availability not claimed)`
-        : demo.proposal_defaults.partner_gap_if_unknown,
-      evidenceBullets,
-      differences: [...new Set(differences)],
-      uncertainties,
-      partnerQuestions: [...new Set(partnerQuestions)],
-      nextStep: demo.proposal_defaults.proposed_next_step,
-    };
-    setProposal(draft);
-    setProposalOpen(true);
-  }
-
   if (mode === "landing") {
     return (
       <Landing
@@ -980,7 +917,7 @@ export function AtlasApp({
                 variant="outline"
                 onClick={() => setExpanded((v) => !v)}
               >
-                {expanded ? "Show guided path" : "Show more connections"}
+                {expanded ? "Show curated path" : "Show more connections"}
               </Button>
             </div>
 
@@ -1080,6 +1017,11 @@ export function AtlasApp({
               })}
             </div>
 
+            {viewNote ? (
+              <p className="mt-3 rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-sm text-sky-950">
+                {viewNote}
+              </p>
+            ) : null}
             {local.emptyReason && (
               <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
                 {local.emptyReason}
@@ -1087,8 +1029,8 @@ export function AtlasApp({
             )}
             {local.truncated && (
               <p className="mt-2 text-xs text-slate-500">
-                Neighborhood truncated for readability. Return to the guided
-                path for the curated multi-hop view.
+                Neighborhood truncated for readability. Switch back to a curated
+                path view for the multi-hop neighborhood.
               </p>
             )}
           </section>
@@ -1114,84 +1056,43 @@ export function AtlasApp({
           </aside>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 md:gap-5">
-          <section className="atlas-panel p-4 md:p-5">
-            <h2 className="font-display text-[18px] font-semibold text-ink md:text-[20px]">
-              Guided discovery
-            </h2>
-            <p className="atlas-meta mt-2 leading-relaxed">
-              A 3-step tour. Each step fits a curated path on the graph —
-              biology first, then studies and partners, then a next-step brief.
-            </p>
-            <ol className="mt-4 grid gap-2 sm:grid-cols-3">
-              {stages.map((s, idx) => (
-                <li key={s.id}>
-                  <button
-                    type="button"
-                    onClick={() => chooseStage(s.id)}
-                    className={`h-full min-h-11 w-full rounded-atlas border px-3 py-2.5 text-left text-sm transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss ${
-                      stageId === s.id
-                        ? "border-ink bg-ink text-white"
-                        : "border-line bg-white hover:border-slate-400 hover:bg-slate-50"
-                    }`}
-                  >
-                    <span className="block text-sm opacity-70">
-                      Step {idx + 1}
-                    </span>
-                    <span className="font-medium">{s.label}</span>
-                  </button>
-                </li>
-              ))}
-            </ol>
-            <p className="atlas-meta mt-3">{stage?.summary}</p>
-          </section>
+        <section className="atlas-panel p-4 md:p-5">
+          <h2 className="font-display text-[18px] font-semibold text-ink md:text-[20px]">
+            Exploration views
+          </h2>
+          <p className="atlas-meta mt-2 leading-relaxed">
+            Switch between curated graph views at any time. These are independent
+            perspectives — not a required sequence.
+          </p>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            {stages.map((s) => (
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => chooseView(s.id)}
+                className={`h-full min-h-11 w-full rounded-atlas border px-3 py-2.5 text-left text-sm transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss ${
+                  stageId === s.id
+                    ? "border-ink bg-ink text-white"
+                    : "border-line bg-white hover:border-slate-400 hover:bg-slate-50"
+                }`}
+              >
+                <span className="font-medium">{s.label}</span>
+              </button>
+            ))}
+          </div>
+          <p className="atlas-meta mt-3">{stage?.summary}</p>
+        </section>
 
-          <section className="atlas-panel p-4 md:p-5">
-            <h2 className="font-display text-[18px] font-semibold text-ink md:text-[20px]">
-              Prepare next step
-            </h2>
-            <p className="atlas-meta mt-2 leading-relaxed">
-              Choose a partner organization and assets, then generate an
-              editable sourced brief. Nothing is sent automatically.
-            </p>
-            <label className="mt-4 block text-sm font-semibold text-slate-600">
-              Potential partner
-            </label>
-            <select
-              className="mt-1 h-11 w-full rounded-atlas border border-line bg-white px-3 text-base text-ink transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
-              value={selectedPartnerId}
-              onChange={(e) => setSelectedPartnerId(e.target.value)}
-            >
-              {partners.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.label}
-                </option>
-              ))}
-            </select>
-            <Button className="mt-3 w-full" onClick={buildProposal}>
-              Prepare research proposal
-            </Button>
-          </section>
-        </div>
-
-        {(stageId === "explore" || stageId === "prepare") && (
+        {stageId === "explore" ? (
           <AssetPanel
             assets={visibleAssets.length ? visibleAssets : assetAssessments}
             selectedAssetIds={selectedAssetIds}
             onToggle={toggleAsset}
             registryGap={demo.registry_gap}
           />
-        )}
+        ) : null}
       </div>
 
-      {proposalOpen && proposal && (
-        <ProposalModal
-          proposal={proposal}
-          datasetId={datasetId}
-          onClose={() => setProposalOpen(false)}
-          onChange={setProposal}
-        />
-      )}
       {briefOpen && briefMeta ? (
         <CollaborationBriefModal
           brief={briefMeta}
@@ -1567,8 +1468,10 @@ function AssetPanel({
         Research assets
       </h2>
       <p className="atlas-meta mt-1">
-        Verified public assets for this journey. Select items to include in a
-        proposal brief.
+        Public assets linked in this curated view. Selecting an item highlights
+        it here; use Evaluate research opportunity to assess a disease–asset
+        pair. Organization pages identify potentially relevant groups — not
+        verified collaborator networks or availability.
       </p>
       <div className="mt-4 space-y-4">
         {assets.map((a) => {
@@ -1667,166 +1570,6 @@ function CompareCol({ title, items }: { title: string; items: string[] }) {
   );
 }
 
-function ProposalModal({
-  proposal,
-  datasetId,
-  onClose,
-  onChange,
-}: {
-  proposal: ProposalDraft;
-  datasetId: string;
-  onClose: () => void;
-  onChange: (p: ProposalDraft) => void;
-}) {
-  const text = formatProposal(proposal);
-
-  async function copy() {
-    await navigator.clipboard.writeText(text);
-  }
-
-  function download() {
-    const blob = new Blob([text], { type: "text/markdown;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${datasetId}-research-proposal-brief.md`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/50 p-4 md:items-center">
-      <div className="max-h-[90vh] w-full max-w-3xl overflow-auto rounded-xl bg-white p-5 shadow-xl">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h2 className="font-display text-2xl">Sourced research proposal</h2>
-            <p className="mt-1 text-sm text-slate-600">
-              Editable brief. Proposed activities are distinct from demonstrated
-              findings. Nothing is emailed or submitted.
-            </p>
-          </div>
-          <button type="button" onClick={onClose} className="text-sm text-slate-500">
-            Close
-          </button>
-        </div>
-
-        <div className="mt-4 space-y-3">
-          <Field
-            label="Patient group disease / focus"
-            value={proposal.diseaseLabel}
-            onChange={(v) => onChange({ ...proposal, diseaseLabel: v })}
-          />
-          <Field
-            label="Research question"
-            value={proposal.researchQuestion}
-            onChange={(v) => onChange({ ...proposal, researchQuestion: v })}
-          />
-          <Field
-            label="Supported connection summary"
-            value={proposal.connectionSummary}
-            onChange={(v) => onChange({ ...proposal, connectionSummary: v })}
-            textarea
-          />
-          <Field
-            label="Proposed resource / collaboration"
-            value={proposal.proposedResource}
-            onChange={(v) => onChange({ ...proposal, proposedResource: v })}
-          />
-          <Field
-            label="Potential partner"
-            value={proposal.partnerLabel}
-            onChange={(v) => onChange({ ...proposal, partnerLabel: v })}
-          />
-          <Field
-            label="Evidence with citations (one per line)"
-            value={proposal.evidenceBullets.join("\n")}
-            onChange={(v) =>
-              onChange({
-                ...proposal,
-                evidenceBullets: v.split("\n").filter(Boolean),
-              })
-            }
-            textarea
-          />
-          <Field
-            label="Known differences / uncertainties"
-            value={[...proposal.differences, ...proposal.uncertainties].join("\n")}
-            onChange={(v) =>
-              onChange({
-                ...proposal,
-                differences: v.split("\n").filter(Boolean),
-                uncertainties: [],
-              })
-            }
-            textarea
-          />
-          <Field
-            label="Questions for prospective partner"
-            value={proposal.partnerQuestions.join("\n")}
-            onChange={(v) =>
-              onChange({
-                ...proposal,
-                partnerQuestions: v.split("\n").filter(Boolean),
-              })
-            }
-            textarea
-          />
-          <Field
-            label="Concrete proposed next step"
-            value={proposal.nextStep}
-            onChange={(v) => onChange({ ...proposal, nextStep: v })}
-            textarea
-          />
-        </div>
-
-        <div className="mt-5 flex flex-wrap gap-2">
-          <Button onClick={copy}>Copy brief</Button>
-          <Button variant="outline" onClick={download}>
-            Download markdown
-          </Button>
-          <Button variant="ghost" onClick={onClose}>
-            Done
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Field({
-  label,
-  value,
-  onChange,
-  textarea,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  textarea?: boolean;
-}) {
-  return (
-    <label className="block text-sm">
-      <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-        {label}
-      </span>
-      {textarea ? (
-        <textarea
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2"
-          rows={4}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      ) : (
-        <input
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      )}
-    </label>
-  );
-}
-
 function Detail({ label, value }: { label: string; value?: string | null }) {
   if (!value) return null;
   return (
@@ -1835,39 +1578,4 @@ function Detail({ label, value }: { label: string; value?: string | null }) {
       <dd className="text-slate-800">{value}</dd>
     </div>
   );
-}
-
-function formatProposal(p: ProposalDraft): string {
-  return `# Sourced research proposal brief
-
-## Patient group focus
-${p.diseaseLabel}
-
-## Research question
-${p.researchQuestion}
-
-## Supported connection
-${p.connectionSummary}
-
-## Proposed resource or collaboration
-${p.proposedResource}
-
-## Potential partner
-${p.partnerLabel}
-
-## Evidence with citations
-${p.evidenceBullets.map((b) => `- ${b}`).join("\n")}
-
-## Known differences and uncertainties
-${[...p.differences, ...p.uncertainties].map((b) => `- ${b}`).join("\n")}
-
-## Questions for the prospective partner
-${p.partnerQuestions.map((b) => `- ${b}`).join("\n")}
-
-## Concrete proposed next step
-${p.nextStep}
-
----
-Note: Proposed activities are distinct from demonstrated findings. This atlas does not send messages or assert partner availability.
-`;
 }
