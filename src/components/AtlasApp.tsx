@@ -921,6 +921,29 @@ export function AtlasApp({
               </Button>
             </div>
 
+            <div
+              className="mb-4 grid gap-2 sm:grid-cols-2"
+              role="group"
+              aria-label="Exploration views"
+            >
+              {stages.map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => chooseView(s.id)}
+                  aria-pressed={stageId === s.id}
+                  className={`min-h-11 w-full rounded-atlas border px-3 py-2.5 text-left text-sm transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss ${
+                    stageId === s.id
+                      ? "border-ink bg-ink text-white"
+                      : "border-line bg-white hover:border-slate-400 hover:bg-slate-50"
+                  }`}
+                >
+                  <span className="font-medium">{s.label}</span>
+                </button>
+              ))}
+            </div>
+            <p className="atlas-meta mb-4 -mt-2">{stage?.summary}</p>
+
             <ResearchOpportunityPanel
               diseaseOptions={diseaseOptions}
               diseaseId={evalDiseaseId}
@@ -1036,7 +1059,7 @@ export function AtlasApp({
           </section>
 
           <aside
-            className="flex min-h-0 flex-col gap-4 lg:sticky lg:top-4"
+            className="flex min-h-0 flex-col gap-4 overflow-hidden lg:sticky lg:top-4"
             style={
               graphSectionHeight
                 ? { height: graphSectionHeight, maxHeight: graphSectionHeight }
@@ -1055,33 +1078,6 @@ export function AtlasApp({
             />
           </aside>
         </div>
-
-        <section className="atlas-panel p-4 md:p-5">
-          <h2 className="font-display text-[18px] font-semibold text-ink md:text-[20px]">
-            Exploration views
-          </h2>
-          <p className="atlas-meta mt-2 leading-relaxed">
-            Switch between curated graph views at any time. These are independent
-            perspectives — not a required sequence.
-          </p>
-          <div className="mt-4 grid gap-2 sm:grid-cols-2">
-            {stages.map((s) => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => chooseView(s.id)}
-                className={`h-full min-h-11 w-full rounded-atlas border px-3 py-2.5 text-left text-sm transition-colors duration-atlas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss ${
-                  stageId === s.id
-                    ? "border-ink bg-ink text-white"
-                    : "border-line bg-white hover:border-slate-400 hover:bg-slate-50"
-                }`}
-              >
-                <span className="font-medium">{s.label}</span>
-              </button>
-            ))}
-          </div>
-          <p className="atlas-meta mt-3">{stage?.summary}</p>
-        </section>
 
         {stageId === "explore" ? (
           <AssetPanel
