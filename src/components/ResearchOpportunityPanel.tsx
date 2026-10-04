@@ -23,6 +23,16 @@ export type DiseaseOption = {
   label: string;
 };
 
+export type PartnerOption = {
+  id: string;
+  label: string;
+  diseaseScope: string;
+  sourceUrl: string | null;
+  relevance: string;
+  contactPage: string | null;
+  willingnessUnknown: boolean;
+};
+
 type Props = {
   diseaseOptions: DiseaseOption[];
   diseaseId: string;
@@ -31,6 +41,9 @@ type Props = {
   assetOptions: AssetOption[];
   assetId: string;
   onAssetChange: (id: string) => void;
+  partnerOptions: PartnerOption[];
+  partnerId: string;
+  onPartnerChange: (id: string) => void;
   researchObjective: string;
   onResearchObjectiveChange: (v: string) => void;
   loading: boolean;
@@ -44,6 +57,7 @@ type Props = {
   evidencePassageById: Map<string, string>;
   evidenceTitleById: Map<string, string>;
   evidenceKindById: Map<string, string>;
+  defaultOpen?: boolean;
 };
 
 const CONCLUSION_COPY: Record<string, string> = {
@@ -62,6 +76,9 @@ export function ResearchOpportunityPanel({
   assetOptions,
   assetId,
   onAssetChange,
+  partnerOptions,
+  partnerId,
+  onPartnerChange,
   researchObjective,
   onResearchObjectiveChange,
   loading,
@@ -75,26 +92,36 @@ export function ResearchOpportunityPanel({
   evidencePassageById,
   evidenceTitleById,
   evidenceKindById,
+  defaultOpen = false,
 }: Props) {
   const diseaseLabel =
     diseaseOptions.find((d) => d.id === diseaseId)?.label || diseaseId;
   const asset = assetOptions.find((a) => a.id === assetId) || null;
+  const partner =
+    partnerId && partnerId !== ""
+      ? partnerOptions.find((p) => p.id === partnerId) || null
+      : null;
   const assessment = result?.assessment || null;
   const canEvaluate = Boolean(diseaseId && assetId && !needsDiseasePick);
 
   return (
-    <section className="mt-4 rounded-atlas border border-line bg-slate-50 p-3 md:p-4">
-      <div className="min-w-0">
-        <h2 className="text-sm font-semibold text-slate-700">
-          Evaluate research opportunity
-        </h2>
-        <p className="atlas-meta mt-1">
-          For a patient-organization leader: why this research asset may matter
-          to your community, what might be reused, what must change, and what to
-          do next. This is an AI assessment — not reviewed — not a discovery or
-          treatment recommendation.
-        </p>
-      </div>
+    <details
+      className="mt-4 rounded-atlas border border-line bg-slate-50 p-3 md:p-4"
+      open={defaultOpen || Boolean(assessment) || loading}
+    >
+      <summary className="cursor-pointer list-none">
+        <div className="min-w-0">
+          <h2 className="text-sm font-semibold text-slate-700">
+            Evaluate research opportunity
+          </h2>
+          <p className="atlas-meta mt-1">
+            Optional next step after exploring the graph: assess a selected
+            study or asset for your community. AI assessment — not reviewed —
+            not a discovery or treatment recommendation.
+          </p>
+        </div>
+      </summary>
+      <div className="mt-3 border-t border-line pt-3">
 
       {needsDiseasePick ? (
         <p className="mt-3 rounded-atlas border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
@@ -141,7 +168,15 @@ export function ResearchOpportunityPanel({
       </div>
 
       {asset ? (
-        <p className="atlas-meta mt-2">{asset.connectionNote}</p>
+        <p className="mt-2 rounded-atlas border border-sky-200 bg-sky-50 px-3 py-2 text-sm text-sky-950">
+          <span className="font-medium">Connection: </span>
+          {asset.connectionNote}
+        </p>
+      ) : diseaseId && !assetId ? (
+        <p className="mt-2 text-sm text-slate-600">
+          Select a study or research asset — or choose one under Explore
+          resources — before evaluating.
+        </p>
       ) : diseaseId && assetOptions.length === 0 ? (
         <p className="mt-2 rounded-atlas border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
           No suitable study, registry, publication, or research asset is
@@ -149,6 +184,60 @@ export function ResearchOpportunityPanel({
           will not be generated.
         </p>
       ) : null}
+
+      <div className="mt-3">
+        <label className="block text-sm">
+          <span className="font-medium text-slate-700">
+            Potential partner organization (optional)
+          </span>
+          <select
+            className="mt-1 h-10 w-full rounded-atlas border border-line bg-white px-2"
+            value={partnerId}
+            onChange={(e) => onPartnerChange(e.target.value)}
+            disabled={loading}
+          >
+            <option value="">No partner selected</option>
+            {partnerOptions.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        {partner ? (
+          <div className="mt-2 rounded-atlas border border-line bg-white px-3 py-2 text-sm text-slate-700">
+            <p>
+              <span className="font-medium">Documented scope: </span>
+              {partner.diseaseScope}
+            </p>
+            <p className="mt-1">
+              <span className="font-medium">Why it may be relevant: </span>
+              {partner.relevance}
+            </p>
+            <p className="mt-1">
+              <span className="font-medium">Source: </span>
+              {partner.sourceUrl ? (
+                <a
+                  href={partner.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-moss-800 underline"
+                >
+                  {partner.sourceUrl}
+                </a>
+              ) : (
+                "No verified source URL in curated records"
+              )}
+            </p>
+            <p className="mt-1 text-amber-900">
+              Interest, capacity, access permissions, and willingness to
+              collaborate are not established unless a source explicitly says
+              so. Selecting a partner does not create a partnership or send a
+              message.
+            </p>
+          </div>
+        ) : null}
+      </div>
 
       <div className="mt-3">
         <label className="block text-sm">
@@ -230,6 +319,13 @@ export function ResearchOpportunityPanel({
         </p>
       ) : null}
 
+      {result?.connection_explanation ? (
+        <p className="mt-3 rounded-atlas border border-sky-200 bg-sky-50 px-3 py-2 text-sm text-sky-950">
+          <span className="font-medium">How these are connected: </span>
+          {result.connection_explanation}
+        </p>
+      ) : null}
+
       {result && !loading ? (
         <AssessmentView
           result={result}
@@ -239,7 +335,8 @@ export function ResearchOpportunityPanel({
           evidenceKindById={evidenceKindById}
         />
       ) : null}
-    </section>
+      </div>
+    </details>
   );
 }
 

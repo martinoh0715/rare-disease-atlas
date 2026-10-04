@@ -13,7 +13,7 @@
     {
       "id": "protein:HBB",
       "type": "protein",
-      "label": "\u03b2-globin",
+      "label": "β-globin",
       "encoded_by": "gene:HBB",
       "review_status": "curated",
       "layer": "curated"
@@ -41,7 +41,7 @@
       "omim": null,
       "genotype_scope": null,
       "clinical_category": null,
-      "notes": "Umbrella clinical category including HbSS, HbSC, HbS/\u03b2-thalassemia, and other genotypes. Shares MONDO with some HbSS mappings; do not collapse local nodes.",
+      "notes": "Umbrella clinical category including HbSS, HbSC, HbS/β-thalassemia, and other genotypes. Shares MONDO with some HbSS mappings; do not collapse local nodes.",
       "status": "in_scope",
       "review_status": "curated",
       "layer": "curated"
@@ -69,7 +69,7 @@
       "omim": "OMIM:613985",
       "genotype_scope": null,
       "clinical_category": null,
-      "notes": "Genetic category caused by reduced/absent HBB expression; subtypes by allele severity. OMIM:613985 / MONDO:0013517 may appear as related entries\u2014preserve mappings rather than merging every synonym.",
+      "notes": "Genetic category caused by reduced/absent HBB expression; subtypes by allele severity. OMIM:613985 / MONDO:0013517 may appear as related entries—preserve mappings rather than merging every synonym.",
       "status": "in_scope",
       "review_status": "curated",
       "layer": "curated"
@@ -105,7 +105,7 @@
     {
       "id": "disease:tdt",
       "type": "disease",
-      "label": "Transfusion-dependent \u03b2-thalassemia",
+      "label": "Transfusion-dependent β-thalassemia",
       "mondo": null,
       "orphanet": null,
       "omim": null,
@@ -119,7 +119,7 @@
     {
       "id": "disease:hbs_beta_thal",
       "type": "disease",
-      "label": "HbS/\u03b2-thalassemia",
+      "label": "HbS/β-thalassemia",
       "mondo": null,
       "orphanet": null,
       "omim": null,
@@ -175,7 +175,7 @@
     {
       "id": "pmid:38657265",
       "type": "publication",
-      "label": "Exagamglogene Autotemcel for Transfusion-Dependent \u03b2-Thalassemia.",
+      "label": "Exagamglogene Autotemcel for Transfusion-Dependent β-Thalassemia.",
       "pmid": "38657265",
       "journal": "The New England journal of medicine",
       "pubdate": "2024 May 9",
@@ -195,12 +195,12 @@
       ],
       "source_url": "https://pubmed.ncbi.nlm.nih.gov/38657265/",
       "retrieval_date": "2026-10-03T20:07:55+00:00",
-      "abstract": "This phase 3 study evaluated exagamglogene autotemcel (exa-cel) in transfusion-dependent \u03b2-thalassemia. Autologous CD34+ hematopoietic stem and progenitor cells were edited at the BCL11A erythroid enhancer to raise fetal hemoglobin, then reinfused after conditioning. Investigators asked whether patients could achieve transfusion independence with durable HbF support and what fetal-hemoglobin levels accompanied independence. The clinical category is transfusion dependence, which overlaps but is not identical to every genetic \u03b2-thalassemia subtype; therefore genotype strata on the source record remain important when mapping these results to a specific patient-group question.",
+      "abstract": "This phase 3 study evaluated exagamglogene autotemcel (exa-cel) in transfusion-dependent β-thalassemia. Autologous CD34+ hematopoietic stem and progenitor cells were edited at the BCL11A erythroid enhancer to raise fetal hemoglobin, then reinfused after conditioning. Investigators asked whether patients could achieve transfusion independence with durable HbF support and what fetal-hemoglobin levels accompanied independence. The clinical category is transfusion dependence, which overlaps but is not identical to every genetic β-thalassemia subtype; therefore genotype strata on the source record remain important when mapping these results to a specific patient-group question.",
       "main_findings": [
         "Among 35 evaluable patients, 32 (91%) achieved transfusion independence.",
         "Mean fetal hemoglobin was about 11.9 g/dL during transfusion independence.",
         "The same BCL11A-editing intervention class is used as in the SCD program; endpoints differ (transfusion independence vs VOC freedom).",
-        "Shared mechanism does not automatically transfer SCD trial design or models to \u03b2-thalassemia research uses."
+        "Shared mechanism does not automatically transfer SCD trial design or models to β-thalassemia research uses."
       ],
       "is_anchor": true,
       "layer": "curated",
@@ -212,12 +212,12 @@
       "label": "Fetal hemoglobin (HbF) reactivation",
       "layer": "curated",
       "review_status": "curated",
-      "plain_language": "Raising fetal hemoglobin can reduce sickling (in SCD) or compensate for missing adult \u03b2-globin (in \u03b2-thalassemia). The shared biology is HbF induction; clinical endpoints differ by disease."
+      "plain_language": "Raising fetal hemoglobin can reduce sickling (in SCD) or compensate for missing adult β-globin (in β-thalassemia). The shared biology is HbF induction; clinical endpoints differ by disease."
     },
     {
       "id": "process:bcl11a_repression_of_hbg",
       "type": "biological_process",
-      "label": "BCL11A-mediated repression of \u03b3-globin (HBG1/HBG2)",
+      "label": "BCL11A-mediated repression of γ-globin (HBG1/HBG2)",
       "layer": "curated",
       "review_status": "curated"
     },
@@ -250,10 +250,10 @@
     {
       "id": "allele:HbS",
       "type": "allele",
-      "label": "HbS (\u03b2S)",
+      "label": "HbS (βS)",
       "hgvs_c": "HBB:c.20A>T",
       "hgvs_p_modern": "p.Glu7Val",
-      "legacy_protein_numbering": "\u03b26 Glu>Val (legacy codon 6 numbering)",
+      "legacy_protein_numbering": "β6 Glu>Val (legacy codon 6 numbering)",
       "reference_transcript": "NM_000518.5",
       "layer": "curated",
       "review_status": "curated"
@@ -261,10 +261,10 @@
     {
       "id": "allele:HbC",
       "type": "allele",
-      "label": "HbC (\u03b2C)",
+      "label": "HbC (βC)",
       "hgvs_c": "HBB:c.19G>A",
       "hgvs_p_modern": "p.Glu7Lys",
-      "legacy_protein_numbering": "\u03b26 Glu>Lys (legacy codon 6 numbering)",
+      "legacy_protein_numbering": "β6 Glu>Lys (legacy codon 6 numbering)",
       "reference_transcript": "NM_000518.5",
       "layer": "curated",
       "review_status": "curated"
@@ -325,10 +325,10 @@
     {
       "id": "hypothesis:hbf_cross_disease_bridge",
       "type": "hypothesis",
-      "label": "HbF reactivation as a cross-disease research bridge (SCD \u2194 \u03b2-thalassemia)",
+      "label": "HbF reactivation as a cross-disease research bridge (SCD ↔ β-thalassemia)",
       "layer": "curated",
       "review_status": "curated",
-      "plain_language": "Because both conditions can benefit from higher HbF, research tools and collaborator networks around BCL11A/HbF may be relevant across communities \u2014 but asset reuse (models, registries, outreach) still needs disease-specific validation."
+      "plain_language": "Because both conditions can benefit from higher HbF, research tools and collaborator networks around BCL11A/HbF may be relevant across communities — but asset reuse (models, registries, outreach) still needs disease-specific validation."
     },
     {
       "id": "org:scdaa",
@@ -379,7 +379,7 @@
       "id": "nct:NCT03655678",
       "type": "clinical_study",
       "label": "CLIMB THAL-111 clinical study (NCT03655678)",
-      "official_title": "A Safety and Efficacy Study Evaluating CTX001 in Participants With Transfusion-Dependent \u03b2-Thalassemia",
+      "official_title": "A Safety and Efficacy Study Evaluating CTX001 in Participants With Transfusion-Dependent β-Thalassemia",
       "nct_id": "NCT03655678",
       "overall_status": "COMPLETED",
       "phases": [
@@ -403,7 +403,7 @@
       "retrieval_date": "2026-10-03T20:07:55+00:00",
       "layer": "curated",
       "review_status": "curated",
-      "notes": "Clinical study registry record. Status/eligibility \u2260 demonstrated efficacy."
+      "notes": "Clinical study registry record. Status/eligibility ≠ demonstrated efficacy."
     },
     {
       "id": "nct:NCT03745287",
@@ -431,25 +431,35 @@
       "retrieval_date": "2026-10-03T20:07:55+00:00",
       "layer": "curated",
       "review_status": "curated",
-      "notes": "Clinical study registry record. Status/eligibility \u2260 demonstrated efficacy."
+      "notes": "Clinical study registry record. Status/eligibility ≠ demonstrated efficacy."
     },
     {
       "id": "question:validate_hbf_asset_transfer",
       "type": "research_question",
-      "label": "Which HbF-pathway research assets and collaborator networks can be responsibly evaluated for \u03b2-thalassemia community needs without assuming SCD-model compatibility?",
+      "label": "Which HbF-pathway research assets and collaborator networks can be responsibly evaluated for β-thalassemia community needs without assuming SCD-model compatibility?",
       "layer": "curated",
       "review_status": "curated",
       "uncertainties": [
-        "Townes SCD mice are not validated here for \u03b2-thalassemia.",
+        "Townes SCD mice are not validated here for β-thalassemia.",
         "Patient organization programs differ by disease community and should be contacted for current priorities.",
         "exa-cel relevance is via BCL11A/HbF, not HBB editing.",
-        "Broad SCD literature may not apply to every genotype (HbSS vs HbSC vs HbS/\u03b2-thal)."
+        "Broad SCD literature may not apply to every genotype (HbSS vs HbSC vs HbS/β-thal)."
       ],
       "validation_questions": [
-        "Does a proposed experimental model recapitulate ineffective erythropoiesis vs sickling, as needed for the \u03b2-thalassemia question?",
+        "Does a proposed experimental model recapitulate ineffective erythropoiesis vs sickling, as needed for the β-thalassemia question?",
         "Are registry/biobank consent and genotype fields sufficient to separate HbSS from other SCD genotypes?",
         "Which outcome measures (VOC vs transfusion independence vs HbF %) are appropriate for the collaboration?"
       ]
+    },
+    {
+      "id": "registry:scdic",
+      "type": "research_asset",
+      "label": "SCDIC Sickle Cell Disease Patient Registry (NHLBI / BioLINCC)",
+      "plain_language": "NHLBI Sickle Cell Disease Implementation Consortium patient registry with a BioLINCC researcher data-request listing. Distinct from ClinicalTrials.gov interventional study records.",
+      "asset_kind": "patient_registry",
+      "source_url": "https://biolincc.nhlbi.nih.gov/studies/scdic_registry/",
+      "retrieval_date": "2026-10-04",
+      "notes": "Patient enrollment, collaboration inquiries, and researcher data access are distinct. Willingness of any group to collaborate on a new question is not established by the listing alone."
     }
   ],
   "edges": [
@@ -482,7 +492,7 @@
       "evidence_type": "disease_gene_nosology",
       "relationship_status": "established",
       "review_status": "curated",
-      "limitations": "Umbrella clinical category including HbSS, HbSC, HbS/\u03b2-thalassemia, and other genotypes. Shares MONDO with some HbSS mappings; do not collapse local nodes.",
+      "limitations": "Umbrella clinical category including HbSS, HbSC, HbS/β-thalassemia, and other genotypes. Shares MONDO with some HbSS mappings; do not collapse local nodes.",
       "layer": "curated"
     },
     {
@@ -504,7 +514,7 @@
       "evidence_type": "disease_gene_nosology",
       "relationship_status": "established",
       "review_status": "curated",
-      "limitations": "Genetic category caused by reduced/absent HBB expression; subtypes by allele severity. OMIM:613985 / MONDO:0013517 may appear as related entries\u2014preserve mappings rather than merging every synonym.",
+      "limitations": "Genetic category caused by reduced/absent HBB expression; subtypes by allele severity. OMIM:613985 / MONDO:0013517 may appear as related entries—preserve mappings rather than merging every synonym.",
       "layer": "curated"
     },
     {
@@ -718,7 +728,7 @@
         "experimental_context": null,
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
-        "limitations": "Other SCD genotypes (HbSC, HbS/\u03b2-thal) are related but distinct.",
+        "limitations": "Other SCD genotypes (HbSC, HbS/β-thal) are related but distinct.",
         "contradictory_evidence": null,
         "reporting_basis": "directly_reported_or_sourced"
       },
@@ -838,7 +848,7 @@
       "layer": "curated",
       "evidence": {
         "source_url": "https://hpo.jax.org/browse/term/HP:0001903",
-        "supporting_passage": "Anemia from reduced/absent \u03b2-globin in \u03b2-thalassemia.",
+        "supporting_passage": "Anemia from reduced/absent β-globin in β-thalassemia.",
         "publication_date": null,
         "retrieval_date": "2026-10-03T22:11:22+00:00",
         "evidence_type": "manual_curation_from_disease_knowledge",
@@ -922,7 +932,7 @@
         "evidence_type": "primary_clinical_trial_publication",
         "extraction_review_status": "manually_reviewed",
         "genotype_context": "Sickle cell disease with severe VOC history (trial population; not all genotypes identical to HbSS)",
-        "population_context": "Ages 12\u201335; \u22652 severe VOCs/year in prior 2 years",
+        "population_context": "Ages 12–35; ≥2 severe VOCs/year in prior 2 years",
         "species": "Homo sapiens",
         "experimental_context": "Phase 3, single-group, open-label (CLIMB SCD-121 / NCT03745287)",
         "extraction_confidence": "high",
@@ -958,7 +968,7 @@
         "contradictory_evidence": null,
         "reporting_basis": "directly_reported_or_sourced"
       },
-      "plain_language": "exa-cel is designed to edit the BCL11A erythroid enhancer \u2014 not HBB."
+      "plain_language": "exa-cel is designed to edit the BCL11A erythroid enhancer — not HBB."
     },
     {
       "id": "edge:gene:BCL11A:participates:process:bcl11a_repression",
@@ -1012,7 +1022,7 @@
         "contradictory_evidence": null,
         "reporting_basis": "directly_reported_or_sourced"
       },
-      "plain_language": "Disrupting BCL11A\u2019s repression of \u03b3-globin supports HbF reactivation."
+      "plain_language": "Disrupting BCL11A’s repression of γ-globin supports HbF reactivation."
     },
     {
       "id": "edge:mechanism:hbf:relevant:disease:scd_broad",
@@ -1024,7 +1034,7 @@
       "layer": "curated",
       "evidence": {
         "source_url": "https://pubmed.ncbi.nlm.nih.gov/38661449/",
-        "supporting_passage": "Elevated levels of fetal hemoglobin are associated with reduced morbidity and mortality from sickle cell disease; among evaluable patients, 97% were free from vaso-occlusive crises for \u226512 months after exa-cel.",
+        "supporting_passage": "Elevated levels of fetal hemoglobin are associated with reduced morbidity and mortality from sickle cell disease; among evaluable patients, 97% were free from vaso-occlusive crises for ≥12 months after exa-cel.",
         "publication_date": "2024 May 9",
         "retrieval_date": "2026-10-03T20:07:55+00:00",
         "evidence_type": "clinical_outcome_in_primary_trial",
@@ -1035,7 +1045,7 @@
         "experimental_context": "CLIMB SCD-121",
         "extraction_confidence": "high",
         "evidence_strength": "high",
-        "limitations": "Outcome is freedom from severe VOCs in the trial population; not a claim that all SCD genotypes were identical to HbSS. Study status elsewhere \u2260 efficacy.",
+        "limitations": "Outcome is freedom from severe VOCs in the trial population; not a claim that all SCD genotypes were identical to HbSS. Study status elsewhere ≠ efficacy.",
         "contradictory_evidence": null,
         "reporting_basis": "directly_reported_or_sourced"
       }
@@ -1109,8 +1119,8 @@
         "retrieval_date": "2026-10-03T20:07:55+00:00",
         "evidence_type": "primary_clinical_trial_publication",
         "extraction_review_status": "manually_reviewed",
-        "genotype_context": "Transfusion-dependent \u03b2-thalassemia (\u03b20/\u03b20, \u03b20/\u03b20-like, or non\u2013\u03b20/\u03b20-like)",
-        "population_context": "Ages 12\u201335",
+        "genotype_context": "Transfusion-dependent β-thalassemia (β0/β0, β0/β0-like, or non–β0/β0-like)",
+        "population_context": "Ages 12–35",
         "species": "Homo sapiens",
         "experimental_context": "Phase 3 CLIMB THAL-111 / NCT03655678",
         "extraction_confidence": "high",
@@ -1119,7 +1129,7 @@
         "contradictory_evidence": null,
         "reporting_basis": "directly_reported_or_sourced"
       },
-      "plain_language": "A parallel 2024 phase 3 publication reports exa-cel in transfusion-dependent \u03b2-thalassemia."
+      "plain_language": "A parallel 2024 phase 3 publication reports exa-cel in transfusion-dependent β-thalassemia."
     },
     {
       "id": "edge:mechanism:hbf:relevant:disease:tdt",
@@ -1131,22 +1141,22 @@
       "layer": "curated",
       "evidence": {
         "source_url": "https://pubmed.ncbi.nlm.nih.gov/38657265/",
-        "supporting_passage": "Among 35 evaluable patients with transfusion-dependent \u03b2-thalassemia, transfusion independence occurred in 32 (91%); mean fetal hemoglobin 11.9 g/dL during independence.",
+        "supporting_passage": "Among 35 evaluable patients with transfusion-dependent β-thalassemia, transfusion independence occurred in 32 (91%); mean fetal hemoglobin 11.9 g/dL during independence.",
         "publication_date": "2024 May 9",
         "retrieval_date": "2026-10-03T20:07:55+00:00",
         "evidence_type": "clinical_outcome_in_primary_trial",
         "extraction_review_status": "manually_reviewed",
-        "genotype_context": "TDT genotypes as enrolled (\u03b20/\u03b20, \u03b20/\u03b20-like, non\u2013\u03b20/\u03b20-like)",
+        "genotype_context": "TDT genotypes as enrolled (β0/β0, β0/β0-like, non–β0/β0-like)",
         "population_context": null,
         "species": "Homo sapiens",
         "experimental_context": "Human phase 3 trial",
         "extraction_confidence": "high",
         "evidence_strength": "high",
-        "limitations": "Do not equate TDT with every genetic \u03b2-thalassemia subtype. exa-cel does not directly edit HBB.",
+        "limitations": "Do not equate TDT with every genetic β-thalassemia subtype. exa-cel does not directly edit HBB.",
         "contradictory_evidence": null,
         "reporting_basis": "directly_reported_or_sourced"
       },
-      "plain_language": "HbF reactivation is relevant to transfusion-dependent \u03b2-thalassemia endpoints in the TDT trial."
+      "plain_language": "HbF reactivation is relevant to transfusion-dependent β-thalassemia endpoints in the TDT trial."
     },
     {
       "id": "edge:disease:tdt:overlap:disease:beta_thal_genetic",
@@ -1158,7 +1168,7 @@
       "layer": "curated",
       "evidence": {
         "source_url": "https://pubmed.ncbi.nlm.nih.gov/38657265/",
-        "supporting_passage": "Transfusion-dependent \u03b2-thalassemia is caused by pathogenic HBB variants causing reduced/absent \u03b2-globin; transfusion dependence is the clinical trial phenotype.",
+        "supporting_passage": "Transfusion-dependent β-thalassemia is caused by pathogenic HBB variants causing reduced/absent β-globin; transfusion dependence is the clinical trial phenotype.",
         "publication_date": "2024 May 9",
         "retrieval_date": "2026-10-03T20:07:55+00:00",
         "evidence_type": "disease_definition",
@@ -1184,7 +1194,7 @@
       "layer": "curated",
       "evidence": {
         "source_url": "https://pubmed.ncbi.nlm.nih.gov/38661449/",
-        "supporting_passage": "Both SCD and \u03b2-thalassemia publications describe BCL11A enhancer editing to raise HbF; shared mechanism \u2260 automatic interchangeability of models, eligibility, or assets.",
+        "supporting_passage": "Both SCD and β-thalassemia publications describe BCL11A enhancer editing to raise HbF; shared mechanism ≠ automatic interchangeability of models, eligibility, or assets.",
         "publication_date": "2024 May 9",
         "retrieval_date": "2026-10-03T22:11:22+00:00",
         "evidence_type": "cross_disease_hypothesis",
@@ -1199,7 +1209,7 @@
         "contradictory_evidence": null,
         "reporting_basis": "inferred_or_proposed"
       },
-      "plain_language": "Shared HbF biology motivates a cross-community research bridge \u2014 still a hypothesis about asset reuse."
+      "plain_language": "Shared HbF biology motivates a cross-community research bridge — still a hypothesis about asset reuse."
     },
     {
       "id": "edge:org:scdaa:supports_community:disease:scd_broad",
@@ -1222,7 +1232,7 @@
         "experimental_context": null,
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
-        "limitations": "Organization relevance \u2260 endorsement of any therapy or trial eligibility.",
+        "limitations": "Organization relevance ≠ endorsement of any therapy or trial eligibility.",
         "contradictory_evidence": null,
         "reporting_basis": "directly_reported_or_sourced"
       },
@@ -1253,7 +1263,7 @@
         "contradictory_evidence": null,
         "reporting_basis": "directly_reported_or_sourced"
       },
-      "plain_language": "Cooley\u2019s Anemia Foundation is a verified patient organization for thalassemia."
+      "plain_language": "Cooley’s Anemia Foundation is a verified patient organization for thalassemia."
     },
     {
       "id": "edge:asset:jax_townes:model_for:disease:hbss",
@@ -1276,7 +1286,7 @@
         "experimental_context": "Animal model",
         "extraction_confidence": "high",
         "evidence_strength": "moderate",
-        "limitations": "Animal findings are not human findings. A sickle-cell model is not automatically suitable for \u03b2-thalassemia experiments.",
+        "limitations": "Animal findings are not human findings. A sickle-cell model is not automatically suitable for β-thalassemia experiments.",
         "contradictory_evidence": null,
         "reporting_basis": "directly_reported_or_sourced"
       },
@@ -1292,7 +1302,7 @@
       "layer": "curated",
       "evidence": {
         "source_url": "https://www.jax.org/strain/013071",
-        "supporting_passage": "No automatic suitability claim: Townes sickle-cell mice model SCD pathophysiology; reuse for \u03b2-thalassemia would require explicit experimental validation.",
+        "supporting_passage": "No automatic suitability claim: Townes sickle-cell mice model SCD pathophysiology; reuse for β-thalassemia would require explicit experimental validation.",
         "publication_date": null,
         "retrieval_date": "2026-10-03T22:11:22+00:00",
         "evidence_type": "negative_or_missing_link",
@@ -1304,10 +1314,10 @@
         "extraction_confidence": "high",
         "evidence_strength": "low",
         "limitations": "Missing validated link; shown to guide next research questions.",
-        "contradictory_evidence": "Model catalog positions this strain for sickle cell disease, not \u03b2-thalassemia.",
+        "contradictory_evidence": "Model catalog positions this strain for sickle cell disease, not β-thalassemia.",
         "reporting_basis": "inferred_or_proposed"
       },
-      "plain_language": "Suitability of the Townes SCD model for \u03b2-thalassemia is not established here."
+      "plain_language": "Suitability of the Townes SCD model for β-thalassemia is not established here."
     },
     {
       "id": "edge:nct:NCT03655678:tests:intervention:exa_cel",
@@ -1317,10 +1327,10 @@
       "relationship_status": "established",
       "review_status": "curated",
       "layer": "curated",
-      "plain_language": "CLIMB THAL-111 is the clinical study registry record testing exa-cel in transfusion-dependent \u03b2-thalassemia.",
+      "plain_language": "CLIMB THAL-111 is the clinical study registry record testing exa-cel in transfusion-dependent β-thalassemia.",
       "evidence": {
         "source_url": "https://clinicaltrials.gov/study/NCT03655678",
-        "supporting_passage": "A Safety and Efficacy Study Evaluating CTX001 in Participants With Transfusion-Dependent \u03b2-Thalassemia",
+        "supporting_passage": "A Safety and Efficacy Study Evaluating CTX001 in Participants With Transfusion-Dependent β-Thalassemia",
         "publication_date": null,
         "retrieval_date": "2026-10-03T20:07:55+00:00",
         "evidence_type": "clinicaltrials_registry",
@@ -1347,7 +1357,7 @@
       "plain_language": "This publication reports results from the CLIMB THAL-111 clinical study (NCT03655678).",
       "evidence": {
         "source_url": "https://pubmed.ncbi.nlm.nih.gov/38657265/",
-        "supporting_passage": "Exagamglogene Autotemcel for Transfusion-Dependent \u03b2-Thalassemia. corresponds to ClinicalTrials.gov NCT03655678.",
+        "supporting_passage": "Exagamglogene Autotemcel for Transfusion-Dependent β-Thalassemia. corresponds to ClinicalTrials.gov NCT03655678.",
         "publication_date": "2024 May 9",
         "retrieval_date": "2026-10-03T20:07:55+00:00",
         "evidence_type": "publication_to_registry_linkage",
@@ -1454,7 +1464,7 @@
       "layer": "curated",
       "evidence": {
         "source_url": "https://www.thalassemia.org/",
-        "supporting_passage": "Patient-group leadership is a stakeholder for prioritizing \u03b2-thalassemia research questions and assets.",
+        "supporting_passage": "Patient-group leadership is a stakeholder for prioritizing β-thalassemia research questions and assets.",
         "publication_date": null,
         "retrieval_date": "2026-10-03T22:11:22+00:00",
         "evidence_type": "stakeholder_mapping",
@@ -1469,7 +1479,7 @@
         "contradictory_evidence": null,
         "reporting_basis": "inferred_or_proposed"
       },
-      "plain_language": "CAF is a potential stakeholder for \u03b2-thalassemia community priorities \u2014 availability not claimed."
+      "plain_language": "CAF is a potential stakeholder for β-thalassemia community priorities — availability not claimed."
     },
     {
       "id": "edge:org:scdaa:could_inform:question",
@@ -1496,7 +1506,49 @@
         "contradictory_evidence": null,
         "reporting_basis": "inferred_or_proposed"
       },
-      "plain_language": "SCDAA is a potential stakeholder for SCD-side priorities \u2014 availability not claimed."
+      "plain_language": "SCDAA is a potential stakeholder for SCD-side priorities — availability not claimed."
+    },
+    {
+      "id": "edge:registry:scdic:supports_community:disease:scd_broad",
+      "source": "registry:scdic",
+      "target": "disease:scd_broad",
+      "type": "supports_community",
+      "relationship_status": "established",
+      "plain_language": "SCDIC is a verified patient registry resource for the sickle cell disease community with a public BioLINCC listing.",
+      "evidence": {
+        "source_url": "https://biolincc.nhlbi.nih.gov/studies/scdic_registry/",
+        "supporting_passage": "Sickle Cell Disease Implementation Consortium (SCDIC) Sickle Cell Disease Patient Registry — BioLINCC open study collection for researcher data requests.",
+        "retrieval_date": "2026-10-04",
+        "evidence_type": "registry_record"
+      }
+    },
+    {
+      "id": "edge:registry:scdic:relevant_to:disease:hbss",
+      "source": "registry:scdic",
+      "target": "disease:hbss",
+      "type": "relevant_to",
+      "relationship_status": "established",
+      "plain_language": "SCDIC public materials include confirmed SCD genotypes such as Hb SS; HbSS-specific field availability still requires checking the data dictionary/application.",
+      "evidence": {
+        "source_url": "https://biolincc.nhlbi.nih.gov/studies/scdic_registry/",
+        "supporting_passage": "Confirmed SCD diagnosis documentation in registry materials includes Hb SS among eligible genotypes; genotype-specific analyses require checking available fields.",
+        "retrieval_date": "2026-10-04",
+        "evidence_type": "registry_record"
+      }
+    },
+    {
+      "id": "edge:nct:NCT03655678:investigates:disease:tdt",
+      "source": "nct:NCT03655678",
+      "target": "disease:tdt",
+      "type": "investigates",
+      "relationship_status": "established",
+      "plain_language": "CLIMB THAL-111 is an interventional clinical study in transfusion-dependent β-thalassemia.",
+      "evidence": {
+        "source_url": "https://clinicaltrials.gov/study/NCT03655678",
+        "supporting_passage": "A Safety and Efficacy Study Evaluating CTX001 in Subjects With Transfusion-Dependent β-Thalassemia (CLIMB THAL-111 / NCT03655678).",
+        "retrieval_date": "2026-10-04",
+        "evidence_type": "registry_record"
+      }
     }
   ],
   "stats": {

@@ -1,4 +1,4 @@
-export const EVAL_PROMPT_VERSION = "atlas-evaluation-v5";
+export const EVAL_PROMPT_VERSION = "atlas-evaluation-v6";
 
 export const CONCLUSION_LABELS = [
   "potential_reuse_worth_investigating",
@@ -93,6 +93,8 @@ export type EvaluationEvidencePackage = {
     curated_adaptation_status?: string;
   };
   connecting_paths: PathStep[][];
+  /** Plain-language explanation of the best curated path (or why none). */
+  connection_explanation: string;
   related_context_nodes: {
     id: string;
     type: string;
@@ -197,6 +199,7 @@ export type EvaluationResult = {
   evidence_ids: string[];
   evidence_version?: string;
   evidence_scope_summary?: string;
+  connection_explanation?: string;
   assessment: ValidatedEvaluation | null;
   message?: string;
   missing_information?: string[];
@@ -204,10 +207,20 @@ export type EvaluationResult = {
   saved_example?: boolean;
 };
 
+export type CollaborationBriefPartner = {
+  label: string;
+  diseaseScope: string;
+  relevance: string;
+  sourceUrl: string | null;
+  contactPage: string | null;
+  willingnessUnknown: boolean;
+};
+
 export type CollaborationBrief = {
   targetDisease: string;
   researchObjective: string;
   selectedAsset: string;
+  potentialPartner: CollaborationBriefPartner | null;
   rationaleAndCitations: string[];
   potentialReuse: string[];
   requiredAdaptations: string[];
@@ -216,4 +229,7 @@ export type CollaborationBrief = {
   aiStatusNote: string;
   generatedAt: string;
   conclusionLabel: string;
+  connectionExplanation?: string;
+  /** Internal evidence ids kept for UI traceability; omitted from export prose. */
+  traceabilityNotes?: string[];
 };

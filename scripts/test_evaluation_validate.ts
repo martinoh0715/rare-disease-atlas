@@ -66,6 +66,8 @@ const fixturePkg: EvaluationEvidencePackage = {
       },
     ],
   ],
+  connection_explanation:
+    "Sickle cell anemia (HbSS) is connected to CLIMB SCD-121 via a curated study path in the demonstration graph.",
   related_context_nodes: [],
   evidence: [
     {
@@ -333,7 +335,31 @@ function baseModel(over: Partial<ModelEvaluation> = {}): ModelEvaluation {
     pkg.missing_information.some((m) => /eligibility criteria text/i.test(m))
   );
   assert.ok(pkg.missing_information.some((m) => /endpoint/i.test(m)));
+  assert.ok(pkg.connecting_paths.length >= 1);
+  assert.match(pkg.connection_explanation, /CLIMB|NCT03745287|Sickle cell/i);
   section("HbSS→CLIMB package keeps 29/30 passage and reports missing protocol details");
+}
+
+// 6b) HbSS→THAL-111 finds a curated multi-hop path
+{
+  const pkg = buildEvaluationEvidencePackage({
+    datasetId: "hbb",
+    graph: hbbGraph,
+    diseaseNodeId: "disease:hbss",
+    assetNodeId: "nct:NCT03655678",
+    researchObjective: "Assess whether study methods could be adapted",
+    assetAssessments: hbbDemo.asset_assessments,
+  });
+  assert.ok(pkg.connecting_paths.length >= 1, "expected a curated path to THAL-111");
+  assert.doesNotMatch(
+    pkg.connection_explanation,
+    /No curated multi-hop path|0 connecting/i
+  );
+  assert.ok(
+    !pkg.missing_information.some((m) => /VOC history thresholds/i.test(m)),
+    "TDT study should not get SCD/VOC eligibility boilerplate"
+  );
+  section("HbSS→CLIMB THAL-111 retrieves a curated path without VOC boilerplate");
 }
 
 // 7) Export preserves limitations and citations
@@ -341,10 +367,28 @@ function baseModel(over: Partial<ModelEvaluation> = {}): ModelEvaluation {
   const v = validateEvaluation(baseModel(), fixturePkg);
   const brief = buildCollaborationBrief(v, fixturePkg, "2026-10-04T00:00:00Z");
   const md = formatCollaborationBriefMarkdown(brief);
+  const partnerBrief = buildCollaborationBrief(
+    v,
+    fixturePkg,
+    "2026-10-04T00:00:00Z",
+    {
+      label: "Cooley's Anemia Foundation",
+      diseaseScope: "β-thalassemia community",
+      relevance: "Verified patient organization for thalassemia",
+      sourceUrl: "https://www.thalassemia.org/",
+      contactPage: "https://www.thalassemia.org/",
+      willingnessUnknown: true,
+    }
+  );
+  const mdPartner = formatCollaborationBriefMarkdown(partnerBrief);
   assert.match(md, /not reviewed/i);
   assert.match(md, /Limitation:/i);
   assert.match(md, /PMID:38661449|38661449/);
   assert.match(md, /eligibility criteria text/i);
+  assert.doesNotMatch(mdPartner, /ev:edge:fixture/);
+  assert.match(mdPartner, /Cooley's Anemia Foundation/);
+  assert.match(mdPartner, /willingness to collaborate are not established/i);
+  assert.match(mdPartner, /Proposed discussion/);
   section("export preserves citations and limitations");
 }
 

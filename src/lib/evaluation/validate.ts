@@ -106,6 +106,42 @@ function usesEfficacyAsReuseRationale(el: ModelReuseElement): boolean {
   );
 }
 
+function crossDiseaseEndpointMismatch(
+  el: ModelReuseElement,
+  pkg: EvaluationEvidencePackage
+): boolean {
+  const assetBlob = [
+    pkg.asset.label,
+    pkg.asset.plain_language,
+    pkg.asset.designed_for?.disease,
+    ...(pkg.asset.curated_may_be_reusable || []),
+  ]
+    .join(" ")
+    .toLowerCase();
+  const elBlob = [
+    el.element,
+    el.documented_detail,
+    el.rationale,
+    el.relevance_to_objective,
+  ]
+    .join(" ")
+    .toLowerCase();
+  const assetIsTdt =
+    /thalassemi|tdt|transfusion-dependent/.test(assetBlob) &&
+    !/sickle|hbss|voc|vaso-occlusive/.test(assetBlob);
+  const assetIsScd =
+    /sickle|hbss|scd|vaso-occlusive/.test(assetBlob) &&
+    !/thalassemi|tdt|transfusion-dependent/.test(assetBlob);
+  const proposesVocFromTdt =
+    assetIsTdt && /voc|vaso-occlusive/.test(elBlob);
+  const proposesTiFromScd =
+    assetIsScd && /transfusion independence|transfusion-independent/.test(elBlob);
+  const genericGenotypeMap =
+    /\bgenotype mapping\b/.test(elBlob) &&
+    !/specific|documented|threshold|stratum|strata/.test(elBlob);
+  return proposesVocFromTdt || proposesTiFromScd || genericGenotypeMap;
+}
+
 function weakSupportFlags(
   model: ModelEvaluation,
   pkg: EvaluationEvidencePackage
@@ -138,11 +174,24 @@ function weakSupportFlags(
 
 function coerceReuseElements(
   elements: ModelReuseElement[],
-  issues: ValidationIssue[]
+  issues: ValidationIssue[],
+  pkg: EvaluationEvidencePackage
 ): ModelReuseElement[] {
   return elements.map((el) => {
     const next = { ...el };
     const genericLabel = GENERIC_ELEMENT.test(next.element.trim());
+    if (crossDiseaseEndpointMismatch(next, pkg)) {
+      issues.push({
+        code: "cross_disease_endpoint_assumption",
+        message: `Reuse element "${next.element}" assumed cross-disease endpoint conversion or generic genotype mapping without specific documented transfer evidence`,
+        severity: "flag",
+      });
+      next.assessment = "insufficient_information";
+      next.rationale = `${next.rationale} Cross-disease outcome conversion is not supported by the supplied evidence; obtain the specific protocol fields and state a precise feasibility-review question before judging transferability.`.trim();
+      if (!required(next.documented_detail)) {
+        next.documented_detail = "Details not present in supplied evidence";
+      }
+    }
     if (
       (next.assessment === "potentially_reusable" ||
         next.assessment === "needs_adaptation") &&
@@ -581,7 +630,8 @@ export function validateEvaluation(
       relevance_to_objective: e.relevance_to_objective || "",
       important_differences: e.important_differences || [],
     })),
-    issues
+    issues,
+    pkg
   );
 
   let top_summary_limitations = [...(model.top_summary_limitations || [])];
@@ -707,28 +757,53 @@ export function validateEvaluation(
   };
 }
 
+export type PartnerBriefInput = {
+  label: string;
+  diseaseScope: string;
+  relevance: string;
+  sourceUrl: string | null;
+  contactPage: string | null;
+  willingnessUnknown: boolean;
+} | null;
+
+function readableCitation(
+  ids: string[],
+  pkg: EvaluationEvidencePackage
+): { prose: string; trace: string[] } {
+  const proseParts: string[] = [];
+  const trace: string[] = [];
+  for (const id of ids) {
+    const rec = pkg.evidence.find((e) => e.evidence_id === id);
+    if (!rec) {
+      trace.push(id);
+      continue;
+    }
+    const title = rec.display_title || rec.title || "Source";
+    const ident = rec.display_identifier ? ` (${rec.display_identifier})` : "";
+    proseParts.push(
+      rec.source_url ? `${title}${ident} — ${rec.source_url}` : `${title}${ident}`
+    );
+    trace.push(`${id} → ${title}${ident}`);
+  }
+  return { prose: proseParts.join("; "), trace };
+}
+
 export function buildCollaborationBrief(
   assessment: ValidatedEvaluation,
   pkg: EvaluationEvidencePackage,
-  generatedAt: string
+  generatedAt: string,
+  partner: PartnerBriefInput = null
 ): CollaborationBrief {
-  const cite = (ids: string[]) =>
-    ids
-      .map((id) => {
-        const rec = pkg.evidence.find((e) => e.evidence_id === id);
-        if (!rec) return id;
-        const title = rec.display_title || rec.title || id;
-        const ident = rec.display_identifier
-          ? ` ${rec.display_identifier}`
-          : "";
-        return rec.source_url
-          ? `${title}${ident} (${id}) → ${rec.source_url}`
-          : `${title}${ident} (${id})`;
-      })
-      .join("; ");
+  const traceabilityNotes: string[] = [];
 
   const rationaleAndCitations = assessment.why_relevant.documented_findings.map(
-    (f) => `${f.claim} [${cite(f.evidence_ids)}]`
+    (f) => {
+      const { prose, trace } = readableCitation(f.evidence_ids, pkg);
+      traceabilityNotes.push(...trace);
+      return prose
+        ? `${f.claim} (Source: ${prose})`
+        : f.claim;
+    }
   );
   rationaleAndCitations.push(
     `AI interpretation (not reviewed): ${assessment.why_relevant.ai_interpretation}`
@@ -737,17 +812,29 @@ export function buildCollaborationBrief(
     `Proposed opportunity (not reviewed): ${assessment.why_relevant.proposed_opportunity}`
   );
 
-  const potentialReuse = assessment.reuse_elements.map(
-    (e) =>
-      `${e.element} [${e.assessment.replace(/_/g, " ")}]: detail=${e.documented_detail}; relevance=${e.relevance_to_objective}; rationale=${e.rationale} [${cite(e.evidence_ids)}]`
-  );
+  const potentialReuse = assessment.reuse_elements.map((e) => {
+    const { prose, trace } = readableCitation(e.evidence_ids, pkg);
+    traceabilityNotes.push(...trace);
+    const status = e.assessment.replace(/_/g, " ");
+    return [
+      `${e.element} — ${status}.`,
+      e.documented_detail ? `Documented detail: ${e.documented_detail}` : "",
+      e.relevance_to_objective
+        ? `Relevance to objective: ${e.relevance_to_objective}`
+        : "",
+      e.rationale ? `Assessment: ${e.rationale}` : "",
+      prose ? `Source: ${prose}` : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+  });
 
   const requiredAdaptations = [
     ...assessment.top_summary_limitations.map((l) => `Limitation: ${l}`),
     ...assessment.reuse_elements.flatMap((e) => [
       ...e.important_differences.map((d) => `${e.element}: ${d}`),
       e.must_verify_before_proceeding
-        ? `${e.element}: verify — ${e.must_verify_before_proceeding}`
+        ? `${e.element}: obtain or verify — ${e.must_verify_before_proceeding}`
         : "",
     ]),
     ...((assessment.study_design_comparison?.missing_information || []).map(
@@ -757,32 +844,75 @@ export function buildCollaborationBrief(
 
   const unresolvedQuestions = assessment.unknown_questions.map(
     (q) =>
-      `${q.unknown} (why: ${q.why_it_matters}; resolve via: ${q.resolvable_by})`
+      `${q.unknown} Why it matters: ${q.why_it_matters} Could be resolved by: ${q.resolvable_by}`
   );
 
   const first = assessment.recommended_next_step.actions[0];
+  const partnerClause = partner
+    ? ` with ${partner.label}`
+    : "";
   const proposedFirstDiscussion = first
-    ? `${assessment.recommended_next_step.milestone} First action: ${first.action} (role: ${first.role_or_organization}; needs: ${first.information_needed}; enables: ${first.decision_enabled})`
+    ? `Proposed discussion${partnerClause}: ${first.action} Reviewer role: ${first.role_or_organization}. Information needed: ${first.information_needed}. Decision enabled: ${first.decision_enabled}`
     : assessment.recommended_next_step.milestone ||
-      "Identify missing study documents and prepare methods-reviewer questions.";
+      "Identify missing study documents and prepare a methods-reviewer question list.";
 
   return {
     targetDisease: pkg.disease.label,
     researchObjective: pkg.research_objective || "(not specified)",
     selectedAsset: pkg.asset.label,
+    potentialPartner: partner
+      ? {
+          label: partner.label,
+          diseaseScope: partner.diseaseScope,
+          relevance: partner.relevance,
+          sourceUrl: partner.sourceUrl,
+          contactPage: partner.contactPage,
+          willingnessUnknown: partner.willingnessUnknown,
+        }
+      : null,
     rationaleAndCitations,
     potentialReuse,
     requiredAdaptations,
     unresolvedQuestions,
     proposedFirstDiscussion,
     aiStatusNote:
-      "AI-generated assessment — not reviewed. Not an established graph relationship, approval, or treatment recommendation. Limitations above must be preserved in any share-out.",
+      "AI-generated assessment — not reviewed. Not an established partnership, approval, or treatment recommendation. Organization interest, capacity, access permissions, and willingness to collaborate are unknown unless a source explicitly states otherwise. Limitations above must be preserved in any share-out.",
     generatedAt,
     conclusionLabel: assessment.conclusion_label.replace(/_/g, " "),
+    connectionExplanation: pkg.connection_explanation,
+    traceabilityNotes: [...new Set(traceabilityNotes)],
   };
 }
 
 export function formatCollaborationBriefMarkdown(b: CollaborationBrief): string {
+  const partnerBlock = b.potentialPartner
+    ? `## Potential partner
+${b.potentialPartner.label}
+
+Documented disease / community scope: ${b.potentialPartner.diseaseScope}
+
+Why this organization may be relevant: ${b.potentialPartner.relevance}
+
+Source supporting relevance: ${
+      b.potentialPartner.sourceUrl || "No verified source URL in curated records"
+    }
+
+Public contact / website: ${
+      b.potentialPartner.contactPage ||
+      "No verified public contact page in curated records — use the organization website after human verification"
+    }
+
+Collaboration status: ${
+      b.potentialPartner.willingnessUnknown
+        ? "Interest, capacity, access permissions, and willingness to collaborate are not established. This brief does not imply an existing partnership."
+        : "See source notes; still verify willingness before outreach."
+    }
+`
+    : `## Potential partner
+No partner selected.
+
+`;
+
   return `# Collaboration brief
 
 ## Target disease
@@ -791,25 +921,32 @@ ${b.targetDisease}
 ## Research objective
 ${b.researchObjective}
 
-## Selected asset
+## Selected research asset
 ${b.selectedAsset}
 
 ## Assessment conclusion
 ${b.conclusionLabel}
 
-## Rationale and citations
+${
+  b.connectionExplanation
+    ? `## How the disease and asset are connected
+${b.connectionExplanation}
+
+`
+    : ""
+}${partnerBlock}## Rationale and citations
 ${b.rationaleAndCitations.map((x) => `- ${x}`).join("\n") || "- (none)"}
 
-## Potential reuse / element-level notes
+## Element-level reuse notes
 ${b.potentialReuse.map((x) => `- ${x}`).join("\n") || "- (none documented)"}
 
-## Required adaptations / limitations / verification
+## Limitations and verification needs
 ${b.requiredAdaptations.map((x) => `- ${x}`).join("\n") || "- (none listed)"}
 
 ## Unresolved questions
 ${b.unresolvedQuestions.map((x) => `- ${x}`).join("\n") || "- (none listed)"}
 
-## Proposed first discussion or feasibility check
+## Proposed discussion or request
 ${b.proposedFirstDiscussion}
 
 ---

@@ -1,5 +1,9 @@
 import { createHash } from "crypto";
-import { findConnectingPaths } from "@/lib/evaluation/assets";
+import {
+  EVALUATION_PATH_MAX_HOPS,
+  explainConnectingPath,
+  findConnectingPaths,
+} from "@/lib/evaluation/assets";
 import type {
   EvaluationEvidencePackage,
   EvaluationEvidenceRecord,
@@ -23,7 +27,13 @@ function neighbors(graph: GraphData, id: string): GraphEdge[] {
   return graph.edges.filter((e) => e.source === id || e.target === id);
 }
 
-export { findConnectingPaths, listCandidateAssets } from "@/lib/evaluation/assets";
+export {
+  findConnectingPaths,
+  listCandidateAssets,
+  listPartnerOrganizations,
+  explainConnectingPath,
+  EVALUATION_PATH_MAX_HOPS,
+} from "@/lib/evaluation/assets";
 
 function displayMeta(
   nodeMap: Map<string, GraphNode>,
@@ -148,6 +158,13 @@ export function buildEvaluationEvidencePackage(options: {
 
   const connecting_paths = findConnectingPaths(
     graph,
+    diseaseNodeId,
+    assetNodeId,
+    EVALUATION_PATH_MAX_HOPS
+  );
+  const connection_explanation = explainConnectingPath(
+    connecting_paths[0] || [],
+    nodeMap,
     diseaseNodeId,
     assetNodeId
   );
@@ -384,7 +401,13 @@ export function buildEvaluationEvidencePackage(options: {
   );
   if (!connecting_paths.length) {
     missing_information.push(
-      "No short curated graph path was found between the disease and this asset."
+      `No curated graph path was found between the disease and this asset within ${EVALUATION_PATH_MAX_HOPS} hops. Visual proximity on the graph does not establish a relationship.`
+    );
+  } else if (
+    connecting_paths[0].some((s) => s.relationship_status === "hypothesis")
+  ) {
+    missing_information.push(
+      "The connecting path includes at least one curated hypothesis edge; hypothesis steps are not independent scientific evidence."
     );
   }
   if (sourcePassages.length < 1) {
@@ -404,15 +427,39 @@ export function buildEvaluationEvidencePackage(options: {
   }
 
   const detailFlags = packageMentionsSpecificProtocolDetail(evidence);
+  const assetDesignedFor = `${assessment?.designed_for?.disease || ""} ${
+    asset?.label || ""
+  } ${assessment?.title || ""}`;
+  const isThalassemiaAsset =
+    /thalassemi|tdt|transfusion-dependent/i.test(assetDesignedFor);
+  const isScdAsset = /sickle|hbss|scd|vaso-occlusive|voc/i.test(
+    assetDesignedFor
+  );
   if (!detailFlags.hasEligibilityDetail) {
-    missing_information.push(
-      "Specific eligibility criteria text (inclusion/exclusion definitions, numeric VOC history thresholds, genotype rules) is not present in the stored evidence package—only high-level mentions."
-    );
+    if (isThalassemiaAsset && !isScdAsset) {
+      missing_information.push(
+        "Specific eligibility criteria text (inclusion/exclusion definitions, transfusion-dependence thresholds, genotype strata) is not present in the stored evidence package—only high-level mentions. This gap is in our stored package; it does not prove the original registry record lacks those fields."
+      );
+    } else if (isScdAsset) {
+      missing_information.push(
+        "Specific eligibility criteria text (inclusion/exclusion definitions, numeric VOC history thresholds, genotype rules) is not present in the stored evidence package—only high-level mentions. This gap is in our stored package; it does not prove the original registry record lacks those fields."
+      );
+    } else {
+      missing_information.push(
+        "Specific eligibility criteria text is not present in the stored evidence package—only high-level mentions. This gap is in our stored package; it does not prove the original source lacks those fields."
+      );
+    }
   }
   if (!detailFlags.hasEndpointDetail) {
-    missing_information.push(
-      "Specific outcome/endpoint definitions from the protocol are not present as reusable measurement specifications in the stored evidence package."
-    );
+    if (isThalassemiaAsset && !isScdAsset) {
+      missing_information.push(
+        "Specific transfusion-independence or other TDT endpoint definitions from the protocol are not present as reusable measurement specifications in the stored evidence package."
+      );
+    } else {
+      missing_information.push(
+        "Specific outcome/endpoint definitions from the protocol are not present as reusable measurement specifications in the stored evidence package."
+      );
+    }
   }
   if (
     /natural[- ]history|observational|registry/i.test(researchObjective) &&
@@ -421,7 +468,7 @@ export function buildEvaluationEvidencePackage(options: {
     )
   ) {
     missing_information.push(
-      "Objective appears observational/natural-history oriented while the asset is an interventional study record; purpose, treatment exposure, and outcome interpretation differences need explicit review."
+      "Objective appears observational/natural-history oriented while the asset is an interventional study record; purpose, treatment exposure, and outcome interpretation differences need explicit review. Natural-history designs typically do not assign the experimental intervention under study; participants may still receive standard care."
     );
   }
 
@@ -477,6 +524,7 @@ export function buildEvaluationEvidencePackage(options: {
       curated_adaptation_status: assessment?.comparison.adaptation_status,
     },
     connecting_paths,
+    connection_explanation,
     related_context_nodes,
     evidence: trimmed,
     missing_information,
@@ -503,6 +551,7 @@ function emptyPackage(
     disease: { id: diseaseNodeId, label: diseaseNodeId, type: "unknown" },
     asset: { id: assetNodeId, label: assetNodeId, type: "unknown" },
     connecting_paths: [],
+    connection_explanation: reason,
     related_context_nodes: [],
     evidence: [],
     missing_information: [reason],

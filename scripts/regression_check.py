@@ -136,8 +136,9 @@ def main() -> int:
                 "intervention:exa_cel",
                 "org:caf",
                 "asset:jax_townes",
+                "registry:scdic",
             ],
-            journey_status="complete",
+            journey_status="partial",
         )
     )
     errors.extend(

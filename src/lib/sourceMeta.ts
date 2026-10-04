@@ -10,6 +10,8 @@ export type SourceCard = {
 export type EdgeSummary = {
   takeaway: string;
   abstract: string | null;
+  /** Label for the abstract-like block based on provenance. */
+  abstractLabel: "Evidence summary" | "Original source passage";
   findings: string[];
   caveat: string | null;
 };
@@ -132,8 +134,10 @@ export function importantSummaryForEdge(
       "No short summary is available for this link yet."
   );
 
+  const hasStoredAbstract =
+    typeof primary?.abstract === "string" && primary.abstract.trim().length > 0;
   const abstractRaw =
-    (typeof primary?.abstract === "string" && primary.abstract) ||
+    (hasStoredAbstract && primary!.abstract) ||
     (typeof primary?.plain_language === "string" &&
       ["publication", "clinical_study", "intervention", "research_asset"].includes(
         primary.type
@@ -142,11 +146,22 @@ export function importantSummaryForEdge(
     null;
 
   // Prefer the full curated abstract; fall back to a longer evidence passage.
+  const usedPassageFallback = !abstractRaw && Boolean(edge.evidence?.supporting_passage);
   const abstract = abstractRaw
-    ? clean(abstractRaw)
+    ? clean(String(abstractRaw))
     : edge.evidence?.supporting_passage
       ? clean(edge.evidence.supporting_passage)
       : null;
+
+  // Only call a block an original source passage when it comes from stored
+  // supporting_passage on an evidence object (not curator plain_language alone).
+  const abstractLabel: EdgeSummary["abstractLabel"] =
+    usedPassageFallback ||
+    (hasStoredAbstract && primary?.type === "publication")
+      ? usedPassageFallback
+        ? "Original source passage"
+        : "Evidence summary"
+      : "Evidence summary";
 
   const findingsFromNode = Array.isArray(primary?.main_findings)
     ? (primary!.main_findings as string[]).map((f) => clean(String(f)))
@@ -166,5 +181,5 @@ export function importantSummaryForEdge(
   const lim = edge.evidence?.limitations || edge.limitations || null;
   const caveat = lim ? clean(String(lim)) : null;
 
-  return { takeaway, abstract, findings, caveat };
+  return { takeaway, abstract, abstractLabel, findings, caveat };
 }

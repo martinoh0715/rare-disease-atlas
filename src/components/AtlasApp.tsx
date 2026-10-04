@@ -6,10 +6,14 @@ import {
   CollaborationBriefModal,
   ResearchOpportunityPanel,
   type AssetOption,
+  type PartnerOption,
 } from "@/components/ResearchOpportunityPanel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { listCandidateAssets } from "@/lib/evaluation/assets";
+import {
+  listCandidateAssets,
+  listPartnerOrganizations,
+} from "@/lib/evaluation/assets";
 import type {
   CollaborationBrief,
   EvaluationEvidencePackage,
@@ -77,9 +81,7 @@ export function AtlasApp({
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
   const [stageId, setStageId] = useState<string>("understand");
   const [expanded, setExpanded] = useState(false);
-  const [selectedAssetIds, setSelectedAssetIds] = useState<string[]>(
-    defaultDataset.demo.default_asset_ids || []
-  );
+  const [selectedAssetIds, setSelectedAssetIds] = useState<string[]>([]);
   const [unsupportedQuery, setUnsupportedQuery] = useState("");
   const [focusHistory, setFocusHistory] = useState<string[]>([]);
   const [viewNote, setViewNote] = useState<string | null>(null);
@@ -91,9 +93,9 @@ export function AtlasApp({
       defaultDataset.curated.nodes.find((n) => n.type === "disease")?.id ||
       ""
   );
-  const [evalAssetId, setEvalAssetId] = useState<string>(
-    defaultDataset.demo.default_asset_ids?.[0] || ""
-  );
+  /** Empty until the user selects an asset (Explore or evaluation form). */
+  const [evalAssetId, setEvalAssetId] = useState<string>("");
+  const [evalPartnerId, setEvalPartnerId] = useState<string>("");
   /** Empty by default — never auto-filled from proposal_defaults or graph nodes. */
   const [researchObjective, setResearchObjective] = useState("");
   const [evalResult, setEvalResult] = useState<EvaluationResult | null>(null);
@@ -130,18 +132,20 @@ export function AtlasApp({
 
   const mergedUnsupported = useMemo(() => {
     const sources = new Set<string>();
-    const notes: string[] = [];
     for (const d of datasets) {
       d.demo.unsupported_search.sources_searched.forEach((s) => sources.add(s));
-      notes.push(d.demo.unsupported_search.coverage_note);
     }
+    const labels = catalog.datasets.map((d) => d.label).join(", ");
     return {
-      sources_searched: [...sources],
-      coverage_note:
-        notes[0] ||
-        "Coverage is limited to the curated demonstration datasets in this prototype.",
+      sources_searched:
+        sources.size > 0
+          ? [...sources]
+          : catalog.datasets.map(
+              (d) => `Curated ${d.label} demonstration layer`
+            ),
+      coverage_note: `Coverage is limited to the curated demonstration datasets in this prototype (${labels}). “Not in our dataset” means this query is outside those curated layers — not that no scientific connection exists.`,
     };
-  }, [datasets]);
+  }, [datasets, catalog.datasets]);
 
   const nodeMap = useMemo(
     () => new Map(curated.nodes.map((n) => [n.id, n])),
@@ -152,19 +156,7 @@ export function AtlasApp({
     [curated]
   );
   useEffect(() => {
-    const validAssets = new Set(demo.asset_assessments.map((a) => a.asset_id));
-    setSelectedAssetIds((prev) => {
-      const next = prev.filter((id) => validAssets.has(id));
-      const fallback = demo.default_asset_ids || [];
-      const resolved = next.length ? next : fallback;
-      if (
-        resolved.length === prev.length &&
-        resolved.every((id, i) => id === prev[i])
-      ) {
-        return prev;
-      }
-      return resolved;
-    });
+    setSelectedAssetIds([]);
     // Evaluations are dataset-scoped; never carry them across collections.
     evalAbortRef.current?.abort();
     evalAbortRef.current = null;
@@ -182,7 +174,8 @@ export function AtlasApp({
       curated.nodes.find((n) => n.type === "disease")?.id ||
       "";
     setEvalDiseaseId(nextDisease);
-    setEvalAssetId(demo.default_asset_ids?.[0] || "");
+    setEvalAssetId("");
+    setEvalPartnerId("");
   }, [datasetId, demo.default_asset_ids, demo.asset_assessments, curated.nodes]);
 
   const stages = useMemo(
@@ -236,6 +229,23 @@ export function AtlasApp({
     return listCandidateAssets(curated, evalDiseaseId, demo.asset_assessments);
   }, [curated, demo.asset_assessments, evalDiseaseId, needsDiseasePick]);
 
+  const partnerOptions: PartnerOption[] = useMemo(() => {
+    if (!evalDiseaseId || needsDiseasePick) return [];
+    return listPartnerOrganizations(
+      curated,
+      evalDiseaseId,
+      demo.asset_assessments
+    );
+  }, [curated, demo.asset_assessments, evalDiseaseId, needsDiseasePick]);
+
+  function selectEvaluationAsset(id: string) {
+    setEvalAssetId(id);
+    setSelectedAssetIds(id ? [id] : []);
+    setEvalResult(null);
+    setEvalError(null);
+    setBriefOpen(false);
+  }
+
   // Keep evaluation disease in sync when user focuses a disease node.
   useEffect(() => {
     if (focusNode?.type === "disease") {
@@ -244,18 +254,19 @@ export function AtlasApp({
       setEvalError(null);
     } else if (
       focusNode &&
-      ["clinical_study", "research_asset", "publication", "organization", "intervention"].includes(
+      ["clinical_study", "research_asset", "publication", "intervention"].includes(
         focusNode.type
       )
     ) {
-      setEvalAssetId(focusNode.id);
-      setEvalResult(null);
-      setEvalError(null);
+      selectEvaluationAsset(focusNode.id);
+    } else if (focusNode?.type === "organization") {
+      setEvalPartnerId(focusNode.id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focusNode]);
 
   useEffect(() => {
-    // Stale-guard: changing disease/asset/objective clears prior assessment display.
+    // Stale-guard: changing disease/asset/objective/partner clears prior assessment display.
     evalRequestIdRef.current += 1;
     evalAbortRef.current?.abort();
     evalAbortRef.current = null;
@@ -263,17 +274,23 @@ export function AtlasApp({
     setEvalResult(null);
     setEvalError(null);
     setBriefOpen(false);
-  }, [evalDiseaseId, evalAssetId, researchObjective, datasetId]);
+  }, [evalDiseaseId, evalAssetId, evalPartnerId, researchObjective, datasetId]);
 
   useEffect(() => {
-    if (!assetOptions.length) {
-      if (evalAssetId) setEvalAssetId("");
-      return;
-    }
+    if (!evalAssetId) return;
     if (!assetOptions.some((a) => a.id === evalAssetId)) {
-      setEvalAssetId(assetOptions[0].id);
+      // Keep selection empty rather than auto-picking an unrelated asset.
+      setEvalAssetId("");
+      setSelectedAssetIds([]);
     }
   }, [assetOptions, evalAssetId]);
+
+  useEffect(() => {
+    if (!evalPartnerId) return;
+    if (!partnerOptions.some((p) => p.id === evalPartnerId)) {
+      setEvalPartnerId("");
+    }
+  }, [partnerOptions, evalPartnerId]);
 
   const evalEvidenceUrlById = useMemo(() => {
     const map = new Map<string, string | null>();
@@ -559,7 +576,9 @@ export function AtlasApp({
 
     if (switching) {
       setDatasetId(nextDatasetId);
-      setSelectedAssetIds(nextDemo.default_asset_ids || []);
+      setSelectedAssetIds([]);
+      setEvalAssetId("");
+      setEvalPartnerId("");
       setSelectedEdgeId(null);
     }
 
@@ -656,9 +675,12 @@ export function AtlasApp({
   }
 
   function toggleAsset(id: string) {
-    setSelectedAssetIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
+    // Single active asset shared with the evaluation selector.
+    if (evalAssetId === id) {
+      selectEvaluationAsset("");
+      return;
+    }
+    selectEvaluationAsset(id);
   }
 
   async function runEvaluation(refresh = false) {
@@ -769,6 +791,10 @@ export function AtlasApp({
           evalEvidenceKindById.get(id) === "asset_record",
       })),
       connecting_paths: [],
+      connection_explanation:
+        evalResult.connection_explanation ||
+        evalResult.evidence_scope_summary ||
+        "",
       related_context_nodes: [],
       missing_information: evalResult.missing_information || [],
       insufficient: false,
@@ -777,10 +803,12 @@ export function AtlasApp({
       asset_node_id: evalAssetId,
       evidence_version: evalResult.evidence_version || "",
     };
+    const partner = partnerOptions.find((p) => p.id === evalPartnerId) || null;
     const brief = buildCollaborationBrief(
       evalResult.assessment,
       pkg as EvaluationEvidencePackage,
-      evalResult.generated_at || new Date().toISOString()
+      evalResult.generated_at || new Date().toISOString(),
+      partner
     );
     setBriefMeta(brief);
     setBriefMarkdown(formatCollaborationBriefMarkdown(brief));
@@ -944,30 +972,7 @@ export function AtlasApp({
             </div>
             <p className="atlas-meta mb-4 -mt-2">{stage?.summary}</p>
 
-            <ResearchOpportunityPanel
-              diseaseOptions={diseaseOptions}
-              diseaseId={evalDiseaseId}
-              onDiseaseChange={setEvalDiseaseId}
-              needsDiseasePick={needsDiseasePick}
-              assetOptions={assetOptions}
-              assetId={evalAssetId}
-              onAssetChange={setEvalAssetId}
-              researchObjective={researchObjective}
-              onResearchObjectiveChange={setResearchObjective}
-              loading={evalLoading}
-              error={evalError}
-              result={evalResult}
-              onEvaluate={() => runEvaluation(false)}
-              onCancel={cancelEvaluation}
-              onRefresh={() => runEvaluation(true)}
-              onPrepareBrief={prepareCollaborationBrief}
-              evidenceUrlById={evalEvidenceUrlById}
-              evidencePassageById={evalEvidencePassageById}
-              evidenceTitleById={evalEvidenceTitleById}
-              evidenceKindById={evalEvidenceKindById}
-            />
-
-            <div className="relative mt-4 overflow-hidden rounded-atlas border border-line bg-slate-50">
+            <div className="relative overflow-hidden rounded-atlas border border-line bg-slate-50">
               <div className="pointer-events-auto absolute left-3 top-3 z-20 flex max-w-[280px] items-center gap-2">
                 <Button
                   size="sm"
@@ -1056,6 +1061,33 @@ export function AtlasApp({
                 path view for the multi-hop neighborhood.
               </p>
             )}
+
+            <ResearchOpportunityPanel
+              diseaseOptions={diseaseOptions}
+              diseaseId={evalDiseaseId}
+              onDiseaseChange={setEvalDiseaseId}
+              needsDiseasePick={needsDiseasePick}
+              assetOptions={assetOptions}
+              assetId={evalAssetId}
+              onAssetChange={selectEvaluationAsset}
+              partnerOptions={partnerOptions}
+              partnerId={evalPartnerId}
+              onPartnerChange={setEvalPartnerId}
+              researchObjective={researchObjective}
+              onResearchObjectiveChange={setResearchObjective}
+              loading={evalLoading}
+              error={evalError}
+              result={evalResult}
+              onEvaluate={() => runEvaluation(false)}
+              onCancel={cancelEvaluation}
+              onRefresh={() => runEvaluation(true)}
+              onPrepareBrief={prepareCollaborationBrief}
+              evidenceUrlById={evalEvidenceUrlById}
+              evidencePassageById={evalEvidencePassageById}
+              evidenceTitleById={evalEvidenceTitleById}
+              evidenceKindById={evalEvidenceKindById}
+              defaultOpen={Boolean(evalAssetId)}
+            />
           </section>
 
           <aside
@@ -1368,11 +1400,8 @@ function SummaryPanel({
       </section>
     );
   }
-  const { takeaway, abstract, findings, caveat } = importantSummaryForEdge(
-    edge,
-    nodeMap,
-    plainFallback
-  );
+  const { takeaway, abstract, abstractLabel, findings, caveat } =
+    importantSummaryForEdge(edge, nodeMap, plainFallback);
   return (
     <section className="atlas-panel flex min-h-0 flex-1 flex-col overflow-hidden">
       <div className="border-b border-line px-4 py-3 md:px-5">
@@ -1384,7 +1413,7 @@ function SummaryPanel({
         <p className="text-base leading-relaxed text-slate-800">{takeaway}</p>
         {abstract ? (
           <div className="mt-5">
-            <h3 className="text-base font-bold text-ink">Abstract</h3>
+            <h3 className="text-base font-bold text-ink">{abstractLabel}</h3>
             <p className="mt-2 text-base leading-relaxed text-slate-700">
               {abstract}
             </p>
@@ -1464,10 +1493,11 @@ function AssetPanel({
         Research assets
       </h2>
       <p className="atlas-meta mt-1">
-        Public assets linked in this curated view. Selecting an item highlights
-        it here; use Evaluate research opportunity to assess a disease–asset
-        pair. Organization pages identify potentially relevant groups — not
-        verified collaborator networks or availability.
+        Public assets linked in this curated view. Selecting an item sets it as
+        the active research asset for evaluation. Organization pages identify
+        potentially relevant groups — not verified collaborator networks or
+        availability. ClinicalTrials.gov study listings are not patient
+        registries.
       </p>
       <div className="mt-4 space-y-4">
         {assets.map((a) => {

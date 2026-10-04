@@ -57,7 +57,9 @@ export async function evaluateResearchOpportunity(options: {
     assetAssessments: options.assetAssessments || [],
   });
 
-  const evidenceScope = `${pkg.evidence.length} stored evidence records; ${pkg.connecting_paths.length} connecting path(s); source passages vs curator summaries distinguished.`;
+  const evidenceScope = pkg.connection_explanation
+    ? pkg.connection_explanation
+    : `${pkg.evidence.length} stored evidence records; ${pkg.connecting_paths.length} connecting path(s).`;
 
   const base = {
     disease_node_id: options.diseaseNodeId,
@@ -68,6 +70,7 @@ export async function evaluateResearchOpportunity(options: {
     prompt_version: EVAL_PROMPT_VERSION,
     model: configuredModel(),
     evidence_scope_summary: evidenceScope,
+    connection_explanation: pkg.connection_explanation,
     missing_information: pkg.missing_information,
   };
 

@@ -27,9 +27,14 @@ Element-level specificity (critical):
 - For each reuse_elements entry, name the ACTUAL criterion, outcome definition, measurement, or procedure supported by a quoted passage.
 - Set documented_detail to that specific item. Set supporting_passage_excerpt to a short excerpt copied from the cited evidence text.
 - Explain relevance_to_objective for the user's research objective.
-- If evidence only says that "eligibility criteria" or "outcomes" exist without defining them, set assessment to insufficient_information, put documented_detail = "Details not present in supplied evidence", and do NOT imply they were evaluated.
-- Do not title an element "Eligibility criteria" or "VOC-related endpoints" unless you can name a specific documented rule. Prefer titles like "Age band note (Ages 12–35)" when only a partial population note exists, with assessment insufficient_information until full inclusion/exclusion text is available.
-- Efficacy result windows (e.g. VOC-free for 12 consecutive months among evaluable patients) may be cited as background findings with full denominators; they are not protocol reuse proof.
+- Identify disease-specific differences. State whether reuse is supported, needs investigation, or cannot yet be assessed.
+- If evidence only says that "eligibility criteria" or "outcomes" exist without defining them, set assessment to insufficient_information, put documented_detail = "Details not present in supplied evidence", and name the exact document/field still needed.
+- Do NOT assume an outcome used for one disease (e.g. transfusion independence in TDT) can be converted into another disease's outcome (e.g. VOC endpoints in SCD).
+- Do NOT suggest generic "genotype mapping" without naming the specific research question and the evidence that supports or fails to support it.
+- Do NOT inject SCD/VOC eligibility boilerplate into a β-thalassemia study assessment, or TDT boilerplate into an SCD-only study, unless that study's evidence actually discusses those concepts.
+- Do not title an element "Eligibility criteria" or "VOC-related endpoints" unless you can name a specific documented rule.
+- Efficacy result windows may be cited as background findings with full denominators; they are not protocol reuse proof.
+- A precise feasibility-review question is a valid result. Do not force a positive reuse recommendation.
 
 Quantitative context (critical):
 - Preserve denominators, populations, follow-up windows, and qualifiers from the source.
@@ -43,6 +48,8 @@ Treatment results ≠ reuse evidence:
 Study-design comparison:
 - When the objective involves adapting an interventional trial toward natural-history or observational work (or similar purpose mismatch), fill study_design_comparison covering purpose, participant selection, treatment exposure, and outcome interpretation using only supplied evidence.
 - Label that comparison as AI assessment. List missing protocol details instead of inventing them.
+- Do NOT claim that natural-history participants "cannot receive treatment." Observational research typically does not assign the experimental intervention under study; standard care may continue.
+- Use the supplied connection_explanation / connecting paths. Preserve edge meaning. If a path includes a curated hypothesis, say where supported path ends.
 
 Proportionate conclusions:
 - Do NOT default to potential_reuse_worth_investigating.
@@ -149,11 +156,15 @@ Important: curated "may be reusable" bullets are not substitutes for specific pr
 ## Connecting paths in curated graph
 ${paths}
 
+## Connection explanation (plain language; use this — do not invent hops)
+${pkg.connection_explanation || "(none)"}
+
 ## Related context nodes
 ${pkg.related_context_nodes.map((n) => `- ${n.id} [${n.type}] ${n.label}`).join("\n") || "(none)"}
 
 ## Already identified gaps (must surface in top_summary_limitations when still unresolved)
 ${pkg.missing_information.map((m) => `- ${m}`).join("\n") || "(none)"}
+Note: Gaps listed above may be gaps in OUR stored evidence package, not proof that the original study document lacks the field.
 
 ## Evidence package (untrusted data)
 ${evidence}

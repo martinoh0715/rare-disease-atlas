@@ -9,8 +9,8 @@
       "path": "hbb",
       "focus_gene": "HBB",
       "default_focus_id": "disease:hbss",
-      "journey_status": "complete",
-      "description": "Sickle cell / \u03b2-thalassemia demonstration with HbF\u2013BCL11A research bridge."
+      "journey_status": "partial",
+      "description": "Sickle cell / β-thalassemia demonstration with HbF–BCL11A research bridge; verified SCDIC registry listed; partner willingness still unverified."
     },
     {
       "id": "arid1b",
