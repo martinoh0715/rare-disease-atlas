@@ -17,13 +17,14 @@ npm run sync-data
 npm run dev         # http://127.0.0.1:43123
 ```
 
-## AI hypothesis exploration (optional)
+## Evaluate research opportunity (optional)
 
-The workspace includes an **Explore potential connections** action that can call a
-server-side OpenAI model to propose up to three evidence-grounded research
-hypotheses. Proposals are stored separately from curated graph JSON, drawn as
-dotted edges only when **Show AI hypotheses** is enabled, and labeled
-**AI-generated hypothesis — not reviewed**.
+The workspace includes **Evaluate research opportunity**: a patient-organization
+leader selects a disease and a related study/registry/publication/model, then
+receives a sourced AI assessment of relevance, potential reuse, differences,
+unknowns, and a next step — plus an editable **Prepare collaboration brief**
+export. Assessments are **AI-generated — not reviewed**, are not written into
+curated graph JSON, and do **not** create dotted edges.
 
 Secure local setup:
 
@@ -31,14 +32,14 @@ Secure local setup:
 2. Set `OPENAI_API_KEY` in `.env.local` only — never commit it, never put it in
    `NEXT_PUBLIC_*` variables, and never paste it into chat.
 3. Optionally set `OPENAI_MODEL` (default `gpt-4o-2024-08-06`).
-4. Restart `npm run dev`.
+4. Optionally set `ATLAS_DISABLE_EVALUATION=true` to disable live calls.
+5. Restart `npm run dev`.
 
 If the key is missing, the UI shows an honest unavailable state and does **not**
-fabricate hypotheses. Cached generations live under `.cache/ai-hypotheses/`
-(gitignored); use **Refresh** to regenerate.
+fabricate assessments. Cache: `.cache/ai-evaluations/` (gitignored).
 
 ```bash
-npm run test:hypotheses   # fixture-labeled validation tests
+npm run test:evaluation   # fixture-labeled evaluation tests
 ```
 
 Validate all curated slices:

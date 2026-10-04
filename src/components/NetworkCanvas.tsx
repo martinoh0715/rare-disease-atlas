@@ -355,9 +355,8 @@ export function NetworkCanvas({
       <p className="border-t border-line bg-white px-3 py-2.5 text-sm leading-relaxed text-slate-600">
         Click a node or connection. Only the selected connection is highlighted.
         Solid lines are sourced, established relationships. Dashed lines are
-        hypotheses (curated or AI-generated) — not proven facts. AI edges are
-        labeled “AI-generated hypothesis — not reviewed” and stay separate from
-        curated data until you dismiss or hide them.
+        curated hypotheses — not proven facts. Research-opportunity evaluations
+        do not add graph edges.
       </p>
     </div>
   );

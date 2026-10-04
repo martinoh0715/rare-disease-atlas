@@ -20,7 +20,8 @@
     "validate:gata6": "python3 research/gata6/validate.py",
     "validate:odc1": "python3 research/odc1/validate.py",
     "regression": "python3 scripts/regression_check.py",
-    "test:hypotheses": "tsx scripts/test_hypothesis_validate.ts"
+    "test:hypotheses": "tsx scripts/test_hypothesis_validate.ts",
+    "test:evaluation": "tsx scripts/test_evaluation_validate.ts"
   },
   "dependencies": {
     "@radix-ui/react-scroll-area": "^1.2.18",
