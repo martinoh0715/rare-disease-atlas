@@ -42,6 +42,8 @@ type Props = {
   onPrepareBrief: () => void;
   evidenceUrlById: Map<string, string | null>;
   evidencePassageById: Map<string, string>;
+  evidenceTitleById: Map<string, string>;
+  evidenceKindById: Map<string, string>;
 };
 
 const CONCLUSION_COPY: Record<string, string> = {
@@ -71,6 +73,8 @@ export function ResearchOpportunityPanel({
   onPrepareBrief,
   evidenceUrlById,
   evidencePassageById,
+  evidenceTitleById,
+  evidenceKindById,
 }: Props) {
   const diseaseLabel =
     diseaseOptions.find((d) => d.id === diseaseId)?.label || diseaseId;
@@ -228,6 +232,8 @@ export function ResearchOpportunityPanel({
           result={result}
           evidenceUrlById={evidenceUrlById}
           evidencePassageById={evidencePassageById}
+          evidenceTitleById={evidenceTitleById}
+          evidenceKindById={evidenceKindById}
         />
       ) : null}
     </section>
@@ -238,10 +244,14 @@ function AssessmentView({
   result,
   evidenceUrlById,
   evidencePassageById,
+  evidenceTitleById,
+  evidenceKindById,
 }: {
   result: EvaluationResult;
   evidenceUrlById: Map<string, string | null>;
   evidencePassageById: Map<string, string>;
+  evidenceTitleById: Map<string, string>;
+  evidenceKindById: Map<string, string>;
 }) {
   const a = result.assessment;
   if (result.status === "insufficient_evidence" && !a) {
@@ -276,6 +286,18 @@ function AssessmentView({
         <p className="mt-2 text-base leading-relaxed text-slate-800">
           {a.opportunity_summary}
         </p>
+        {a.top_summary_limitations?.length ? (
+          <div className="mt-3 rounded-atlas border border-amber-200 bg-amber-50 px-3 py-2">
+            <p className="text-xs font-semibold uppercase tracking-wide text-amber-900">
+              Important limitations
+            </p>
+            <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-amber-950">
+              {a.top_summary_limitations.map((l) => (
+                <li key={l}>{l}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
         <ScopeLine result={result} />
       </div>
 
@@ -289,6 +311,8 @@ function AssessmentView({
                 ids={f.evidence_ids}
                 evidenceUrlById={evidenceUrlById}
                 evidencePassageById={evidencePassageById}
+                evidenceTitleById={evidenceTitleById}
+                evidenceKindById={evidenceKindById}
               />
             </li>
           ))}
@@ -303,7 +327,7 @@ function AssessmentView({
         </p>
       </Expandable>
 
-      <Expandable title="Reuse assessment">
+      <Expandable title="Reuse assessment" defaultOpen>
         {a.reuse_elements.length === 0 ? (
           <p className="text-sm text-slate-600">
             No specific reusable elements were described in the available
@@ -313,12 +337,26 @@ function AssessmentView({
           <ul className="space-y-3">
             {a.reuse_elements.map((el) => (
               <li
-                key={el.element}
+                key={`${el.element}-${el.documented_detail}`}
                 className="rounded-atlas border border-line bg-slate-50 p-3"
               >
                 <p className="text-sm font-semibold text-ink">{el.element}</p>
                 <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">
                   {el.assessment.replace(/_/g, " ")}
+                </p>
+                <p className="mt-2 text-sm text-slate-700">
+                  <span className="font-medium">Documented detail: </span>
+                  {el.documented_detail || "Details not present in supplied evidence"}
+                </p>
+                {el.supporting_passage_excerpt ? (
+                  <p className="mt-2 text-sm text-slate-600">
+                    <span className="font-medium">Supporting passage: </span>
+                    {el.supporting_passage_excerpt}
+                  </p>
+                ) : null}
+                <p className="mt-2 text-sm text-slate-700">
+                  <span className="font-medium">Relevance to objective: </span>
+                  {el.relevance_to_objective}
                 </p>
                 <p className="mt-2 text-sm text-slate-700">{el.rationale}</p>
                 {el.important_differences.length ? (
@@ -335,11 +373,42 @@ function AssessmentView({
                   ids={el.evidence_ids}
                   evidenceUrlById={evidenceUrlById}
                   evidencePassageById={evidencePassageById}
+                  evidenceTitleById={evidenceTitleById}
+                  evidenceKindById={evidenceKindById}
                 />
               </li>
             ))}
           </ul>
         )}
+      </Expandable>
+
+      <Expandable title="Study-design comparison (AI assessment — not reviewed)" defaultOpen>
+        <p className="text-sm text-slate-700">
+          <span className="font-medium">Purpose: </span>
+          {a.study_design_comparison?.purpose_differences || "Not assessed."}
+        </p>
+        <p className="mt-2 text-sm text-slate-700">
+          <span className="font-medium">Participant selection: </span>
+          {a.study_design_comparison?.participant_selection_differences ||
+            "Not assessed."}
+        </p>
+        <p className="mt-2 text-sm text-slate-700">
+          <span className="font-medium">Treatment exposure: </span>
+          {a.study_design_comparison?.treatment_exposure_differences ||
+            "Not assessed."}
+        </p>
+        <p className="mt-2 text-sm text-slate-700">
+          <span className="font-medium">Outcome interpretation: </span>
+          {a.study_design_comparison?.outcome_interpretation_differences ||
+            "Not assessed."}
+        </p>
+        {a.study_design_comparison?.missing_information?.length ? (
+          <ul className="mt-2 list-disc pl-5 text-sm text-amber-950">
+            {a.study_design_comparison.missing_information.map((m) => (
+              <li key={m}>{m}</li>
+            ))}
+          </ul>
+        ) : null}
       </Expandable>
 
       <Expandable title="Unknowns and expert-review questions">
@@ -438,19 +507,31 @@ function CitationList({
   ids,
   evidenceUrlById,
   evidencePassageById,
+  evidenceTitleById,
+  evidenceKindById,
 }: {
   ids: string[];
   evidenceUrlById: Map<string, string | null>;
   evidencePassageById: Map<string, string>;
+  evidenceTitleById: Map<string, string>;
+  evidenceKindById: Map<string, string>;
 }) {
   if (!ids?.length) return null;
   return (
-    <ul className="mt-2 space-y-1 text-xs text-slate-600">
+    <ul className="mt-2 space-y-2 text-xs text-slate-600">
       {ids.map((id) => {
         const url = evidenceUrlById.get(id);
         const passage = evidencePassageById.get(id);
+        const title = evidenceTitleById.get(id) || id;
+        const kind = evidenceKindById.get(id) || "evidence";
+        const kindLabel =
+          kind === "curator_summary"
+            ? "Curator summary (not a verbatim abstract)"
+            : kind === "asset_record"
+              ? "Asset / journey record"
+              : "Original source passage";
         return (
-          <li key={id}>
+          <li key={id} className="rounded border border-slate-200 bg-white px-2 py-1.5">
             {url ? (
               <a
                 href={url}
@@ -458,15 +539,18 @@ function CitationList({
                 rel="noreferrer"
                 className="font-medium text-moss-800 underline"
               >
-                {id}
+                {title}
               </a>
             ) : (
-              <span className="font-medium">{id}</span>
+              <span className="font-medium text-ink">{title}</span>
             )}
+            <span className="mt-0.5 block text-slate-500">
+              {kindLabel} · internal id: {id}
+            </span>
             {passage ? (
-              <span className="mt-0.5 block text-slate-500">
-                Evidence summary: {passage.slice(0, 220)}
-                {passage.length > 220 ? "…" : ""}
+              <span className="mt-0.5 block text-slate-600">
+                Supporting text: {passage.slice(0, 260)}
+                {passage.length > 260 ? "…" : ""}
               </span>
             ) : null}
           </li>

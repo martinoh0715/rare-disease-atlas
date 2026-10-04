@@ -14,6 +14,7 @@ import type {
 import {
   buildCollaborationBrief,
   formatCollaborationBriefMarkdown,
+  lostQuantitativeQualifierIssues,
   validateEvaluation,
 } from "../src/lib/evaluation/validate";
 import { relationshipStatusOf, type GraphData } from "../src/lib/graph";
@@ -39,8 +40,8 @@ const fixturePkg: EvaluationEvidencePackage = {
   dataset_id: "hbb",
   disease_node_id: "disease:hbss",
   asset_node_id: "nct:NCT03745287",
-  research_objective: "Assess whether study methods could be adapted",
-  evidence_version: "fixture-eval-v1",
+  research_objective: "Plan a natural-history study",
+  evidence_version: "fixture-eval-v2",
   disease: {
     id: "disease:hbss",
     label: "Sickle cell anemia (HbSS)",
@@ -71,141 +72,226 @@ const fixturePkg: EvaluationEvidencePackage = {
       evidence_id: "ev:edge:fixture:path:passage",
       kind: "source_passage",
       edge_id: "edge:fixture:path",
-      source_url: "https://clinicaltrials.gov/study/NCT03745287",
+      source_url: "https://pubmed.ncbi.nlm.nih.gov/38661449/",
+      display_title: "Exagamglogene Autotemcel for Severe Sickle Cell Disease",
+      display_identifier: "PMID:38661449",
       supporting_passage:
-        "CLIMB SCD-121 enrolls participants with sickle cell disease genotypes including HbSS and evaluates gene-editing outcomes in a defined protocol.",
+        "Of 30 patients with sufficient follow-up, 29 (97%) were free from vaso-occlusive crises for at least 12 consecutive months.",
       is_curator_summary: false,
     },
     {
       evidence_id: "ev:assessment:nct:NCT03745287",
       kind: "asset_record",
       source_url: "https://clinicaltrials.gov/study/NCT03745287",
+      display_title: "CLIMB SCD-121 study design (NCT03745287)",
+      display_identifier: "NCT03745287",
       supporting_passage:
-        "Access note: Public registry page only. Eligibility and outcomes are protocol-specific; willingness to collaborate is not established.",
+        "Access note: Public registry page only. Eligibility and outcomes are protocol-specific; willingness to collaborate is not established. Mentions VOC eligibility criteria without defining inclusion thresholds.",
       is_curator_summary: true,
     },
   ],
   missing_information: [
+    "Specific eligibility criteria text is not present in the stored evidence package—only high-level mentions.",
     "Access permission, licensing, or collaboration willingness is not established in the stored records.",
   ],
   insufficient: false,
 };
 
-// 1) Supported assessment with valid citations
-{
-  const model: ModelEvaluation = {
-    assessment_id: "eval:fixture:1",
+function baseModel(over: Partial<ModelEvaluation> = {}): ModelEvaluation {
+  return {
+    assessment_id: "eval:fixture",
     conclusion_label: "important_differences_require_review",
     opportunity_summary:
-      "CLIMB SCD-121 is relevant to HbSS communities as a documented SCD gene-editing study design, but eligibility and access limits require review before reuse.",
+      "CLIMB SCD-121 is relevant as a severe-SCD interventional study linked to HbSS communities, but stored evidence lacks specific eligibility/endpoint definitions for reuse into a natural-history plan.",
+    top_summary_limitations: [
+      "Specific eligibility criteria text is not present in the stored evidence package—only high-level mentions.",
+    ],
     why_relevant: {
       documented_findings: [
         {
           claim:
-            "CLIMB SCD-121 enrolls participants with sickle cell disease genotypes including HbSS",
+            "Of 30 patients with sufficient follow-up, 29 (97%) were free from vaso-occlusive crises for at least 12 consecutive months.",
           evidence_ids: ["ev:edge:fixture:path:passage"],
         },
       ],
       ai_interpretation:
-        "The public protocol is disease-aligned with HbSS, so methods may inform planning discussions without implying transferability.",
+        "Efficacy results are background only; they do not establish transferable protocol elements for a natural-history design.",
       proposed_opportunity:
-        "Review which outcome measures or eligibility patterns could inform a community natural-history or methods discussion.",
+        "Use the public registry/publication link to inventory which documents are still missing before any methods adaptation discussion.",
     },
     reuse_elements: [
       {
-        element: "Eligibility criteria",
-        assessment: "needs_adaptation",
+        element: "VOC-free duration outcome wording from publication results",
+        documented_detail:
+          "Details not present in supplied evidence for a protocol-level endpoint specification usable in natural history",
+        supporting_passage_excerpt:
+          "Of 30 patients with sufficient follow-up, 29 (97%) were free from vaso-occlusive crises for at least 12 consecutive months.",
+        relevance_to_objective:
+          "Natural-history planning needs observational outcome definitions; this excerpt is an interventional efficacy result, not a reusable protocol schedule.",
+        assessment: "insufficient_information",
         rationale:
-          "The trial’s genotype inclusion is SCD-specific and may not map to another community’s question without redesign.",
+          "The package quotes an efficacy result, not a transferable natural-history measurement protocol.",
         important_differences: [
-          "Gene-editing interventional eligibility differs from observational natural-history needs.",
+          "Interventional follow-up after gene editing differs from untreated natural-history observation.",
         ],
         evidence_ids: ["ev:edge:fixture:path:passage"],
         must_verify_before_proceeding:
-          "Confirm whether the community question needs interventional or observational eligibility language.",
+          "Obtain the public ClinicalTrials.gov outcome measure definitions before judging reuse.",
       },
     ],
+    study_design_comparison: {
+      purpose_differences:
+        "CLIMB SCD-121 is an interventional gene-editing efficacy study; the objective is natural-history planning.",
+      participant_selection_differences:
+        "Publication/registry framing is severe SCD with recurrent VOCs; exact inclusion thresholds are not in the stored package.",
+      treatment_exposure_differences:
+        "Participants receive edited autologous cells after myeloablative conditioning; natural-history cohorts typically have no such exposure.",
+      outcome_interpretation_differences:
+        "Freedom from VOCs after therapy is not the same as untreated disease-course measurement.",
+      missing_information: [
+        "Full inclusion/exclusion criteria text",
+        "Primary/secondary endpoint schedule definitions from the registry record",
+      ],
+    },
     unknown_questions: [
       {
-        unknown: "Whether any methods materials beyond the public registry page are shareable",
-        why_it_matters: "Public existence does not establish access to full protocols or datasets",
-        resolvable_by: "ClinicalTrials.gov record contacts / study sponsor public desk (role, not a named person invented here)",
+        unknown: "Exact public registry eligibility and outcome measure text",
+        why_it_matters: "Without it, reuse cannot be assessed element-by-element",
+        resolvable_by:
+          "ClinicalTrials.gov study record fields and a study-methods reviewer role",
       },
     ],
     recommended_next_step: {
-      milestone: "Complete a feasibility review of public CLIMB SCD-121 fields against the community question",
+      milestone:
+        "Build a missing-document checklist and a methods-reviewer question list",
       actions: [
         {
-          action: "Extract public eligibility and outcome fields into a comparison table",
-          role_or_organization: "Patient-organization research lead with a clinical methods advisor",
-          information_needed: "Community research objective and genotype scope",
-          decision_enabled: "Whether to pursue methods adaptation or a different asset",
+          action:
+            "Export ClinicalTrials.gov eligibility and outcome-measure fields for NCT03745287 into a comparison table against the natural-history objective",
+          role_or_organization: "Study-methods reviewer (biostatistics/clinical research methods)",
+          information_needed:
+            "Public registry eligibility text, outcome definitions, and the community natural-history objective",
+          decision_enabled:
+            "Whether any documented measurement is appropriate to adapt, and what changes are required",
         },
       ],
     },
     potential_time_savings:
-      "Reusing publicly described outcome definitions might avoid drafting those fields from scratch; acceleration has not been quantified.",
-    evidence_limitations_explanation: "",
+      "A public-fields checklist may avoid rediscovering registry links; acceleration has not been quantified.",
+    evidence_limitations_explanation:
+      "Stored evidence lacks detailed protocol eligibility/endpoint specifications.",
+    ...over,
   };
-  const v = validateEvaluation(model, fixturePkg);
+}
+
+// 1) Supported assessment with valid citations
+{
+  const v = validateEvaluation(baseModel(), fixturePkg);
   assert.equal(v.validation.accepted, true);
   assert.equal(v.origin, "ai_generated");
   assert.equal(v.review_status, "not_reviewed");
+  assert.ok(v.top_summary_limitations.length >= 1);
   section("supported assessment with valid citations accepted");
 }
 
-// 2) Insufficient evidence package from thin graph slice
+// 2) Lost quantitative qualifiers detected
 {
-  const thin: GraphData = {
-    generated_at: "t",
-    layer: "curated",
-    nodes: [
-      { id: "disease:hbss", type: "disease", label: "HbSS" },
-      { id: "nct:NCT03745287", type: "clinical_study", label: "Study" },
-    ],
-    edges: [],
-  };
-  const pkg = buildEvaluationEvidencePackage({
-    datasetId: "hbb",
-    graph: thin,
-    diseaseNodeId: "disease:hbss",
-    assetNodeId: "nct:NCT03745287",
-  });
-  assert.equal(pkg.insufficient, true);
-  assert.ok(pkg.missing_information.length >= 1);
-  section("insufficient evidence yields missing-information questions");
+  const issues = lostQuantitativeQualifierIssues(
+    "The study showed that 97% of patients were free from vaso-occlusive crises.",
+    "Of 30 patients with sufficient follow-up, 29 (97%) were free from vaso-occlusive crises for at least 12 consecutive months."
+  );
+  assert.ok(issues.some((i) => i.code === "lost_quantitative_qualifier"));
+  const v = validateEvaluation(
+    baseModel({
+      opportunity_summary:
+        "CLIMB SCD-121 showed that 97% of patients were free from vaso-occlusive crises, so endpoints can be reused.",
+      why_relevant: {
+        documented_findings: [
+          {
+            claim: "97% of patients were free from vaso-occlusive crises.",
+            evidence_ids: ["ev:edge:fixture:path:passage"],
+          },
+        ],
+        ai_interpretation: "x",
+        proposed_opportunity: "y",
+      },
+    }),
+    fixturePkg
+  );
+  assert.ok(
+    v.validation.issues.some((i) => i.code === "lost_quantitative_qualifier") ||
+      v.validation.issues.some((i) => i.code === "dropped_unqualified_finding")
+  );
+  assert.equal(v.why_relevant.documented_findings.length, 0);
+  assert.ok(
+    v.top_summary_limitations.some((l) => /qualifier|denominator|30/i.test(l))
+  );
+  section("lost quantitative qualifiers flagged and unqualified findings dropped");
 }
 
-// 3) Invalid evidence references rejected
+// 3) Generic reuse recommendation coerced
 {
-  const model: ModelEvaluation = {
-    assessment_id: "eval:bad",
-    conclusion_label: "potential_reuse_worth_investigating",
-    opportunity_summary: "Bad",
-    why_relevant: {
-      documented_findings: [
-        { claim: "Invented", evidence_ids: ["ev:not-real"] },
-      ],
-      ai_interpretation: "x",
-      proposed_opportunity: "y",
-    },
-    reuse_elements: [],
-    unknown_questions: [],
-    recommended_next_step: {
-      milestone: "m",
-      actions: [
+  const v = validateEvaluation(
+    baseModel({
+      conclusion_label: "potential_reuse_worth_investigating",
+      reuse_elements: [
         {
-          action: "a",
-          role_or_organization: "r",
-          information_needed: "i",
-          decision_enabled: "d",
+          element: "Eligibility criteria",
+          documented_detail: "VOC eligibility criteria",
+          supporting_passage_excerpt: "VOC eligibility criteria",
+          relevance_to_objective: "Might help natural history",
+          assessment: "potentially_reusable",
+          rationale: "Asset mentions eligibility criteria.",
+          important_differences: [],
+          evidence_ids: ["ev:assessment:nct:NCT03745287"],
+          must_verify_before_proceeding: "Check details",
         },
       ],
-    },
-    potential_time_savings: "Acceleration has not been quantified.",
-    evidence_limitations_explanation: "",
-  };
-  const v = validateEvaluation(model, fixturePkg);
+    }),
+    fixturePkg
+  );
+  assert.equal(v.reuse_elements[0].assessment, "insufficient_information");
+  assert.notEqual(v.conclusion_label, "potential_reuse_worth_investigating");
+  section("generic reuse recommendations coerced away from positive reuse");
+}
+
+// 4) Without-modification language rejected
+{
+  const v = validateEvaluation(
+    baseModel({
+      recommended_next_step: {
+        milestone: "Determine if these elements can be adapted without modification",
+        actions: [
+          {
+            action: "Consult regulatory experts",
+            role_or_organization: "regulatory experts",
+            information_needed: "n/a",
+            decision_enabled: "n/a",
+          },
+        ],
+      },
+    }),
+    fixturePkg
+  );
+  assert.equal(v.validation.accepted, false);
+  assert.ok(v.validation.issues.some((i) => i.code === "without_modification"));
+  section("without-modification next step rejected");
+}
+
+// 5) Invalid evidence references rejected
+{
+  const v = validateEvaluation(
+    baseModel({
+      why_relevant: {
+        documented_findings: [
+          { claim: "Invented", evidence_ids: ["ev:not-real"] },
+        ],
+        ai_interpretation: "x",
+        proposed_opportunity: "y",
+      },
+    }),
+    fixturePkg
+  );
   assert.equal(v.validation.accepted, false);
   assert.ok(
     v.validation.issues.some((i) => i.code === "fabricated_evidence")
@@ -213,79 +299,37 @@ const fixturePkg: EvaluationEvidencePackage = {
   section("invalid evidence references rejected");
 }
 
-// 4) Differences prevent positive-only conclusion path in fixture reuse element
-{
-  const model: ModelEvaluation = {
-    assessment_id: "eval:diff",
-    conclusion_label: "evidence_argues_against_proposed_reuse",
-    opportunity_summary:
-      "Public access notes argue against treating the registry page as a reusable private protocol.",
-    why_relevant: {
-      documented_findings: [
-        {
-          claim:
-            "Access note: Public registry page only. Eligibility and outcomes are protocol-specific; willingness to collaborate is not established.",
-          evidence_ids: ["ev:assessment:nct:NCT03745287"],
-        },
-      ],
-      ai_interpretation: "Existence ≠ access.",
-      proposed_opportunity: "Treat as public methods reconnaissance only.",
-    },
-    reuse_elements: [
-      {
-        element: "Full protocol package",
-        assessment: "evidence_argues_against_reuse",
-        rationale: "Only a public registry page is documented in the package.",
-        important_differences: ["No verified access to internal protocol materials"],
-        evidence_ids: ["ev:assessment:nct:NCT03745287"],
-        must_verify_before_proceeding: "Do not assume sponsor materials are available.",
-      },
-    ],
-    unknown_questions: [
-      {
-        unknown: "Whether any redacted methods summary can be requested",
-        why_it_matters: "Changes whether reuse is even discussable",
-        resolvable_by: "Study public contact role on ClinicalTrials.gov",
-      },
-    ],
-    recommended_next_step: {
-      milestone: "Decide to limit work to public-fields review",
-      actions: [
-        {
-          action: "Document public-only constraint in the brief",
-          role_or_organization: "Patient-organization research lead",
-          information_needed: "Community objective",
-          decision_enabled: "Stop or continue public-methods review",
-        },
-      ],
-    },
-    potential_time_savings: "Acceleration has not been quantified.",
-    evidence_limitations_explanation: "",
-  };
-  const v = validateEvaluation(model, fixturePkg);
-  assert.equal(v.validation.accepted, true);
-  assert.equal(v.conclusion_label, "evidence_argues_against_proposed_reuse");
-  section("important differences / against-reuse conclusion accepted");
-}
-
-// 5) Public asset existence without verified access remains in missing info
+// 6) Real HBB package reports protocol detail gaps
 {
   const pkg = buildEvaluationEvidencePackage({
     datasetId: "hbb",
     graph: hbbGraph,
     diseaseNodeId: "disease:hbss",
     assetNodeId: "nct:NCT03745287",
+    researchObjective: "Plan a natural-history study",
     assetAssessments: hbbDemo.asset_assessments,
   });
-  assert.ok(pkg.evidence.length > 0);
+  assert.ok(pkg.evidence.some((e) => e.evidence_id.includes("abstract") || /29 \(97%\)|Of 30 patients/i.test(e.supporting_passage)));
   assert.ok(
-    pkg.missing_information.some((m) => /access|collaborat/i.test(m)) ||
-      pkg.asset.access_info
+    pkg.missing_information.some((m) => /eligibility criteria text/i.test(m))
   );
-  section("public asset package preserves access caveats");
+  assert.ok(pkg.missing_information.some((m) => /endpoint/i.test(m)));
+  section("HbSS→CLIMB package keeps 29/30 passage and reports missing protocol details");
 }
 
-// 6) Candidate assets listed; gene is not silently a disease
+// 7) Export preserves limitations and citations
+{
+  const v = validateEvaluation(baseModel(), fixturePkg);
+  const brief = buildCollaborationBrief(v, fixturePkg, "2026-10-04T00:00:00Z");
+  const md = formatCollaborationBriefMarkdown(brief);
+  assert.match(md, /not reviewed/i);
+  assert.match(md, /Limitation:/i);
+  assert.match(md, /PMID:38661449|38661449/);
+  assert.match(md, /eligibility criteria text/i);
+  section("export preserves citations and limitations");
+}
+
+// 8) Disease required; assets listed; unreviewed status
 {
   const assets = listCandidateAssets(
     hbbGraph,
@@ -293,77 +337,14 @@ const fixturePkg: EvaluationEvidencePackage = {
     hbbDemo.asset_assessments
   );
   assert.ok(assets.length >= 1);
-  const bad = buildEvaluationEvidencePackage({
-    datasetId: "hbb",
-    graph: hbbGraph,
-    diseaseNodeId: "gene:HBB",
-    assetNodeId: "nct:NCT03745287",
-    assetAssessments: hbbDemo.asset_assessments,
-  });
-  assert.equal(bad.insufficient, true);
-  section("disease required; assets offered from graph");
+  assert.equal(
+    relationshipStatusOf({ id: "e", source: "a", target: "b", type: "x" }),
+    "unreviewed"
+  );
+  section("assets listed; missing relationship_status unreviewed");
 }
 
-// 7) Missing relationship_status remains unreviewed
-{
-  const edge = {
-    id: "e",
-    source: "a",
-    target: "b",
-    type: "x",
-  };
-  assert.equal(relationshipStatusOf(edge), "unreviewed");
-  section("missing relationship_status is unreviewed");
-}
-
-// 8) Export preserves citations and unreviewed status
-{
-  const model: ModelEvaluation = {
-    assessment_id: "eval:export",
-    conclusion_label: "important_differences_require_review",
-    opportunity_summary: "Summary",
-    why_relevant: {
-      documented_findings: [
-        {
-          claim: "CLIMB SCD-121 enrolls participants with sickle cell disease genotypes including HbSS",
-          evidence_ids: ["ev:edge:fixture:path:passage"],
-        },
-      ],
-      ai_interpretation: "Interpretation",
-      proposed_opportunity: "Opportunity",
-    },
-    reuse_elements: [],
-    unknown_questions: [
-      {
-        unknown: "Access pathway",
-        why_it_matters: "Blocks reuse",
-        resolvable_by: "Public study contact role",
-      },
-    ],
-    recommended_next_step: {
-      milestone: "Feasibility check",
-      actions: [
-        {
-          action: "Review public fields",
-          role_or_organization: "Research lead",
-          information_needed: "Objective",
-          decision_enabled: "Go/no-go",
-        },
-      ],
-    },
-    potential_time_savings: "Acceleration has not been quantified.",
-    evidence_limitations_explanation: "",
-  };
-  const v = validateEvaluation(model, fixturePkg);
-  const brief = buildCollaborationBrief(v, fixturePkg, "2026-10-04T00:00:00Z");
-  const md = formatCollaborationBriefMarkdown(brief);
-  assert.match(md, /not reviewed/i);
-  assert.match(md, /ev:edge:fixture:path:passage/);
-  assert.match(md, /clinicaltrials\.gov/i);
-  section("export preserves citations and unreviewed status");
-}
-
-// 9) Evaluation does not mutate curated datasets
+// 9) No curated mutation
 {
   const before = JSON.stringify(hbbGraph.edges[0]);
   buildEvaluationEvidencePackage({

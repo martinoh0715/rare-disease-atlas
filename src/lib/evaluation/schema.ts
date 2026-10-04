@@ -6,8 +6,10 @@ export const evaluationResponseSchema = {
     "assessment_id",
     "conclusion_label",
     "opportunity_summary",
+    "top_summary_limitations",
     "why_relevant",
     "reuse_elements",
+    "study_design_comparison",
     "unknown_questions",
     "recommended_next_step",
     "potential_time_savings",
@@ -25,6 +27,10 @@ export const evaluationResponseSchema = {
       ],
     },
     opportunity_summary: { type: "string" },
+    top_summary_limitations: {
+      type: "array",
+      items: { type: "string" },
+    },
     why_relevant: {
       type: "object",
       additionalProperties: false,
@@ -57,6 +63,9 @@ export const evaluationResponseSchema = {
         additionalProperties: false,
         required: [
           "element",
+          "documented_detail",
+          "supporting_passage_excerpt",
+          "relevance_to_objective",
           "assessment",
           "rationale",
           "important_differences",
@@ -65,6 +74,9 @@ export const evaluationResponseSchema = {
         ],
         properties: {
           element: { type: "string" },
+          documented_detail: { type: "string" },
+          supporting_passage_excerpt: { type: "string" },
+          relevance_to_objective: { type: "string" },
           assessment: {
             type: "string",
             enum: [
@@ -81,6 +93,27 @@ export const evaluationResponseSchema = {
           },
           evidence_ids: { type: "array", items: { type: "string" } },
           must_verify_before_proceeding: { type: "string" },
+        },
+      },
+    },
+    study_design_comparison: {
+      type: "object",
+      additionalProperties: false,
+      required: [
+        "purpose_differences",
+        "participant_selection_differences",
+        "treatment_exposure_differences",
+        "outcome_interpretation_differences",
+        "missing_information",
+      ],
+      properties: {
+        purpose_differences: { type: "string" },
+        participant_selection_differences: { type: "string" },
+        treatment_exposure_differences: { type: "string" },
+        outcome_interpretation_differences: { type: "string" },
+        missing_information: {
+          type: "array",
+          items: { type: "string" },
         },
       },
     },

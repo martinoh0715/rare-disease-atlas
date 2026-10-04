@@ -339,12 +339,75 @@ export function AtlasApp({
       if (typeof n.abstract === "string") {
         map.set(`ev:node:${n.id}:abstract`, n.abstract);
       }
+      if (Array.isArray(n.main_findings)) {
+        map.set(
+          `ev:node:${n.id}:main_findings`,
+          n.main_findings.map(String).join(" | ")
+        );
+      }
     }
     for (const a of demo.asset_assessments) {
       map.set(
         `ev:assessment:${a.asset_id}`,
         `${a.description} Access: ${a.access}`
       );
+    }
+    return map;
+  }, [curated, demo.asset_assessments]);
+
+  const evalEvidenceTitleById = useMemo(() => {
+    const map = new Map<string, string>();
+    const titleFor = (nodeId: string) => {
+      const n = nodeMap.get(nodeId);
+      if (!n) return nodeId;
+      const official = n.official_title as string | undefined;
+      const pmid = n.pmid as string | undefined;
+      const nct = n.nct_id as string | undefined;
+      const base = official || n.label;
+      if (pmid) return `${base} (PMID:${pmid})`;
+      if (nct) return `${base} (${nct})`;
+      return base;
+    };
+    for (const e of curated.edges) {
+      const prefer =
+        nodeMap.get(e.source)?.type === "publication" ||
+        nodeMap.get(e.source)?.type === "clinical_study"
+          ? e.source
+          : nodeMap.get(e.target)?.type === "publication" ||
+              nodeMap.get(e.target)?.type === "clinical_study"
+            ? e.target
+            : e.source;
+      const t = titleFor(prefer);
+      map.set(`ev:${e.id}:passage`, t);
+      map.set(`ev:${e.id}:curator`, t);
+      map.set(`ev:${e.id}`, t);
+    }
+    for (const n of curated.nodes) {
+      const t = titleFor(n.id);
+      map.set(`ev:node:${n.id}`, t);
+      map.set(`ev:node:${n.id}:abstract`, t);
+      map.set(`ev:node:${n.id}:main_findings`, t);
+    }
+    for (const a of demo.asset_assessments) {
+      map.set(`ev:assessment:${a.asset_id}`, a.title);
+    }
+    return map;
+  }, [curated, demo.asset_assessments, nodeMap]);
+
+  const evalEvidenceKindById = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const e of curated.edges) {
+      map.set(`ev:${e.id}:passage`, "source_passage");
+      map.set(`ev:${e.id}:curator`, "curator_summary");
+      map.set(`ev:${e.id}`, "source_passage");
+    }
+    for (const n of curated.nodes) {
+      map.set(`ev:node:${n.id}`, "curator_summary");
+      map.set(`ev:node:${n.id}:abstract`, "source_passage");
+      map.set(`ev:node:${n.id}:main_findings`, "source_passage");
+    }
+    for (const a of demo.asset_assessments) {
+      map.set(`ev:assessment:${a.asset_id}`, "asset_record");
     }
     return map;
   }, [curated, demo.asset_assessments]);
@@ -690,10 +753,23 @@ export function AtlasApp({
       research_objective: researchObjective,
       evidence: (evalResult.evidence_ids || []).map((id) => ({
         evidence_id: id,
-        kind: "source_passage" as const,
+        kind: (evalEvidenceKindById.get(id) || "source_passage") as
+          | "source_passage"
+          | "curator_summary"
+          | "asset_record",
         source_url: evalEvidenceUrlById.get(id) || null,
         supporting_passage: evalEvidencePassageById.get(id) || "",
-        is_curator_summary: id.includes(":curator") || id.includes("assessment:"),
+        display_title: evalEvidenceTitleById.get(id) || id,
+        display_identifier: id.includes("pmid:")
+          ? id.match(/pmid:(\d+)/i)?.[1]
+            ? `PMID:${id.match(/pmid:(\d+)/i)![1]}`
+            : undefined
+          : id.includes("nct:") || /NCT\d+/i.test(id)
+            ? id.match(/NCT\d+/i)?.[0]
+            : undefined,
+        is_curator_summary:
+          evalEvidenceKindById.get(id) === "curator_summary" ||
+          evalEvidenceKindById.get(id) === "asset_record",
       })),
       connecting_paths: [],
       related_context_nodes: [],
@@ -927,6 +1003,8 @@ export function AtlasApp({
               onPrepareBrief={prepareCollaborationBrief}
               evidenceUrlById={evalEvidenceUrlById}
               evidencePassageById={evalEvidencePassageById}
+              evidenceTitleById={evalEvidenceTitleById}
+              evidenceKindById={evalEvidenceKindById}
             />
 
             <div className="relative mt-4 overflow-hidden rounded-atlas border border-line bg-slate-50">

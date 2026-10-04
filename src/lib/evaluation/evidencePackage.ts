@@ -25,6 +25,39 @@ function neighbors(graph: GraphData, id: string): GraphEdge[] {
 
 export { findConnectingPaths, listCandidateAssets } from "@/lib/evaluation/assets";
 
+function displayMeta(
+  nodeMap: Map<string, GraphNode>,
+  edge?: GraphEdge,
+  node?: GraphNode | null
+): { display_title?: string; display_identifier?: string; title?: string } {
+  const n =
+    node ||
+    (edge
+      ? nodeMap.get(edge.source)?.type === "publication" ||
+        nodeMap.get(edge.source)?.type === "clinical_study"
+        ? nodeMap.get(edge.source)
+        : nodeMap.get(edge.target)?.type === "publication" ||
+            nodeMap.get(edge.target)?.type === "clinical_study"
+          ? nodeMap.get(edge.target)
+          : nodeMap.get(edge.source)
+      : null);
+  if (!n) return {};
+  const pmid = (n.pmid as string | undefined) || undefined;
+  const nct =
+    (n.nct_id as string | undefined) ||
+    (n.id.startsWith("nct:") ? n.id.slice(4) : undefined);
+  const official = (n.official_title as string | undefined) || undefined;
+  return {
+    title: official || n.label,
+    display_title: official || n.label,
+    display_identifier: pmid
+      ? `PMID:${pmid}`
+      : nct
+        ? `NCT${nct.replace(/^NCT/i, "")}`
+        : n.id,
+  };
+}
+
 function pushEvidence(
   list: EvaluationEvidenceRecord[],
   seen: Set<string>,
@@ -40,6 +73,34 @@ function pushEvidence(
   }
   seen.add(rec.evidence_id);
   list.push(rec);
+}
+
+function packageMentionsSpecificProtocolDetail(
+  evidence: EvaluationEvidenceRecord[]
+): {
+  hasEligibilityDetail: boolean;
+  hasEndpointDetail: boolean;
+} {
+  const text = evidence.map((e) => e.supporting_passage).join("\n");
+  // Require protocol-style eligibility definitions — not bare “eligibility criteria”
+  // mentions, age-band journey notes, or efficacy result windows.
+  const hasEligibilityDetail =
+    /\b(inclusion|exclusion)\s+criteria\b[\s\S]{0,120}\b(must|required|at least|history of|diagnosed)\b/i.test(
+      text
+    ) ||
+    /\b(history of|experienced)\s+(at least\s+)?\d+\s+(severe\s+)?(vocs?|vaso-occlusive crises)\b/i.test(
+      text
+    ) ||
+    /\beligible if\b[\s\S]{0,80}\d+/i.test(text);
+  // Protocol endpoint specifications — not “12 consecutive months” efficacy results alone.
+  const hasEndpointDetail =
+    /\b(primary|secondary)\s+(endpoint|outcome)\b[\s\S]{0,160}\b(defined|definition|measured|assessed as)\b/i.test(
+      text
+    ) ||
+    /\bendpoint\s+definition\b/i.test(text) ||
+    /\b(outcome|endpoint)\s+measured\s+as\b/i.test(text) ||
+    /\btransfusion independence\s+defined\b/i.test(text);
+  return { hasEligibilityDetail, hasEndpointDetail };
 }
 
 export function buildEvaluationEvidencePackage(options: {
@@ -137,6 +198,7 @@ export function buildEvaluationEvidencePackage(options: {
     }
     const passage = clean(edge.evidence?.supporting_passage);
     const curatorPlain = clean(edge.plain_language);
+    const meta = displayMeta(nodeMap, edge);
     if (passage) {
       pushEvidence(evidence, seen, {
         evidence_id: `ev:${edge.id}:passage`,
@@ -161,6 +223,9 @@ export function buildEvaluationEvidencePackage(options: {
           nodeMap.get(edge.source)?.label,
           nodeMap.get(edge.target)?.label,
         ].filter(Boolean) as string[],
+        title: meta.title,
+        display_title: meta.display_title,
+        display_identifier: meta.display_identifier,
         is_curator_summary: false,
       });
     }
@@ -173,8 +238,53 @@ export function buildEvaluationEvidencePackage(options: {
         supporting_passage: curatorPlain,
         claim_summary: "Curator-written summary (not a verbatim abstract)",
         relationship_status: relationshipStatusOf(edge),
+        title: meta.title,
+        display_title: meta.display_title,
+        display_identifier: meta.display_identifier,
         is_curator_summary: true,
       });
+    }
+  }
+
+  // Pull publication/study abstracts and main findings for nodes on the path.
+  for (const id of contextIds) {
+    const n = nodeMap.get(id);
+    if (!n) continue;
+    if (!["publication", "clinical_study"].includes(n.type)) continue;
+    const meta = displayMeta(nodeMap, undefined, n);
+    if (typeof n.abstract === "string" && isUsefulPassage(n.abstract)) {
+      pushEvidence(evidence, seen, {
+        evidence_id: `ev:node:${n.id}:abstract`,
+        kind: "source_passage",
+        node_id: n.id,
+        source_url: (n.source_url as string | undefined) || null,
+        title: meta.title,
+        display_title: meta.display_title,
+        display_identifier: meta.display_identifier,
+        supporting_passage: clean(n.abstract).slice(0, 1400),
+        publication_date: (n.pubdate as string | undefined) || null,
+        retrieval_date: (n.retrieval_date as string | undefined) || null,
+        is_curator_summary: false,
+        claim_summary: "Stored abstract on publication/study node",
+      });
+    }
+    const findings = n.main_findings;
+    if (Array.isArray(findings)) {
+      const joined = findings.map((f) => clean(String(f))).filter(Boolean).join(" | ");
+      if (isUsefulPassage(joined)) {
+        pushEvidence(evidence, seen, {
+          evidence_id: `ev:node:${n.id}:main_findings`,
+          kind: "source_passage",
+          node_id: n.id,
+          source_url: (n.source_url as string | undefined) || null,
+          title: meta.title,
+          display_title: meta.display_title,
+          display_identifier: meta.display_identifier,
+          supporting_passage: joined.slice(0, 1200),
+          is_curator_summary: false,
+          claim_summary: "Stored main_findings on publication node",
+        });
+      }
     }
   }
 
@@ -185,28 +295,19 @@ export function buildEvaluationEvidencePackage(options: {
       clean(asset.notes),
       clean(asset.access_info),
     ].filter(Boolean);
+    const assetMeta = displayMeta(nodeMap, undefined, asset);
     if (bits.length) {
       pushEvidence(evidence, seen, {
         evidence_id: `ev:node:${asset.id}`,
         kind: "asset_record",
         node_id: asset.id,
         source_url: (asset.source_url as string | undefined) || null,
-        title: asset.label,
+        title: assetMeta.title || asset.label,
+        display_title: assetMeta.display_title || asset.label,
+        display_identifier: assetMeta.display_identifier,
         supporting_passage: bits.join(" | ").slice(0, 900),
         is_curator_summary: true,
         claim_summary: "Asset node record from curated dataset",
-      });
-    }
-    if (typeof asset.abstract === "string" && isUsefulPassage(asset.abstract)) {
-      pushEvidence(evidence, seen, {
-        evidence_id: `ev:node:${asset.id}:abstract`,
-        kind: "source_passage",
-        node_id: asset.id,
-        source_url: (asset.source_url as string | undefined) || null,
-        title: asset.label,
-        supporting_passage: clean(asset.abstract).slice(0, 1200),
-        is_curator_summary: false,
-        claim_summary: "Stored abstract text on asset/publication node",
       });
     }
   }
@@ -216,11 +317,14 @@ export function buildEvaluationEvidencePackage(options: {
       assessment.description,
       `Access note: ${assessment.access}`,
       `Relevance: ${assessment.relevance_to_journey}`,
-      `May be reusable: ${assessment.comparison.may_be_reusable.join("; ")}`,
+      `May be reusable (high-level journey note, not protocol text): ${assessment.comparison.may_be_reusable.join("; ")}`,
       `What differs: ${assessment.comparison.what_differs.join("; ")}`,
       `Needs expert review: ${assessment.comparison.needs_expert_review.join("; ")}`,
       `Adaptation status: ${assessment.comparison.adaptation_status}`,
       `Validation question: ${assessment.comparison.validation_question}`,
+      `Designed for disease: ${assessment.designed_for.disease || "(unspecified)"}`,
+      `Designed for genotype note: ${assessment.designed_for.genotype || "(unspecified)"}`,
+      `Designed for population note: ${assessment.designed_for.population || "(unspecified)"}`,
     ]
       .map(clean)
       .filter(Boolean)
@@ -231,7 +335,11 @@ export function buildEvaluationEvidencePackage(options: {
       node_id: assessment.asset_id,
       source_url: assessment.source_url || null,
       title: assessment.title,
-      supporting_passage: packed.slice(0, 1200),
+      display_title: assessment.title,
+      display_identifier: assessment.asset_id.startsWith("nct:")
+        ? assessment.asset_id.slice(4)
+        : assessment.asset_id,
+      supporting_passage: packed.slice(0, 1400),
       is_curator_summary: true,
       claim_summary:
         "Curated asset assessment (journey metadata; not a publication abstract)",
@@ -284,9 +392,36 @@ export function buildEvaluationEvidencePackage(options: {
       "No specific source passages were available on the disease–asset path."
     );
   }
-  if (assessment && /not established|unknown|not claimed|no automatic/i.test(assessment.access + assessment.comparison.adaptation_status)) {
+  if (
+    assessment &&
+    /not established|unknown|not claimed|no automatic|does not grant access/i.test(
+      assessment.access + " " + assessment.comparison.adaptation_status
+    )
+  ) {
     missing_information.push(
       "Access permission, licensing, or collaboration willingness is not established in the stored records."
+    );
+  }
+
+  const detailFlags = packageMentionsSpecificProtocolDetail(evidence);
+  if (!detailFlags.hasEligibilityDetail) {
+    missing_information.push(
+      "Specific eligibility criteria text (inclusion/exclusion definitions, numeric VOC history thresholds, genotype rules) is not present in the stored evidence package—only high-level mentions."
+    );
+  }
+  if (!detailFlags.hasEndpointDetail) {
+    missing_information.push(
+      "Specific outcome/endpoint definitions from the protocol are not present as reusable measurement specifications in the stored evidence package."
+    );
+  }
+  if (
+    /natural[- ]history|observational|registry/i.test(researchObjective) &&
+    /clinical_study|study_protocol|intervention/i.test(
+      asset?.type || assessment?.asset_kind || ""
+    )
+  ) {
+    missing_information.push(
+      "Objective appears observational/natural-history oriented while the asset is an interventional study record; purpose, treatment exposure, and outcome interpretation differences need explicit review."
     );
   }
 
@@ -303,6 +438,7 @@ export function buildEvaluationEvidencePackage(options: {
         assetNodeId,
         ids: trimmed.map((e) => e.evidence_id).sort(),
         passages: trimmed.map((e) => e.supporting_passage),
+        missing: missing_information,
       })
     )
     .digest("hex")

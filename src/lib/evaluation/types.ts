@@ -1,4 +1,4 @@
-export const EVAL_PROMPT_VERSION = "atlas-evaluation-v1";
+export const EVAL_PROMPT_VERSION = "atlas-evaluation-v3";
 
 export const CONCLUSION_LABELS = [
   "potential_reuse_worth_investigating",
@@ -47,6 +47,10 @@ export type EvaluationEvidenceRecord = {
   relationship_status?: string | null;
   claim_summary?: string | null;
   endpoint_labels?: string[];
+  /** Human-readable source title for UI citations. */
+  display_title?: string | null;
+  /** PMID / NCT / other public identifier for UI citations. */
+  display_identifier?: string | null;
   /** True when this text is curator-authored, not a verbatim abstract. */
   is_curator_summary: boolean;
 };
@@ -103,6 +107,10 @@ export type EvaluationEvidencePackage = {
 
 export type ModelReuseElement = {
   element: string;
+  /** Specific criterion/measure/procedure from evidence, or explicit missing-detail statement. */
+  documented_detail: string;
+  supporting_passage_excerpt: string;
+  relevance_to_objective: string;
   assessment: ReuseAssessmentLabel | string;
   rationale: string;
   important_differences: string[];
@@ -123,16 +131,27 @@ export type ModelNextAction = {
   decision_enabled: string;
 };
 
+export type ModelStudyDesignComparison = {
+  purpose_differences: string;
+  participant_selection_differences: string;
+  treatment_exposure_differences: string;
+  outcome_interpretation_differences: string;
+  missing_information: string[];
+};
+
 export type ModelEvaluation = {
   assessment_id: string;
   conclusion_label: ConclusionLabel | string;
   opportunity_summary: string;
+  /** Key limitations that must appear with the top summary. */
+  top_summary_limitations: string[];
   why_relevant: {
     documented_findings: { claim: string; evidence_ids: string[] }[];
     ai_interpretation: string;
     proposed_opportunity: string;
   };
   reuse_elements: ModelReuseElement[];
+  study_design_comparison: ModelStudyDesignComparison;
   unknown_questions: ModelUnknownQuestion[];
   recommended_next_step: {
     milestone: string;
