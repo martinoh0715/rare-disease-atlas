@@ -222,7 +222,14 @@ function baseModel(over: Partial<ModelEvaluation> = {}): ModelEvaluation {
     v.validation.issues.some((i) => i.code === "lost_quantitative_qualifier") ||
       v.validation.issues.some((i) => i.code === "dropped_unqualified_finding")
   );
-  assert.equal(v.why_relevant.documented_findings.length, 0);
+  assert.ok(
+    v.validation.issues.some((i) => i.code === "restored_qualified_finding")
+  );
+  assert.equal(v.why_relevant.documented_findings.length, 1);
+  assert.match(
+    v.why_relevant.documented_findings[0].claim,
+    /29|Of 30 patients with sufficient follow-up/i
+  );
   assert.ok(
     v.top_summary_limitations.some((l) => /qualifier|denominator|30/i.test(l))
   );

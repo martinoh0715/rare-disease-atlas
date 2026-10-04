@@ -531,7 +531,7 @@ export function validateEvaluation(
     issues.push({ code: "weak_support", message: f, severity: "flag" });
   }
 
-  const cleanedFindings = findings.filter((f) => {
+  let cleanedFindings = findings.filter((f) => {
     const weak = flagged_claims.some(
       (flag) =>
         (f.evidence_ids || []).some((eid) => flag.includes(eid)) &&
@@ -548,6 +548,30 @@ export function validateEvaluation(
     }
     return !weak && !lostQualifier;
   });
+
+  // If the model omitted or lost qualified quantitative findings, restore a
+  // background efficacy/context passage with its original denominators.
+  if (cleanedFindings.length === 0) {
+    const quant = pkg.evidence.find(
+      (e) =>
+        e.kind === "source_passage" &&
+        /\b\d+\s*\(\d{1,3}%\)|\b\d+\s+of\s+\d+\b/.test(e.supporting_passage)
+    );
+    if (quant) {
+      cleanedFindings = [
+        {
+          claim: quant.supporting_passage.slice(0, 400),
+          evidence_ids: [quant.evidence_id],
+        },
+      ];
+      issues.push({
+        code: "restored_qualified_finding",
+        message:
+          "Restored a source passage with full quantitative qualifiers as background (not reuse proof)",
+        severity: "flag",
+      });
+    }
+  }
 
   const reuse_elements = coerceReuseElements(
     (model.reuse_elements || []).map((e) => ({
@@ -597,6 +621,46 @@ export function validateEvaluation(
     opportunity_summary = `${opportunity_summary} (Important: any percentage cited from the evidence must retain its original denominator and follow-up qualifier; see limitations.)`;
   }
 
+  let proposed_opportunity = model.why_relevant?.proposed_opportunity || "";
+  const protocolGaps = pkg.missing_information.some((m) =>
+    /eligibility|endpoint|outcome definition|protocol/i.test(m)
+  );
+  if (
+    protocolGaps &&
+    /\b(reuse|adapt|use)\b[\s\S]{0,40}\b(eligibility|endpoint|VOC-related)\b/i.test(
+      proposed_opportunity
+    )
+  ) {
+    proposed_opportunity =
+      "Before proposing adaptation, obtain the missing public registry eligibility and outcome-measure text and compare each documented element to the natural-history objective with a study-methods reviewer.";
+    issues.push({
+      code: "softened_opportunity",
+      message:
+        "Softened proposed opportunity that assumed endpoint/eligibility reuse despite missing protocol details",
+      severity: "flag",
+    });
+  }
+
+  // Age-band / population notes without full VOC thresholds should not be
+  // treated as ready-to-adapt eligibility packages.
+  for (const el of reuse_elements) {
+    if (
+      /age band|ages?\s+\d+/i.test(el.element + " " + el.documented_detail) &&
+      /severe VOC history|VOC history/i.test(el.documented_detail) &&
+      !/\b\d+\s+(severe\s+)?(voc|vaso-occlusive)/i.test(el.documented_detail) &&
+      (el.assessment === "needs_adaptation" ||
+        el.assessment === "potentially_reusable")
+    ) {
+      el.assessment = "insufficient_information";
+      el.rationale = `${el.rationale} The stored note gives an age band and mentions severe VOC history but does not define numeric VOC thresholds or full inclusion/exclusion text, so transferability cannot yet be assessed.`.trim();
+      issues.push({
+        code: "partial_population_note",
+        message: `Downgraded "${el.element}" to insufficient_information: age/VOC note lacks protocol thresholds`,
+        severity: "flag",
+      });
+    }
+  }
+
   const conclusion_label = proportionateConclusion(
     { ...model, opportunity_summary },
     pkg,
@@ -620,7 +684,7 @@ export function validateEvaluation(
     why_relevant: {
       documented_findings: cleanedFindings,
       ai_interpretation: model.why_relevant?.ai_interpretation || "",
-      proposed_opportunity: model.why_relevant?.proposed_opportunity || "",
+      proposed_opportunity,
     },
     reuse_elements,
     study_design_comparison: model.study_design_comparison || {
