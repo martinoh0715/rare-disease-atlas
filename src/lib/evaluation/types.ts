@@ -1,4 +1,4 @@
-export const EVAL_PROMPT_VERSION = "atlas-evaluation-v3";
+export const EVAL_PROMPT_VERSION = "atlas-evaluation-v4";
 
 export const CONCLUSION_LABELS = [
   "potential_reuse_worth_investigating",

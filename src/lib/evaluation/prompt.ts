@@ -28,7 +28,8 @@ Element-level specificity (critical):
 - Set documented_detail to that specific item. Set supporting_passage_excerpt to a short excerpt copied from the cited evidence text.
 - Explain relevance_to_objective for the user's research objective.
 - If evidence only says that "eligibility criteria" or "outcomes" exist without defining them, set assessment to insufficient_information, put documented_detail = "Details not present in supplied evidence", and do NOT imply they were evaluated.
-- Do not recommend reuse of broad labels like "eligibility criteria" or "VOC-related endpoints" unless a specific definition is in the evidence.
+- Do not title an element "Eligibility criteria" or "VOC-related endpoints" unless you can name a specific documented rule. Prefer titles like "Age band note (Ages 12–35)" when only a partial population note exists, with assessment insufficient_information until full inclusion/exclusion text is available.
+- Efficacy result windows (e.g. VOC-free for 12 consecutive months among evaluable patients) may be cited as background findings with full denominators; they are not protocol reuse proof.
 
 Quantitative context (critical):
 - Preserve denominators, populations, follow-up windows, and qualifiers from the source.
@@ -49,7 +50,9 @@ Proportionate conclusions:
 - Put the most important limitations in opportunity_summary AND top_summary_limitations (not only in collapsed detail).
 
 Next steps must be concrete:
-- Each action must name the exact document/information to obtain, the comparison or question it resolves, an appropriate reviewer role (not a generic "regulatory experts" unless a specific regulatory issue is identified), and the decision/deliverable expected.
+- Each action must name the exact document/information to obtain, the comparison or question it resolves, an appropriate reviewer role, and the decision/deliverable expected.
+- Prefer: ClinicalTrials.gov eligibility/outcome fields, publication methods sections, and a study-methods reviewer question list.
+- Do NOT add generic "consult regulatory experts" tasks unless the evidence identifies a specific IND/IDE/IRB/ethics issue.
 - Ask whether reuse is appropriate and what adaptations would be required — never "adapted without modification".
 
 conclusion_label enum:

@@ -142,6 +142,7 @@ function coerceReuseElements(
 ): ModelReuseElement[] {
   return elements.map((el) => {
     const next = { ...el };
+    const genericLabel = GENERIC_ELEMENT.test(next.element.trim());
     if (
       (next.assessment === "potentially_reusable" ||
         next.assessment === "needs_adaptation") &&
@@ -166,8 +167,124 @@ function coerceReuseElements(
       next.rationale =
         `${next.rationale} The package does not contain enough specific protocol text to evaluate transferability of this element; an efficacy or high-level mention is not sufficient.`.trim();
     }
+    // Clarify generic labels even when already insufficient_information
+    if (
+      genericLabel &&
+      (GENERIC_DETAIL_MISSING.test(next.documented_detail || "") ||
+        !required(next.documented_detail) ||
+        (next.documented_detail || "").trim().length < 24)
+    ) {
+      next.element = `Unspecified ${next.element.trim().toLowerCase()} (details missing from stored evidence)`;
+      if (!required(next.documented_detail)) {
+        next.documented_detail = "Details not present in supplied evidence";
+      }
+      if (!required(next.relevance_to_objective)) {
+        next.relevance_to_objective =
+          "Cannot judge relevance to the objective until specific criterion/measurement text is obtained.";
+      }
+    }
     return next;
   });
+}
+
+function isGenericRegulatoryAction(action: {
+  action?: string;
+  role_or_organization?: string;
+  information_needed?: string;
+  decision_enabled?: string;
+}): boolean {
+  const blob = [
+    action.action,
+    action.role_or_organization,
+    action.information_needed,
+    action.decision_enabled,
+  ].join(" ");
+  return /\bregulatory (experts?|affairs)\b/i.test(blob);
+}
+
+function concreteDocumentChecklistAction(
+  pkg: EvaluationEvidencePackage
+): ModelEvaluation["recommended_next_step"]["actions"][number] {
+  const assetLabel = pkg.asset.label || pkg.asset_node_id;
+  const ident =
+    pkg.asset.source_url ||
+    pkg.asset_node_id.replace(/^nct:/, "NCT") ||
+    "the selected asset";
+  return {
+    action: `Pull the public registry eligibility and outcome-measure fields for ${assetLabel} (${ident}) into a side-by-side comparison against the stated research objective`,
+    role_or_organization:
+      "Study-methods reviewer (clinical research methods / biostatistics)",
+    information_needed:
+      "Registry inclusion/exclusion text, outcome definitions/schedules, and the community objective wording",
+    decision_enabled:
+      "Whether any documented measurement or selection rule is appropriate to adapt, what modifications would be required, and which documents remain missing",
+  };
+}
+
+function sanitizeNextStep(
+  step: ModelEvaluation["recommended_next_step"],
+  pkg: EvaluationEvidencePackage,
+  evidenceBlob: string,
+  issues: ValidationIssue[]
+): ModelEvaluation["recommended_next_step"] {
+  const next = {
+    milestone: step?.milestone || "",
+    actions: [...(step?.actions || [])],
+  };
+  if (WITHOUT_MODIFICATION.test(next.milestone)) {
+    next.milestone =
+      "Assess whether any documented design elements are appropriate for the community objective and what adaptations would be required";
+  } else if (
+    !required(next.milestone) ||
+    /\b(clarify|consult)\b/i.test(next.milestone)
+  ) {
+    next.milestone =
+      "Inventory missing study documents and prepare a methods-reviewer comparison against the community objective";
+  }
+
+  const evidenceHasRegulatoryIssue =
+    /\b(IND|IDE|FDA|EMA|IRB|ethics)\b/i.test(evidenceBlob);
+  let actions = next.actions.filter((a) => {
+    if (!evidenceHasRegulatoryIssue && isGenericRegulatoryAction(a)) {
+      issues.push({
+        code: "generic_regulatory",
+        message:
+          "Removed generic regulatory-expert action without a specific regulatory issue in the evidence",
+        severity: "flag",
+      });
+      return false;
+    }
+    return true;
+  });
+
+  actions = actions.map((a) => {
+    const copy = { ...a };
+    if (WITHOUT_MODIFICATION.test(copy.decision_enabled || "")) {
+      copy.decision_enabled =
+        "Whether reuse is appropriate and what adaptations would be required";
+    }
+    if (
+      !required(copy.information_needed) ||
+      /^(n\/a|none|unknown)$/i.test(copy.information_needed.trim())
+    ) {
+      copy.information_needed =
+        "Specific public protocol/registry fields still missing from the stored evidence package";
+    }
+    if (
+      !required(copy.role_or_organization) ||
+      /\bregulatory experts?\b/i.test(copy.role_or_organization)
+    ) {
+      copy.role_or_organization =
+        "Study-methods reviewer (clinical research methods / biostatistics)";
+    }
+    return copy;
+  });
+
+  if (actions.length === 0) {
+    actions = [concreteDocumentChecklistAction(pkg)];
+  }
+  next.actions = actions;
+  return next;
 }
 
 function proportionateConclusion(
@@ -409,18 +526,6 @@ export function validateEvaluation(
       severity: "reject",
     });
   }
-  if (
-    /\bregulatory experts?\b/i.test(blob) &&
-    !/\b(IND|IDE|FDA|EMA|IRB|ethics)\b/i.test(evidenceBlob)
-  ) {
-    issues.push({
-      code: "generic_regulatory",
-      message:
-        "Generic regulatory-expert action without a specific regulatory issue in the evidence",
-      severity: "flag",
-    });
-  }
-
   const flagged_claims = weakSupportFlags(model, pkg);
   for (const f of flagged_claims) {
     issues.push({ code: "weak_support", message: f, severity: "flag" });
@@ -499,15 +604,12 @@ export function validateEvaluation(
     issues
   );
 
-  // Soft-rewrite next-step language if it slipped through without hard reject path cleanup
-  const recommended_next_step = model.recommended_next_step || {
-    milestone: "",
-    actions: [],
-  };
-  if (WITHOUT_MODIFICATION.test(recommended_next_step.milestone || "")) {
-    recommended_next_step.milestone =
-      "Assess whether any documented design elements are appropriate for the community objective and what adaptations would be required";
-  }
+  const recommended_next_step = sanitizeNextStep(
+    model.recommended_next_step || { milestone: "", actions: [] },
+    pkg,
+    evidenceBlob,
+    issues
+  );
 
   const reject = issues.some((i) => i.severity === "reject");
 

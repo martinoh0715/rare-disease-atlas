@@ -275,6 +275,18 @@ function baseModel(over: Partial<ModelEvaluation> = {}): ModelEvaluation {
   );
   assert.equal(v.validation.accepted, false);
   assert.ok(v.validation.issues.some((i) => i.code === "without_modification"));
+  assert.ok(
+    v.validation.issues.some((i) => i.code === "generic_regulatory")
+  );
+  assert.ok(
+    v.recommended_next_step.actions.every(
+      (a) => !/regulatory/i.test(`${a.action} ${a.role_or_organization}`)
+    )
+  );
+  assert.match(
+    v.recommended_next_step.actions[0].action,
+    /eligibility|outcome|registry|ClinicalTrials/i
+  );
   section("without-modification next step rejected");
 }
 
